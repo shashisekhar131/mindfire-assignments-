@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href=  
+"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">  
+     
+<link rel="stylesheet" href="css-code.css">
+
+</head>
+<body>
+
+  <h2 class="say"> too small to display</h2>
+<div class="form-design">
+  <div class="flex-container">
+   
+    <form>
+ 
+    <h2 class="css-3d-text"> User Form </h2>
+
+    First Name:
+     <div class="input-container">
+        <input  type="text" placeholder="Enter your name" > <span class="fa fa-user"></span> 
+    </div>
+
+    Last Name:
+    <div class="input-container">
+       <input  type="text" placeholder="Enter your name" > <span class="fa fa-user"></span> 
+   </div>
+    <br><br>
+
+    Password:
+    <div class="input-container"> 
+         <input  type="password" placeholder="Enter password"> <span class="fa fa-key"></span>
+    </div>
+
+    Retype Password:
+    <div class="input-container"> 
+         <input  type="password" placeholder="Enter password"> <span class="fa fa-key"></span>
+    </div>
+    
+
+   <br>
+   
+
+   Age( between 0 and 100):
+   <input id="age" type="range" min="0" step="1" max="100" value="20">
+   <span id="show-range"></span> <br><br>
+
+
+    Date of Birth:
+    <input  type="date">
+    <br><br>
+
+    
+    gender:<br>
+    
+    <input type="radio" name="gender">Male
+    <input type="radio" name="gender">Female
+    <input type="radio" name="gender">Others
+    <br><br>
+
+    marital status:<br>
+    <input type="radio" name="marital-status">Married
+    <input type="radio" name="marital-status">Unmarried
+    <br><br>
+    favourite color:
+    <input  type="color">
+    <br><br>
+
+    Phone number:
+    <div class="input-container"> <input  type="text" placeholder="Enter phone number"> <span class="fa fa-phone"></span></div>
+    
+    Alternate Phone number:
+    <div class="input-container"> <input  type="text" placeholder="Enter phone number"> <span class="fa fa-phone"></span></div>
+    
+    <br><br>
+
+
+
+
+   email:
+   <div class="input-container"> 
+    <input type="email" placeholder="Enter your email address"> <span class="fa fa-envelope"></span>
+   </div>
+   
+   Alternate email:
+   <div class="input-container"> 
+    <input type="email" placeholder="Enter your email address"> <span class="fa fa-envelope"></span>
+   </div>
+   <br><br>
+  
+   preferred language:<br> 
+   <select name="language">
+       <option value="English">English</option>
+       <option value="telugu">Telugu</option>
+       <option value="Hindi">Hindi</option>
+       <option value="Tamil">Tamil</option>
+       <option value="Odia">Odia</option>
+   </select> <br><br>
+   nationality:<br> 
+   <select name="nationality">
+       <option value="India">India</option>
+       <option value="Australia">Australia</option>
+       <option value="USA">USA</option>
+       <option value="Canada">Canada</option>
+       <option value="Russia">Russia</option>
+   </select> <br><br>
+    
+     <div class="address">  address:
+      State: <input type="text">
+      District: <input type="text">
+      City: <input type="text">
+      pin: <input type="text">
+     </div>
+   <br><br>
+   
+   photo:
+   <label for="fileInput" class="custom-file-input">
+     <span class="fa fa-upload"></span>
+      Drag file(s) or click here to upload
+   </label>
+   <input type="file" id="fileInput">  <br><br>
+   
+
+    <div> <div class="text-social-media">Social media <br>
+    
+       <span class="fa fa-facebook social-media"></span> | <span class="fa fa-instagram social-media"></span> | <span class="fa fa-twitter social-media"></span>  | <span class="fa fa-linkedin social-media"></span>  
+    </div>
+     <br><br><input type="url" placeholder="enter the url"> <br><br>
+    </div>
+    
+
+
+    Comments:<br><textarea placeholder="Enter here..."></textarea>
+  <br>
+    <input type="checkbox"> I agree with terms and conditions <br><br>
+    <input type="checkbox"> I want to recive the newsletter<br><br>
+    <button type="submit">submit</button>
+    <button type="reset">reset</button>
+   
+    </form>
+
+  </div>  
+</div>  
+
+
+
+
+  <script> 
+   var slider =document.getElementById("age"); 
+   slider.oninput=function(){ document.getElementById("show-range").innerHTML = slider.value; } 
+ 
+  </script>
+</body>
+</html>
