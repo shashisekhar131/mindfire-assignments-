@@ -154,4 +154,20 @@ document.body.addEventListener('click',function(e){
 
 });
 
- 
+ // tip error for text inputs 
+
+var textInputs = document.querySelectorAll('[data-allowed ="text"]');
+
+
+for (let i = 0; i < textInputs.length; i++) {
+  let currentInput = textInputs[i];  // Creating a new variable to capture the correct input element
+  currentInput.addEventListener('input', function (event) {
+      if (currentInput.value !="" && !/^[a-zA-Z]+$/.test(currentInput.value)) {
+          currentInput.nextElementSibling.innerHTML = "only text allowed";
+          currentInput.style.borderColor ="red";
+      } else {
+          currentInput.nextElementSibling.innerHTML = "";
+          currentInput.style.borderColor = "rgba(120,120,120,0.5)";
+      }
+  });
+}

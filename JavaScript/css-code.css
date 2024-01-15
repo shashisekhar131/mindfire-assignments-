@@ -131,6 +131,10 @@ button[type="submit"]{
   font-size:20px;
 }
 
+.error-tip{
+  color:red;
+}
+
 @keyframes sizeAnimation {
       0% {
           transform: scale(1);
