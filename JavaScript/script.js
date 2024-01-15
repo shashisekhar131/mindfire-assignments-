@@ -154,7 +154,4 @@ document.body.addEventListener('click',function(e){
 
 });
 
- //show slider input 
- var slider = document.getElementById("age"); 
-   slider.oninput=function(){ document.getElementById("show-range").innerHTML = slider.value; } 
  

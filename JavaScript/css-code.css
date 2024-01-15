@@ -1,262 +1,201 @@
 body{
             
-    padding: 0;
-    margin: 0;
-  }
-  .form-design{
-    width: 100%;
-    height:100%;
-    margin:auto;
-    background-color: lavender;
-  }
-  
-   .flex-container{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-   } 
+  padding: 0;
+  margin: 0;
+}
 
-   .css-3d-text {
-    font-size:30px;
-    text-transform: uppercase;
-font-family: "Arial Black", Gadget, sans-serif;
-   }   
-    
-   
-  /* CSS form */
-   form{
-    
-    padding:20px;
-    margin:20px;
-    border-radius:10px;
-    font-family: Georgia, 'Times New Roman', Times, serif;
-    transition-duration: 0.8s;
-    background-color: white; 
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3); 
-   
-  }
-   
-
-   h2{
-    text-align: center;
-    border-bottom:1px solid rgba(120,120,120,0.5);
-    padding:4px;
-   }
-
-   .input-container{
-    position:relative;
-    display:inline-block;
-   }
-   input{
-    padding:5px;
-    transition-duration: 0.8s;
-   }
-
-   .input-container input{
-    padding-left:30px;
-   }
-
-   input::placeholder{
-    color:rgba(0,0,0,0.3);
-    transition-duration: 0.8s;
-  }
-
-  
-
- .text-social-media{
-  font-size:20px;
-  margin-top:30px;
- }
-   
-  input,textarea,select{
-    border:none;
-    border-bottom: 1px solid rgba(0,0,0,0.3);
-    outline: none;
-    font-size:25px;
-    margin:5px;
-  }
-
-  select {
-    text-align: center;
-    width: 50%; 
-  }
-
-  button{
-    padding:5px 15px 5px 15px;
-    border-radius:5px;
-    background:green;
-    border:none;
-    cursor: pointer;
-    font-size: large;
-    color:white;
-
-  }
-   
-  button:hover{
-    box-shadow: 2px 5px 15px black;
-  }
-  .custom-file-input{
-    
-    padding:30px;
-    border:2px dashed gray;
-  
-  }
-  input[type="file"]{
-    display: none;
-  }
-  button[type="submit"]{
-    animation: sizeAnimation 2s infinite; /* 2s duration, infinite loop */
-    margin-right:20px;
-  }
+/* centering the form */
+.form-design{
+  width: 100%;
+  height:100%;
+  margin:auto;
+  background-color: lavender;
+}
 
 
+.flex-container{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+ } 
 
-  /* CSS for POPUP */
-  #pop-up{
-    position: fixed;
-    top:10%;
-    left:50%;
-    transform: translateX(-50%);
-    background-color: white;
-    padding:20px;
-    box-shadow: 0px 5px 15px rgba(0,0,0,0.5);
-    border-radius: 5px;
-    display: none;
-    font-size:25px;
-    max-height:80vh;
-    overflow: auto;
-  }
-  
-
-  #pop-up button{
-    float:right;
-    margin-top:20px;
-    font-size:20px;
-  }
- 
-  @keyframes sizeAnimation {
-        0% {
-            transform: scale(1);
-        }
-        50% {
-            transform: scale(1.3);
-        }
-        100% {
-            transform: scale(1);
-        }
-    }
-  /* CSS for icons */
-  
-  .fa-instagram{
-    color:red;
-   }
-   .fa-twitter{
-    color:dodgerblue;
-   }
-   .fa-facebook{
-    color:rgb(24, 119, 242);
-   }
-   .fa-linkedin{
-    color:blue;;
-   }
-   .fa-user,.fa-key,.fa-phone,.fa-envelope{
-    font-size: 25px;
-    color:rgb(120,120,120);
-    position:absolute;
-    left:4px;
-    top:8px;
-   }
-
-    .address{
-      display: flex;
-      flex-wrap: wrap;
-    }
-    
-   .social-media{
-    font-size: 30px;
-   }
-   /* responsiveness tab */
-  @media screen and (max-width:680px){
-    
-    .form-design {
-
-      font-size:small;
-    }
-    .input-container{
-      display:block;
-    }
-
-     input::placeholder,textarea::placeholder{
-     
-      font-size: small;
-    }
-    .fa-user,.fa-key,.fa-phone,.fa-envelope{
-      font-size: small;
-    }
-    select,input{
-      font-size: small;
-    }
-    
-    .address{
-      flex-direction: column;
-    }
-
-    .text-social-media{
-  font-size:30px;
+/* form styles*/
+ h2{
   text-align: center;
+  border-bottom:1px solid rgba(120,120,120,0.5);
+  padding:4px;
+  font-size: 30px;
  }
- button{
-  font-size: x-small;
- }
+ form{
+  
+  padding:20px;
+  margin:20px;
+  border-radius:10px;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  transition-duration: 0.8s;
+  background-color: white; 
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3); 
  
+}
+ 
+
+/* layout for input elements */
+
+.grid-container{
+display: grid;
+grid-template-columns: auto auto;
+border: 1px solid black;
+padding:10px;
+grid-gap:10px;
+}
+
+
+
+/* icons inside the input */
+
+input{
+padding:5px;
+transition-duration: 0.8s;
+}
+
+.input-container{
+position:relative;
+}
+
+.fa-user,.fa-key,.fa-phone,.fa-envelope{
+
+color:rgb(120,120,120);
+position:absolute;
+left:10px;
+top:10px;
+}
+
+
+.input-container input{
+padding-left:30px;
+}
+
+/* styling input */
+
+input,textarea,select{
+border:none;
+border-bottom: 1px solid rgba(0,0,0,0.3);
+outline: none;
+margin:5px;
+}
+
+/* styling submit button */ 
+
+button{
+  padding:5px 15px 5px 15px;
+  border-radius:5px;
+  background:green;
+  border:none;
+  cursor: pointer;
+  font-size: large;
+  color:white;
+
+}
+ 
+button:hover{
+  box-shadow: 2px 5px 15px black;
+}
+
+button[type="submit"]{
+  animation: sizeAnimation 2s infinite; /* 2s duration, infinite loop */
+  margin-right:20px;
+}
+
+
+
+/* CSS for POPUP */
+#pop-up{
+  position: fixed;
+  top:10%;
+  left:50%;
+  transform: translateX(-50%);
+  background-color: white;
+  padding:20px;
+  box-shadow: 0px 5px 15px rgba(0,0,0,0.5);
+  border-radius: 5px;
+  display: none;
+  font-size:25px;
+  max-height:80vh;
+  overflow: auto;
+}
+
+
+#pop-up button{
+  float:right;
+  margin-top:20px;
+  font-size:20px;
+}
+
+@keyframes sizeAnimation {
+      0% {
+          transform: scale(1);
+      }
+      50% {
+          transform: scale(1.3);
+      }
+      100% {
+          transform: scale(1);
+      }
   }
+
+  
+  
+ /* responsiveness tab */
+@media screen and (max-width:680px){
+  
+
+  .grid-container{
+    grid-template-columns: auto;
+  }
+  .form-design {
+    font-size:small;
+  }
+  
+   input::placeholder,textarea::placeholder{
+   
+    font-size: small;
+  }
+  .fa-user,.fa-key,.fa-phone,.fa-envelope{
+    font-size: small;
+  }
+  select,input{
+    font-size: small;
+  }
+
+button{
+font-size: x-small;
+}
+
+}
 /* responsiveness phone */
-  @media screen and (max-width:395px){
-    
-   
-    .form-design {
-      width:15vw;
-      font-size:xx-small;
-      padding:0;
-    }
-
-    .input-container{
-      display:block;
-    }
-
-     input::placeholder,textarea::placeholder{
-
-      font-size: xx-small;
-      padding-left:2px;
-    }
-    .fa-user,.fa-key,.fa-phone,.fa-envelope{
-      font-size:xx-small;
-    }
-    select,input{
-      font-size: xx-small;
-    }
-    input[type="range"]{
-     width:50px;
-    }
-
-    textarea{
-      width:150px;
-      height:50px;
-    }
-    .social-media{
-     font-size:25px;
-    }
-    
-    .text-social-media{
-  font-size:20px;
-  text-align: center;
- }
-
- .custom-file-input{
-    
-    display: none;
+@media screen and (max-width:395px){
+  
+ 
+  .form-design {
+    font-size:xx-small;
   }
-  input[type="file"]{
-    display: block;
+
+
+   input::placeholder,textarea::placeholder{
+    font-size: xx-small;
+    padding-left:2px;
   }
+  .fa-user,.fa-key,.fa-phone,.fa-envelope{
+    font-size:xx-small;
   }
+  select,input{
+    font-size: xx-small;
+  }
+ 
+  textarea{
+    width:150px;
+    height:50px;
+  }
+  
+
+}
