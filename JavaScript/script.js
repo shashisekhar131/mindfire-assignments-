@@ -110,6 +110,22 @@ var popUpElement = document.getElementById("pop-up");
           if(maritalStatus[i].checked)userDetails.push({"marital-status":maritalStatus[i].value});
         }
 
+        // get the answer from hobbies
+        var hobbiesEntered = document.getElementsByName("hobbies");
+        for(let i=0;i<hobbiesEntered.length;i++){
+          
+          if(hobbiesEntered[i].checked){
+            if(hobbiesEntered[i].value == "others"){
+             var x = prompt("enter the hobbies");
+              userDetails.push({"hobbies":x});
+         
+            }else{
+              userDetails.push({"hobbies":hobbiesEntered[i].value});
+         
+            }
+             }
+        }
+
         // form validated and got details now show the details 
         showDetails();
   }
