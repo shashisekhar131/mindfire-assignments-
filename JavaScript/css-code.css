@@ -49,6 +49,10 @@ padding:10px;
 grid-gap:10px;
 }
 
+.grid-item{
+  position: relative;
+}
+
 
 
 /* icons inside the input */
@@ -134,6 +138,9 @@ button[type="submit"]{
 
 .error-tip{
   color:red;
+  position: absolute;
+  left:0;
+  bottom:-12px;
 }
 
 @keyframes sizeAnimation {

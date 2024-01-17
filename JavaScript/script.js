@@ -145,7 +145,7 @@ if(currentInput.is('[data-allowed="text"]')){
 
 if(currentInput.is('[type="password"]')){
 
-if(currentInput.val() !== "" && currentInput.val().length < 8) showErrorTip("it should be more than 8 characters",currentInput);
+if(currentInput.val() !== "" && currentInput.val().length < 8) showErrorTip("minimum 8 characters",currentInput);
 else  removeErrorTip(currentInput);
 
 }
