@@ -8,6 +8,8 @@
     <link rel="stylesheet" href=  
 "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">  
 <link rel="stylesheet" href="css-code.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+			
 <script src="script.js" defer></script>
 </head>
 <body>
@@ -35,27 +37,27 @@
           </div>
 
           <div class="grid-item">
-            Password: <div class="input-container">     <input  type="password" placeholder="Enter password" name="password" value="88888888"> <span class="fa fa-key"></span>     </div>
+            Password: <div class="input-container">     <input  type="password" placeholder="Enter password" name="password" value="88888888"><span class="error-tip"></span> <span class="fa fa-key"></span>     </div>
           </div>
 
           <div class="grid-item">
-            Retype Password: <div class="input-container">   <input  type="password" placeholder="Enter password" name="re-type-password" value="88888888"> <span class="fa fa-key"></span> </div>
+            Retype Password: <div class="input-container">   <input  type="password" placeholder="Enter password" name="re-type-password" value="88888888"> <span class="error-tip"></span><span class="fa fa-key"></span> </div>
           </div>
 
           <div class="grid-item">
-            Phone number:    <div class="input-container"> <input  type="tel"  value="9234567890" placeholder="Enter phone number" name="phone-number"> <span class="fa fa-phone"></span></div>
+            Phone number:    <div class="input-container"> <input  type="tel"  value="9234567890" placeholder="Enter phone number" name="phone-number"> <span class="error-tip"></span><span class="fa fa-phone"></span></div>
           </div>
 
           <div class="grid-item">
-            Alternate Phone number:   <div class="input-container"> <input  type="tel"  value="8234567890" placeholder="Enter phone number" name="alternate-phone-number"> <span class="fa fa-phone"></span></div>
+            Alternate Phone number:   <div class="input-container"> <input  type="tel"  value="8234567890" placeholder="Enter phone number" name="alternate-phone-number"> <span class="error-tip"></span><span class="fa fa-phone"></span></div>
           </div>
 
           <div class="grid-item">
-            email: <div class="input-container">  <input type="text" placeholder="Enter your email address" name="email" value="xyz@gmail.com"> <span class="fa fa-envelope"></span>            </div>
+            email: <div class="input-container">  <input type="text" placeholder="Enter your email address" name="email" value="xyz@gmail.com"> <span class="error-tip"></span><span class="fa fa-envelope"></span>            </div>
           </div>
           
           <div class="grid-item">
-            Alternate email: <div class="input-container">    <input type="text" placeholder="Enter your email address" name="email" value="abc@gmail.com"> <span class="fa fa-envelope"></span>            </div>
+            Alternate email: <div class="input-container">    <input type="text" placeholder="Enter your email address" name="email" value="abc@gmail.com"><span class="error-tip"></span> <span class="fa fa-envelope"></span>            </div>
           </div>
 
           <div class="grid-item">
@@ -121,12 +123,12 @@
                  
            </div>
            <div class="grid-item">
-            pin: <input type="text" name="PIN" value="751003">
+            pin: <input type="text" name="PIN" value="751003"> <span class="error-tip"></span>
                 
            </div>
            
            <div class="grid-item">
-            Aadhaar no <input type="text" name="Aadhaar" value="1234 5678 1234">
+            Aadhaar no <input type="text" name="Aadhaar" value="1234 5678 1234"> <span class="error-tip"></span>
                 
            </div>
            <div class="grid-item">
@@ -143,15 +145,19 @@
             Social Media: <input type="url" placeholder="enter the url" value="http://example.com/xYz1" name="social-profile"> <br><br>
     
            </div>
+
+         
            <div class="grid-item">
             hobbiles: 
                 <input type="checkbox" name="hobbies" value="sports">sports 
                 <input type="checkbox" name="hobbies" value="travelling"> travelling
                 <input type="checkbox" name="hobbies" value="others">others
             </div>
+           
            <div class="grid-item">
             Comments:<textarea placeholder="Enter here..."></textarea>
            </div>
+           
          
         </div>
 
@@ -165,7 +171,7 @@
           </div>
 
           <div class="grid-item">
-           percentage in 10th: <input type="text" name="10th-percentage">
+           percentage in 10th: <input type="text" name="10th-percentage" data-allowed="marks"> <span class="error-tip"></span>
           </div>
 
            <div class="grid-item">
@@ -173,7 +179,7 @@
            </div>
 
            <div class="grid-item">
-            percentage in 11th & 12th: <input type="text" name="intermediate-percentage">
+            percentage in 11th & 12th: <input type="text" name="intermediate-percentage" data-allowed="marks"> <span class="error-tip"></span>
             </div>
 
            <div class="grid-item">
@@ -181,7 +187,7 @@
            </div>
 
            <div class="grid-item">
-           percentage in b.tech: <input type="text" name="b.tech-percentage">
+           percentage in b.tech: <input type="text" name="b.tech-percentage" data-allowed="marks"> <span class="error-tip"></span>
             </div>
           
            

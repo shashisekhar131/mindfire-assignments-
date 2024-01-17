@@ -60,6 +60,7 @@ transition-duration: 0.8s;
 
 .input-container{
 position:relative;
+display: inline-block;
 }
 
 .fa-user,.fa-key,.fa-phone,.fa-envelope{
