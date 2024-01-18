@@ -25,6 +25,7 @@ body{
   border-bottom:1px solid rgba(120,120,120,0.5);
   padding:4px;
   font-size: 30px;
+  
  }
  form{
   
@@ -46,7 +47,7 @@ display: grid;
 grid-template-columns: auto auto;
 border: 1px solid black;
 padding:10px;
-grid-gap:10px;
+grid-gap:12px;
 }
 
 .grid-item{
@@ -59,7 +60,9 @@ grid-gap:10px;
 
 input{
 padding:5px;
+
 transition-duration: 0.8s;
+
 }
 
 .input-container{
@@ -67,12 +70,13 @@ position:relative;
 display: inline-block;
 }
 
-.fa-user,.fa-key,.fa-phone,.fa-envelope{
+.fa-user,.fa-key,.fa-phone,.fa-envelope,.fa-briefcase{
 
 color:rgb(120,120,120);
 position:absolute;
 left:10px;
-top:10px;
+top:15px;
+font-size: 20px;
 }
 
 
@@ -83,10 +87,11 @@ padding-left:30px;
 /* styling input */
 
 input,textarea,select{
-border:none;
-border-bottom: 1px solid rgba(0,0,0,0.3);
-outline: none;
-margin:5px;
+  border: 1px solid rgba(0,0,0,0.5);
+  border-radius: 3px;
+  outline: none;
+  margin:5px;
+  height: 30px;
 }
 
 /* styling submit button */ 
@@ -138,9 +143,9 @@ button[type="submit"]{
 
 .error-tip{
   color:red;
-  position: absolute;
-  left:0;
-  bottom:-12px;
+      position: absolute;
+      left:25%;
+      bottom:-12px;
 }
 
 @keyframes sizeAnimation {
@@ -172,9 +177,7 @@ button[type="submit"]{
    
     font-size: small;
   }
-  .fa-user,.fa-key,.fa-phone,.fa-envelope{
-    font-size: small;
-  }
+  
   select,input{
     font-size: small;
   }
@@ -197,11 +200,12 @@ font-size: x-small;
     font-size: xx-small;
     padding-left:2px;
   }
-  .fa-user,.fa-key,.fa-phone,.fa-envelope{
+  .fa-user,.fa-key,.fa-phone,.fa-envelope,.fa-briefcase{
     font-size:xx-small;
   }
   select,input{
     font-size: xx-small;
+
   }
  
   textarea{
@@ -211,3 +215,6 @@ font-size: x-small;
   
 
 }
+
+
+
