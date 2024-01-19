@@ -1,0 +1,26 @@
+#pop-up{
+    position: fixed;
+    top:10%;
+    left:50%;
+    transform: translateX(-50%);
+    background-color: white;
+    padding:20px;
+    box-shadow: 0px 5px 15px rgba(0,0,0,0.5);
+    border-radius: 5px;
+    display: none;
+    font-size:25px;
+    max-height:80vh;
+    overflow: auto;
+  }
+
+  form{
+    border:1px solid black;
+    padding:10px;
+  }
+
+  #pop-up button{
+    background-color:green;
+    border:none;
+    color:white;
+    border-radius:5px;
+  }
