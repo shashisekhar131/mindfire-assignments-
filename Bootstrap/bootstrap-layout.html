@@ -21,21 +21,22 @@
       <form onsubmit="validateForm(event)">
 
         <h2 class="text-center"> USER FORM </h2>
+        <div class="personal-details">
         <h3> personal details </h3>
 
         <div class="row">
             <div class="col-sm-6">
-                <label for="first-name"> First Name: </label> <input  type="text" id="first-name" class="form-control" placeholder="Enter here..." value="xyz" name="first-name" data-allowed="text" > <span class="error-tip"></span>
+                <label for="first-name"> First Name: </label> <input  type="text" id="first-name" class="form-control" placeholder="Enter here..."  name="first-name" data-allowed="text" > <span class="error-tip"></span>
             </div>
             <div class="col-sm-6">
-                <label for="last-name"> last Name: </label>  <input  type="text" id="last-name" class="form-control"  placeholder="Enter here..." value="abc" name="last-name" data-allowed="text"> <span class="error-tip"></span>
+                <label for="last-name"> last Name: </label>  <input  type="text" id="last-name" class="form-control"  placeholder="Enter here..."  name="last-name" data-allowed="text"> <span class="error-tip"></span>
             </div>
         </div>
 
 
         <div class="row">
             <div class="col-sm-6">
-                <label for="password"> password: </label>  <input id="password" type="password" class="form-control" placeholder="Enter password " value="88888888" name="password"  > <span class="error-tip"></span>
+                <label for="password"> password: </label>  <input id="password" type="password" class="form-control" placeholder="Enter password "  name="password"  > <span class="error-tip"></span>
             </div>
             <div class="col-sm-6">
                 <label for="re-type-password"> re-type-password : </label>  <input id="re-type-password" type="password" class="form-control" placeholder="Enter password " value="88888888" name="re-type-password"  > <span class="error-tip"></span>
@@ -77,54 +78,73 @@
                 <label for="email"> email: </label>  <input id="email" type="text" class="form-control" placeholder="Enter here..." value="abc@gmail.com" name="email"  > <span class="error-tip"></span>
             </div>
             <div class="col-sm-6">
-                <label for="alternat-email"> alternat-email: </label>  <input id="alternat-email" type="text" class="form-control" placeholder="Enter here..." value="abc@gmail.com" name="alternat-email"> <span class="error-tip"></span>
+                <label for="alternat-email"> alternat-email: </label>  <input id="alternat-email" type="text" class="form-control" placeholder="Enter here..." value="abc@gmail.com" name="email"> <span class="error-tip"></span>
             </div>
         </div>
 
         <div class="row">
             <div class="col-sm-6">
-                <label for="dob"> dob: </label>  <input id="dob" type="date" class="form-control" placeholder="Enter here..."  name="dob" > 
+                <label for="dob"> dob: </label>  <input id="dob" type="date" class="form-control" placeholder="Enter here..."  name="dob" > <span class="error-tip"></span>
             </div>
             <div class="col-sm-6">
-                <label for="favourite-color"> favourite-color : </label>  <input id="favourite-color" type="color"  placeholder="Enter here..."  name="fav-color"  > 
+                <label for="favourite-color"> favourite-color : </label>  <input id="favourite-color" type="text" class="form-control"  placeholder="Enter here..."  name="fav-color"  data-allowed="text"><span class="error-tip"></span> 
             </div>
         </div>
 
         <div class="row">
             <div class="col-sm-6">
                 <div>gender:      </div>  
-                <input type="radio" name="gender" value="male" >Male
-                <input type="radio" name="gender" value="female">Female
-                <input type="radio" name="gender" vlaue="Others" >Others
-                   </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="gender" id="male" value="male" > 
+                    <label class="form-check-label" for="male">Male</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="gender" id="female" value="female" >
+                    <label class="form-check-label" for="female">Female</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="gender" id="others" value="Others" >
+                    <label class="form-check-label" for="others">Others</label>
+                  </div>
+                  
+                  <span class="error-tip"></span> 
+                </div>
             <div class="col-sm-6">
                 <div>preferred language:</div>         
             
-            <select name="language">
-                <option value="English">English</option>
-                <option value="telugu">Telugu</option>
-                <option value="Hindi">Hindi</option>
-                <option value="Tamil">Tamil</option>
-                <option value="Odia">Odia</option>
-            </select>  </div>
+                <select class="form-control" name="language" id="language">
+                     <option class="custom-select" value="English">English</option>
+                    <option class="custom-select" value="telugu">Telugu</option>
+                    <option class="custom-select" value="Hindi">Hindi</option>
+                    <option class="custom-select" value="Tamil">Tamil</option>
+                    <option class="custom-select" value="Odia">Odia</option>
+                  </select>  </div>
         </div>
         
         
         <div class="row">
             <div class="col-sm-6">
                 <div>marital status:</div> 
-            <input type="radio" name="marital-status" value="married">Married
-            <input type="radio" name="marital-status" value="unmarried">Unmarried
-           </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="marital-status" id="married" value="married"> 
+                    <label class="form-check-label" for="married">Married</label> 
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="marital-status" id="unmarried" value="unmarried">
+                    <label class="form-check-label" for="unmarried">Unmarried</label>
+                  </div>
+                  <span class="error-tip"></span> 
+                
+             </div>
             <div class="col-sm-6">
                 <div>nationality:</div>     
-                <select name="nationality">
-                    <option value="India">India</option>
-                    <option value="Australia">Australia</option>
-                    <option value="USA">USA</option>
-                    <option value="Canada">Canada</option>
-                    <option value="Russia">Russia</option>
-                </select> </div>
+                <select class="form-control" name="nationality" id="nationality">
+                    <option class="custom-select" value="India">India</option>
+                    <option class="custom-select" value="Australia">Australia</option>
+                    <option class="custom-select" value="USA">USA</option>
+                    <option class="custom-select" value="Canada">Canada</option>
+                    <option class="custom-select" value="Russia">Russia</option>
+                  </select> </div>
         </div>
 
 
@@ -151,30 +171,42 @@
                 <label for="Aadhaar"> Aadhaar No: </label>  <input id="Aadhaar" type="text" class="form-control" placeholder="Enter here..." value="123 456 789" name="Aadhaar" > <span class="error-tip"></span>
             </div>
             <div class="col-sm-6">
-                <label for="PAN"> PAN: </label>  <input id="PAN" type="text" class="form-control" placeholder="Enter here..." value="123A123B" name="PAN" > 
+                <label for="PAN"> PAN: </label>  <input id="PAN" type="text" class="form-control" placeholder="Enter here..." value="123A123B" name="PAN" > <span class="error-tip"></span>
             </div>
         </div>
         
         
         <div class="row">
             <div class="col-sm-6">
-                <div>hobbies:</div>  
-                <input type="checkbox" name="hobbies" value="sports">sports 
-                <input type="checkbox" name="hobbies" value="travelling"> travelling
-                <input type="checkbox" name="hobbies" value="others">others
-           </div>
+                <div>hobbies:</div> 
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="hobbies" id="sports" value="sports">
+                    <label class="form-check-label" for="sports">Sports</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="hobbies" id="travelling" value="travelling">
+                    <label class="form-check-label" for="travelling">Travelling</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="hobbies" id="others" value="others">
+                    <label class="form-check-label" for="others">Others</label>
+                  </div>
+            </div>
             <div class="col-sm-6">
-                <label for="social-media"> social-media: </label>  <input id="social-media" type="text" class="form-control" placeholder="Enter here..." value="xyz" name="social-media"  > 
+                <label for="social-media"> social-media: </label>  <input id="social-media" type="text" class="form-control" placeholder="Enter here..." value="xyz" name="social-media"  > <span class="error-tip"></span>
             </div>
         </div>
 
+    </div>
+
+    <div class="education-details">
         <h3> educational details  </h3>
 
        
 
         <div class="row">
             <div class="col-sm-6">
-                <label for="primary education(upto 10th)"> primary education(upto 10th): </label>  <input id="primary education(upto 10th)" type="text" class="form-control" placeholder="Enter here..." value="xyz" name="primary education(upto 10th)"  > 
+                <label for="primary education(upto 10th)"> primary education(upto 10th): </label>  <input id="primary education(upto 10th)" type="text" class="form-control" placeholder="Enter here..." value="xyz" name="primary education(upto 10th)"  > <span class="error-tip"></span>
             </div>
             <div class="col-sm-6">
                 <label for="percentage in 10th"> percentage in 10th: </label>  <input id="percentage in 10th" type="text" class="form-control" placeholder="Enter here..." value="99" name="percentage in 10th" data-allowed="marks"> <span class="error-tip"></span>
@@ -183,7 +215,7 @@
 
         <div class="row">
             <div class="col-sm-6">
-                <label for="intermediate education"> intermediate education: </label>  <input id="intermediate education" type="text" class="form-control" placeholder="Enter here..." value="xyz" name="intermediate education"  > 
+                <label for="intermediate education"> intermediate education: </label>  <input id="intermediate education" type="text" class="form-control" placeholder="Enter here..." value="xyz" name="intermediate education"  > <span class="error-tip"></span>
             </div>
             <div class="col-sm-6">
                 <label for="intermediate-percentage"> intermediate-percentage: </label>  <input id="intermediate-percentage" type="text" class="form-control" placeholder="Enter here..." value="99" name="intermediate-percentage" data-allowed="marks" > <span class="error-tip"></span>
@@ -192,15 +224,16 @@
 
         <div class="row">
             <div class="col-sm-6">
-                <label for="btech"> btech: </label>  <input id="btech" type="text" class="form-control" placeholder="Enter here..." value="xyz" name="btech"> 
+                <label for="btech"> btech: </label>  <input id="btech" type="text" class="form-control" placeholder="Enter here..." value="xyz" name="btech"> <span class="error-tip"></span>
             </div>
             <div class="col-sm-6">
                 <label for="btech-percentage"> btech-percentage: </label>  <input id="btech-percentage" type="text" class="form-control" placeholder="Enter here..." value="99" name="btech-percentage" data-allowed="marks" > <span class="error-tip"></span>
             </div>
         </div>
         
-        <input type="checkbox" name="terms and conditions" value="on"> I agree with terms and conditions <br><br>
-        <input type="checkbox" > I want to recive the newsletter<br><br>
+    </div>
+        <input type="checkbox" name="terms and conditions" value="off" > I agree with terms and conditions <span class="error-tip"></span>
+        <input type="checkbox" value="off" > I want to recive the newsletter<br><br>
         
         <button type="submit" class="btn btn-success" >submit</button> 
         <button type="reset" class="btn btn-danger">reset</button>      
