@@ -13,11 +13,11 @@ namespace ConsoleApp1
         {
             Console.WriteLine("enter some text that you want to write to file");
 
-            // for the first time             
+            // ask the user for the first time             
             File.WriteAllText("randomFile.txt",Console.ReadLine());
             Console.WriteLine("enter the option add / read / stop");
 
-            // do go away from console until user enters stop
+            // don't go away from console until user enters stop
             string userInput = Console.ReadLine().ToLower();
 
             while (userInput != "stop") {
@@ -46,7 +46,7 @@ namespace ConsoleApp1
                     try
                     {
                         // Read all text from the file
-                        string fileContent = File.ReadAllText("randomFile.txt");
+                         string fileContent = File.ReadAllText("randomFile.txt");
 
                         // showing the content on console
                         Console.WriteLine("File Content:");
