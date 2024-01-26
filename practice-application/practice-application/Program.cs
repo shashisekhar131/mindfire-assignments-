@@ -35,9 +35,10 @@ namespace app
             li.Insert(0, 5);
 
             li.Sort();
+           
             Console.WriteLine("ELMEENTS IN YOUR LIST");
             for (int i = 0; i < li.Count; i++) Console.Write(li[i] + " ");
-
+              
 
 
             // Dictonary Collection
