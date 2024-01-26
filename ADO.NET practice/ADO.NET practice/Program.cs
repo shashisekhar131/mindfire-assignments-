@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Configuration;
+using CRUDOperation.LOG;
 
 namespace ADO.NET_practice
 {
@@ -13,14 +14,14 @@ namespace ADO.NET_practice
         static void Main(string[] args)
         {
 
-             
+
             new Program().Connecting();
             int selected;
             do
             {
                 Console.WriteLine(" 1. ReadTable \n 2. insert the Data \n 3. delete the row \n 4. stop");
 
-                 selected = Convert.ToInt32(Console.ReadLine());
+                selected = Convert.ToInt32(Console.ReadLine());
 
                 switch (selected)
                 {
@@ -35,9 +36,9 @@ namespace ADO.NET_practice
                         break;
                 }
 
-            } while ( selected != 4);
-            
-            
+            } while (selected != 4);
+
+
         }
 
         public void Connecting()
@@ -49,29 +50,31 @@ namespace ADO.NET_practice
                 {
                     connection.Open();
                     Console.WriteLine("Connection Established Successfully");
+                    LoggerClass.AddData("connected to database");
                 }
             }
             catch (Exception e)
             {
                 Console.WriteLine("OOPs, something went wrong.\n" + e);
+                LoggerClass.AddData(" error with connecting to the database");
             }
         }
 
         public void InsertRow()
         {
 
-             // get last Id 
+            // get last Id 
 
             try
             {
                 string ConString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
                 int lastId = 0;
 
-                using(SqlConnection connection = new SqlConnection(ConString))
+                using (SqlConnection connection = new SqlConnection(ConString))
                 {
                     string selectMaxIdQuery = "SELECT MAX(ID) FROM StudentTable";
 
-                    SqlCommand cmd = new SqlCommand(selectMaxIdQuery,connection);
+                    SqlCommand cmd = new SqlCommand(selectMaxIdQuery, connection);
                     connection.Open();
                     var result = cmd.ExecuteScalar();
 
@@ -81,7 +84,7 @@ namespace ADO.NET_practice
 
                 }
 
-                
+
                 int newId = lastId + 1;
 
 
@@ -90,9 +93,9 @@ namespace ADO.NET_practice
                 using (SqlConnection connection = new SqlConnection(ConString))
                 {
 
-                   
 
-                    
+
+
                     Console.Write("Enter Name: ");
                     string name = Console.ReadLine();
 
@@ -107,21 +110,23 @@ namespace ADO.NET_practice
                     SqlCommand cmd = new SqlCommand(insertQuery, connection);
                     connection.Open();
                     int rowsAffected = cmd.ExecuteNonQuery();
-                    
-                    if(rowsAffected>0) Console.WriteLine("Inserted row successfully");
 
-                   
+                    if (rowsAffected > 0) Console.WriteLine("Inserted row successfully");
+
+                    LoggerClass.AddData($"Inserted row with ID {newId}");
 
                 }
             }
             catch (Exception e)
             {
                 Console.WriteLine("OOPs, something went wrong.\n" + e);
+                LoggerClass.AddData(" error with Inserting row ");
+
             }
 
         }
 
-      
+
         public void ReadTable()
         {
             try
@@ -133,11 +138,12 @@ namespace ADO.NET_practice
                     connection.Open();
 
                     SqlDataReader sdr = cmd.ExecuteReader();
-                     
-                    while(sdr.Read())
+
+                    while (sdr.Read())
                     {
-                        Console.WriteLine("Name: "+ sdr[0] + " Email:" + sdr[1] + " Moblie:"+ sdr[2]);
+                        Console.WriteLine("Name: " + sdr[0] + " Email:" + sdr[1] + " Moblie:" + sdr[2]);
                     }
+                    LoggerClass.AddData("read some data");
 
 
 
@@ -146,6 +152,7 @@ namespace ADO.NET_practice
             catch (Exception e)
             {
                 Console.WriteLine("OOPs, something went wrong.\n" + e);
+                LoggerClass.AddData(" error with Reading the table");
             }
         }
 
@@ -160,24 +167,33 @@ namespace ADO.NET_practice
                     Console.WriteLine("look at the table and select Id of the row to be deleted");
                     new Program().ReadTable();
 
-                    
+
                     Console.Write("Enter the ID of the row to delete: ");
                     int idToDelete = Convert.ToInt32(Console.ReadLine());
 
-                    
+
                     string deleteQuery = "DELETE FROM StudentTable WHERE ID = @ID";
 
-                   
+
                     using (SqlCommand cmd = new SqlCommand(deleteQuery, connection))
                     {
                         cmd.Parameters.AddWithValue("@ID", idToDelete);
-                      
+
                         connection.Open();
                         int rowsAffected = cmd.ExecuteNonQuery();
-                      
-                        if (rowsAffected > 0)    Console.WriteLine("Row deleted successfully.");
-                        else   Console.WriteLine("No rows were deleted.");
-                        
+
+                        if (rowsAffected > 0)
+                        {
+                            Console.WriteLine("Row deleted successfully.");
+                            LoggerClass.AddData($"Deleted row with ID {idToDelete}");
+                        }
+                        else
+                        {
+
+                            Console.WriteLine("No rows were deleted.");
+                            LoggerClass.AddData(" error with deleting the row ");
+                        }
+
                     }
 
                     // Display remaining records after deletion
