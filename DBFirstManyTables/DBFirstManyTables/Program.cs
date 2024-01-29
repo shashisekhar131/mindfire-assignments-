@@ -6,72 +6,93 @@ using Entity_Framework_MtoM_CRUD.LOG;
 
 namespace DBFirstManyTables
 {
+
+
+    public enum Operation
+    {
+        ReadStudentTable = 1,
+        InsertStudent,
+        DeleteStudentRow,
+        ReadCourseTable,
+        InsertCourse,
+        DeleteCourseRow,
+        ReadGradeTable,
+        InsertGrade,
+        DeleteGradeRow,
+        AssignStudentToGrade,
+        AssignCourseToGrade,
+        RemoveCourseFromGrade,
+        RemoveStudentFromGrade,
+        DisplayAllStudentInGrades,
+        DisplayAllCourseGrades,
+        Stop
+    }
     internal class Program
     {
         static void Main(string[] args)
         {
 
-            int selected;
+            Operation selected;
             do
             {
-                Console.WriteLine(" 1. ReadStudentTable \n 2. insert student Data \n 3. delete student row \n" +
-                    "4. ReadCourseTable \n 5. insert Course Data \n 6. delete Course row \n" +
-                    "7. ReadCourseTable \n 8. insert Course Data \n 9. delete Course row \n 10.assign student to course \n 11.assgin course to grade \n 12.remove course from grade \n 13.remove student from grade \n 14.all stuents in grades \n 15.courses in grades \n 16.stop"
-                    );
+                Console.WriteLine(" \n \n 1. ReadStudentTable \n 2. insert student Data \n 3. delete student row \n" +
+                    " 4. ReadCourseTable \n 5. insert Course Data \n 6. delete Course row \n" +
+                    " 7. ReadGradeTable \n 8. insert Grade Data \n 9. delete Grade row \n 10.assign student to course \n" +
+                    " 11.assgin course to grade \n 12.remove course from grade \n 13.remove student from grade \n" +
+                    " 14.all stuents in grades \n 15.courses in grades \n 16.stop");
 
-                selected = Convert.ToInt32(Console.ReadLine());
+                selected = (Operation)Convert.ToInt32(Console.ReadLine());
 
                 switch (selected)
                 {
-                    case 1:
+                    case Operation.ReadStudentTable:
                         ReadStudentTable();
                         break;
-                    case 2:
+                    case Operation.InsertStudent:
                         InsertStudent();
                         break;
-                    case 3:
+                    case Operation.DeleteStudentRow:
                         DeleteStudentRow();
                         break;
-                    case 4:
+                    case Operation.ReadCourseTable:
                         ReadCourseTable();
                         break;
-                    case 5:
+                    case Operation.InsertCourse:
                         InsertCourse();
                         break;
-                    case 6:
+                    case Operation.DeleteCourseRow:
                         DeleteCourseRow();
                         break;
-                    case 7:
+                    case Operation.ReadGradeTable:
                         ReadGradeTable();
                         break;
-                    case 8:
+                    case Operation.InsertGrade:
                         InsertGrade();
                         break;
-                    case 9:
+                    case Operation.DeleteGradeRow:
                         DeleteGradeRow();
                         break;
-                    case 10:
+                    case Operation.AssignStudentToGrade:
                         AssignStudentToGrade();
                         break;
-                    case 11:
+                    case Operation.AssignCourseToGrade:
                         AssignCourseToGrade();
                         break;
-                    case 12:
+                    case Operation.RemoveCourseFromGrade:
                         RemoveCourseFromGrade();
                         break;
-                    case 13:
+                    case Operation.RemoveStudentFromGrade:
                         RemoveStudentFromGrade();
                         break;
-                    case 14:
+                    case Operation.DisplayAllStudentInGrades:
                         DisplayAllStudentInGrades();
                         break;
-                    case 15:
+                    case Operation.DisplayAllCourseGrades:
                         DisplayAllCourseGrades();
                         break;
-
                 }
 
-            } while (selected != 16);
+            } while (selected != Operation.Stop);
 
         }
 
