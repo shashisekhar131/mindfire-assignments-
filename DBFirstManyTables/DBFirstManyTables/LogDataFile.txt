@@ -1,0 +1,15 @@
+﻿29-01-2024 13:25:22: read the table
+29-01-2024 13:25:34: inserted into table
+29-01-2024 13:25:35: read the table
+29-01-2024 13:26:14: read the table
+29-01-2024 13:31:24: Error: The DELETE statement conflicted with the REFERENCE constraint "FK__StudentGr__Stude__3D5E1FD2". The conflict occurred in database "XYZSchoolDB", table "dbo.StudentGrade", column 'StudentID'.
+The statement has been terminated.
+29-01-2024 14:52:00: read the table
+29-01-2024 14:52:20: read the table
+29-01-2024 14:52:21: read the table
+29-01-2024 14:52:59: read the table
+29-01-2024 14:53:07: read the table
+29-01-2024 14:53:14: inserted into table
+29-01-2024 14:53:19: read the table
+29-01-2024 14:59:14: read the table
+29-01-2024 14:59:23: inserted into table
