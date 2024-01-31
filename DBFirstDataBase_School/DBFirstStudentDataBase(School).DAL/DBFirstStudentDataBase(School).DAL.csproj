@@ -107,8 +107,8 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DBFirstStudentDataBase%28School%29.Utils\DBFirstStudentDataBase%28School%29.Utils.csproj">
-      <Project>{6b29ddaa-7651-450e-8c18-acc02ebcddd9}</Project>
+    <ProjectReference Include="..\DBFirstStudentDataBase%28School%29.Utils\DBFirstStudentDataBase%28School%29.Utils\DBFirstStudentDataBase%28School%29.Utils.csproj">
+      <Project>{0474df25-ff9f-41e4-addc-b6e41e2df4ba}</Project>
       <Name>DBFirstStudentDataBase%28School%29.Utils</Name>
     </ProjectReference>
   </ItemGroup>

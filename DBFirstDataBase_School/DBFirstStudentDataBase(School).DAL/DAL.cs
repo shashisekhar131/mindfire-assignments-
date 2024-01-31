@@ -32,8 +32,8 @@ namespace DBFirstStudentDataBase_School_.DAL
 
             }catch (Exception ex)
             {
-                LoggerClass.AddData("somehting went wrong");
-                Console.WriteLine("something went wrong" + ex);
+                LoggerClass.AddData("somehting went wrong during reading from student table");
+                Console.WriteLine("something went wrong during reading student table " + ex);
 
             }
 
@@ -59,7 +59,7 @@ namespace DBFirstStudentDataBase_School_.DAL
                         context.Students.Remove(studentToDelete);
                         context.SaveChanges();
                         Console.WriteLine("Student deleted successfully!");
-                        LoggerClass.AddData("deleted the row");
+                        LoggerClass.AddData("deleted the row in student table");
                     }
                     else
                     {
@@ -104,13 +104,13 @@ namespace DBFirstStudentDataBase_School_.DAL
                     context.Students.Add(newStudent);
                     context.SaveChanges();
                     Console.WriteLine("Student created successfully!");
-                    LoggerClass.AddData("inserted into table");
+                    LoggerClass.AddData("inserted student row into table");
                 }
             }catch (DbUpdateException ex)
             {
                 Exception innerException = ex;
                 Console.WriteLine(ex);
-                LoggerClass.AddData("something went wrong");
+                LoggerClass.AddData($"{ex}");
             }
             
         }
@@ -137,13 +137,13 @@ namespace DBFirstStudentDataBase_School_.DAL
                     context.Courses.Add(newCourse);
                     context.SaveChanges();
                     Console.WriteLine("Course created successfully!");
-                    LoggerClass.AddData("inserted into table");
+                    LoggerClass.AddData("inserted new course into table");
                 }
             }catch(DbUpdateException ex)
             {
                  Exception innerException = ex;
                 Console.WriteLine("something went wrong" + ex);
-                LoggerClass.AddData("something went wrong");
+                LoggerClass.AddData("something went wrong" + ex);
 
             }
 
@@ -166,13 +166,13 @@ namespace DBFirstStudentDataBase_School_.DAL
                         Console.WriteLine($"ID: {course.CourseID}, Name: {course.CourseName}");
                     }
 
-                    LoggerClass.AddData("read the table");
+                    LoggerClass.AddData("read course the table");
                 }
             }catch (DbUpdateException ex)
             {
                 Exception innerException = ex;
                 Console.WriteLine("something went wrong" + ex);
-                LoggerClass.AddData("something went wrong");
+                LoggerClass.AddData("something went wrong" +ex);
             }
            
         }
@@ -195,12 +195,12 @@ namespace DBFirstStudentDataBase_School_.DAL
                         context.Courses.Remove(courseToDelete);
                         context.SaveChanges();
                         Console.WriteLine("course deleted successfully!");
-                        LoggerClass.AddData("deleted the row");
+                        LoggerClass.AddData("deleted the row in course table ");
                     }
                     else
                     {
                         Console.WriteLine("No course found with ID:");
-                        LoggerClass.AddData("tried deleting id that is not present in table");
+                        LoggerClass.AddData("tried deleting id that is not present in course table");
                     }
                 }
                 catch (DbUpdateException ex)
@@ -252,7 +252,7 @@ namespace DBFirstStudentDataBase_School_.DAL
                     context.Grades.Add(newGrade);
                     context.SaveChanges();
                     Console.WriteLine("Grade created successfully!");
-                    LoggerClass.AddData("inserted into table");
+                    LoggerClass.AddData("inserted grade into table");
                 }
             }catch (DbUpdateException ex) { 
                 
@@ -281,7 +281,7 @@ namespace DBFirstStudentDataBase_School_.DAL
                         Console.WriteLine($"ID: {Grade.GradeID}, Name: {Grade.GradeName}");
                     }
 
-                    LoggerClass.AddData("read the table");
+                    LoggerClass.AddData("read grade the table");
                 }
 
             }catch(DbUpdateException ex)
@@ -312,12 +312,12 @@ namespace DBFirstStudentDataBase_School_.DAL
                         context.Grades.Remove(GradeToDelete);
                         context.SaveChanges();
                         Console.WriteLine("Grade deleted successfully!");
-                        LoggerClass.AddData("deleted the row");
+                        LoggerClass.AddData("deleted the row in grade table ");
                     }
                     else
                     {
                         Console.WriteLine("No Grade found with ID:");
-                        LoggerClass.AddData("tried deleting id that is not present in table");
+                        LoggerClass.AddData("tried deleting id that is not present in grade table");
                     }
                 }
                 catch (DbUpdateException ex)
