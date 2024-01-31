@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -9,31 +10,42 @@ namespace DBFirstStudentDataBase_School_.Utils
 {
     public class LoggerClass
     {
+
+        
         public static void AddData(string logData)
         {
-            string logFilePath = "C:\\Users\\belagallus\\source\\repos\\DBFirstDataBase(School)\\DBFirstStudentDataBase(School).Utils\\LogDataFile.txt";
 
 
-            // add to logger database 
-            try
+            // add logData to Database LOGGER 
+            string ConnectionString = "data source=.; database=LOGGER; integrated security=SSPI";
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                using (var context = new LOGGEREntities())
+
+                try
                 {
-                    var time = DateTime.Now.ToString();
-                    var newLog = new loggerTable
-                    {
-                        logData = logData,
-                        createdDate = time
-                    };
-                    context.loggerTables.Add(newLog);
+                    connection.Open();
+                    
+
+                    string query = "INSERT INTO loggerTable (logData,createdDate) VALUES (@LogData,@LogDate)";
+                    SqlCommand cmd = new SqlCommand(query, connection);
+
+                    cmd.Parameters.AddWithValue("@LogDate", DateTime.Now);
+                    cmd.Parameters.AddWithValue("@LogData", logData);
+
+                    int rowsAffected = cmd.ExecuteNonQuery();
+
+                    
                 }
-            }
-            catch (Exception ex)
-            {
-                 Console.WriteLine(ex.ToString());
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error while inserting into database: {ex.Message}");
+                }
+
             }
 
-            // add to log file 
+            // add to logDataFile.txt
+            string logFilePath = "C:\\Users\\belagallus\\Desktop\\mindfire-assignments-\\DBFirstDataBase_School\\DBFirstStudentDataBase(School).Utils\\DBFirstStudentDataBase(School).Utils\\LogDataFile.txt";
+           
             try
             {
                 using (StreamWriter writer = new StreamWriter(logFilePath, true))
@@ -48,3 +60,4 @@ namespace DBFirstStudentDataBase_School_.Utils
         }
     }
 }
+
