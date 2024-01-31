@@ -33,7 +33,7 @@ namespace DBFirstStudentDataBase_School_.DAL
             }catch (Exception ex)
             {
                 LoggerClass.AddData("somehting went wrong");
-                Console.WriteLine("something went wrong");
+                Console.WriteLine("something went wrong" + ex);
 
             }
 
@@ -50,9 +50,10 @@ namespace DBFirstStudentDataBase_School_.DAL
             {
                 Console.WriteLine("Enter the student ID to delete:");
 
-                var studentToDelete = context.Students.Find(Convert.ToInt32(Console.ReadLine()));
+               
                 try
                 {
+                    var studentToDelete = context.Students.Find(Convert.ToInt32(Console.ReadLine()));
                     if (studentToDelete != null)
                     {
                         context.Students.Remove(studentToDelete);
@@ -68,16 +69,10 @@ namespace DBFirstStudentDataBase_School_.DAL
                 }
                 catch (DbUpdateException ex)
                 {
-                    Exception innerException = ex;
+                    
 
-                    while (innerException.InnerException != null)
-                    {
-                        innerException = innerException.InnerException;
-                    }
-
-                    Console.WriteLine($"Error: {innerException.Message}");
-                    Console.WriteLine($"Error: {innerException.Message}");
-                    LoggerClass.AddData($"Error: {innerException.Message}");
+                    Console.WriteLine($"Error: {ex}");
+                    LoggerClass.AddData($"Error: {ex}");
                 }
 
 
@@ -262,7 +257,7 @@ namespace DBFirstStudentDataBase_School_.DAL
             }catch (DbUpdateException ex) { 
                 
                 Exception innerException = ex;
-                Console.WriteLine($"Error: {innerException.Message}");
+                
                 Console.WriteLine($"Error: {innerException.Message}");
                 LoggerClass.AddData($"Error: {innerException.Message}");
             }
@@ -352,14 +347,15 @@ namespace DBFirstStudentDataBase_School_.DAL
         // we are creating using  exiting database and there is no third column in rlationship table so STudentGrades will not be in EF 
         public void AssignStudentToGrade()
         {
-            Console.WriteLine("Enter Student ID:");
-            int studentId = int.Parse(Console.ReadLine());
-
-            Console.WriteLine("Enter Grade ID:");
-            int gradeId = int.Parse(Console.ReadLine());
-
+            
             try
             {
+                Console.WriteLine("Enter Student ID:");
+                int studentId = int.Parse(Console.ReadLine());
+
+                Console.WriteLine("Enter Grade ID:");
+                int gradeId = int.Parse(Console.ReadLine());
+
                 using (var context = new XYZSchoolDBEntities())
                 {
                     Student student = context.Students.Find(studentId);
@@ -391,14 +387,16 @@ namespace DBFirstStudentDataBase_School_.DAL
 
         public  void AssignCourseToGrade()
         {
-            Console.WriteLine("Enter Course ID:");
-            int courseId = int.Parse(Console.ReadLine());
-
-            Console.WriteLine("Enter Grade ID:");
-            int gradeId = int.Parse(Console.ReadLine());
-
+            
             try
             {
+
+                Console.WriteLine("Enter Course ID:");
+                int courseId = int.Parse(Console.ReadLine());
+
+                Console.WriteLine("Enter Grade ID:");
+                int gradeId = int.Parse(Console.ReadLine());
+
                 using (var context = new XYZSchoolDBEntities())
                 {
                     Course course = context.Courses.Find(courseId);
@@ -430,14 +428,16 @@ namespace DBFirstStudentDataBase_School_.DAL
 
         public void RemoveCourseFromGrade()
         {
-            Console.WriteLine("Enter Course ID:");
-            int courseId = int.Parse(Console.ReadLine());
-
-            Console.WriteLine("Enter Grade ID:");
-            int gradeId = int.Parse(Console.ReadLine());
-
+           
             try
             {
+
+                Console.WriteLine("Enter Course ID:");
+                int courseId = int.Parse(Console.ReadLine());
+
+                Console.WriteLine("Enter Grade ID:");
+                int gradeId = int.Parse(Console.ReadLine());
+
                 using (var context = new XYZSchoolDBEntities())
                 {
                     Course course = context.Courses.Find(courseId);
@@ -468,14 +468,16 @@ namespace DBFirstStudentDataBase_School_.DAL
 
         public void RemoveStudentFromGrade()
         {
-            Console.WriteLine("Enter Student ID:");
-            int studentId = int.Parse(Console.ReadLine());
-
-            Console.WriteLine("Enter Grade ID:");
-            int gradeId = int.Parse(Console.ReadLine());
-
+            
             try
             {
+
+                Console.WriteLine("Enter Student ID:");
+                int studentId = int.Parse(Console.ReadLine());
+
+                Console.WriteLine("Enter Grade ID:");
+                int gradeId = int.Parse(Console.ReadLine());
+
                 using (var context = new XYZSchoolDBEntities())
                 {
                     Student student = context.Students.Find(studentId);
@@ -518,7 +520,7 @@ namespace DBFirstStudentDataBase_School_.DAL
                     {
                         foreach (var grade in student.Grades)
                         {
-                            Console.WriteLine($"Student ID: {student.StudentID}, Grade ID: {grade.GradeID}");
+                            Console.WriteLine($" Student Name:{student.Name}(ID: {student.StudentID}), Grade:{grade.GradeName}(ID: {grade.GradeID})");
                         }
                     }
                     LoggerClass.AddData("displayed all students in grades ");
@@ -545,7 +547,7 @@ namespace DBFirstStudentDataBase_School_.DAL
                     {
                         foreach (var grade in course.Grades)
                         {
-                            Console.WriteLine($"Course ID: {course.CourseID}, Grade ID: {grade.GradeID}");
+                            Console.WriteLine($"Course {course.CourseName}( ID: {course.CourseID}), Grade {grade.GradeName}(ID: {grade.GradeID})");
                         }
                     }
 
@@ -557,6 +559,96 @@ namespace DBFirstStudentDataBase_School_.DAL
                 Console.WriteLine(ex);
             }
         }
+
+
+
+
+        public  void DisplayAllStudentsGradeWise()
+        {
+            try
+            {
+                using (var context = new XYZSchoolDBEntities())
+                {
+                    var grades = context.Grades.Include("Students");
+
+
+
+                    foreach (var grade in grades)
+                    {
+                        if (grade.Students.Count != 0)
+                        {
+
+                            Console.Write($"All Students in Grade {grade.GradeName}:  ");
+
+                            foreach (var student in grade.Students) Console.Write($" {student.Name}.  ");
+                            Console.WriteLine("");
+
+                        }
+                        else
+                        {
+                            Console.WriteLine($"No Students in Grade {grade.GradeName} ");
+
+                        }
+
+                    }
+
+
+                    LoggerClass.AddData("displayed courses grade wise");
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                LoggerClass.AddData("some error");
+            }
+        }
+
+
+
+        public void DisplayAllCoursesGradeWise()
+        {
+            try
+            {
+                using (var context = new XYZSchoolDBEntities())
+                {
+                    var grades = context.Grades.Include("Courses");
+
+
+
+                    foreach (var grade in grades)
+                    {
+                        if (grade.Courses.Count != 0)
+                        {
+
+                            Console.Write($"All Courses in Grade {grade.GradeName}:  ");
+
+                            foreach (var course in grade.Courses) Console.Write($" {course.CourseName}.  ");
+                            Console.WriteLine("");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"No Courses in Grade {grade.GradeName} ");
+
+                        }
+
+                    }
+
+
+                    LoggerClass.AddData("displayed students grade wise ");
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+
+                LoggerClass.AddData("some error");
+            }
+        }
+
+
+
 
     }
 }

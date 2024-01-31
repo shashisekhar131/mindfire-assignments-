@@ -83,7 +83,14 @@ namespace DBFirstStudentDataBase_School_.Business
             dataAccess.DisplayAllCoursesInGrades();
         }
 
-
+      public void DisplayAllCoursesGradeWise()
+        {
+            dataAccess.DisplayAllCoursesGradeWise();
+        }
+     public void DisplayAllStudentsGradeWise()
+        {
+            dataAccess.DisplayAllStudentsGradeWise();
+        }
 
     }
 }
