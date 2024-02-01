@@ -1,9 +1,0 @@
-﻿31-01-2024 16:11:42: read student table
-31-01-2024 16:23:27: read student table
-31-01-2024 16:24:08: read student table
-31-01-2024 16:24:45: inserted into table
-31-01-2024 16:29:22: read student table
-31-01-2024 16:29:29: deleted the row
-31-01-2024 16:30:52: read student table
-31-01-2024 16:31:34: read student table
-31-01-2024 16:31:38: displayed students grade wise 

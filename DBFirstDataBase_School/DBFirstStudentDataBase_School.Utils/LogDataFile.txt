@@ -1,0 +1,6 @@
+﻿31-01-2024 17:34:15: read student table
+31-01-2024 17:34:18: displayed students grade wise 
+01-02-2024 09:30:03: read student table
+01-02-2024 09:30:17: inserted student row into table
+01-02-2024 09:30:20: read student table
+01-02-2024 09:30:28: displayed all students in grades 

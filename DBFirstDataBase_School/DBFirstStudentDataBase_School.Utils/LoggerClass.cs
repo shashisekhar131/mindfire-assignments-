@@ -6,12 +6,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DBFirstStudentDataBase_School_.Utils
+namespace DBFirstStudentDataBase_School.Utils
 {
     public class LoggerClass
     {
 
-        
+
         public static void AddData(string logData)
         {
 
@@ -24,7 +24,7 @@ namespace DBFirstStudentDataBase_School_.Utils
                 try
                 {
                     connection.Open();
-                    
+
 
                     string query = "INSERT INTO loggerTable (logData,createdDate) VALUES (@LogData,@LogDate)";
                     SqlCommand cmd = new SqlCommand(query, connection);
@@ -34,7 +34,7 @@ namespace DBFirstStudentDataBase_School_.Utils
 
                     int rowsAffected = cmd.ExecuteNonQuery();
 
-                    
+
                 }
                 catch (Exception ex)
                 {
@@ -44,8 +44,8 @@ namespace DBFirstStudentDataBase_School_.Utils
             }
 
             // add to logDataFile.txt
-            string logFilePath = "C:\\Users\\belagallus\\Desktop\\mindfire-assignments-\\DBFirstDataBase_School\\DBFirstStudentDataBase(School).Utils\\DBFirstStudentDataBase(School).Utils\\LogDataFile.txt";
-           
+            string logFilePath = "C:\\Users\\belagallus\\Desktop\\mindfire-assignments-\\DBFirstDataBase_School\\DBFirstStudentDataBase_School.Utils\\LogDataFile.txt";
+
             try
             {
                 using (StreamWriter writer = new StreamWriter(logFilePath, true))
@@ -60,4 +60,3 @@ namespace DBFirstStudentDataBase_School_.Utils
         }
     }
 }
-

@@ -107,9 +107,9 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DBFirstStudentDataBase%28School%29.Utils\DBFirstStudentDataBase%28School%29.Utils\DBFirstStudentDataBase%28School%29.Utils.csproj">
-      <Project>{0474df25-ff9f-41e4-addc-b6e41e2df4ba}</Project>
-      <Name>DBFirstStudentDataBase%28School%29.Utils</Name>
+    <ProjectReference Include="..\DBFirstStudentDataBase_School.Utils\DBFirstStudentDataBase_School.Utils.csproj">
+      <Project>{55795995-f30b-4ee6-b0db-d49496e68afe}</Project>
+      <Name>DBFirstStudentDataBase_School.Utils</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

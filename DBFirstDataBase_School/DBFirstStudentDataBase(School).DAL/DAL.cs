@@ -4,7 +4,7 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DBFirstStudentDataBase_School_.Utils;
+using DBFirstStudentDataBase_School.Utils;
 namespace DBFirstStudentDataBase_School_.DAL
 {
     public class DataAccess
