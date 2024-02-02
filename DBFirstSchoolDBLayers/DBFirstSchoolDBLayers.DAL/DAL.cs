@@ -12,14 +12,19 @@ namespace DBFirstSchoolDBLayers.DAL
 
     public class DataAccess
     {
+        public static void LogDataToAllFiles(string msg)
+        {
+            LogDataToExcel.AddDataToExcel(msg);
+            LoggerClass.AddData(msg);
+            LogDataToCSV.AddDataToCsv(msg);
+        }
         public List<StudentModel> ReadStudentTable()
         {
             List<StudentModel> ListOfStudents = new List<StudentModel>();
             try
             {
                 using (var context = new XYZSchoolDBEntities())
-                {
-                    
+                {                    
                     var students = context.Students.ToList();
 
                     foreach (var student in students)
@@ -31,37 +36,27 @@ namespace DBFirstSchoolDBLayers.DAL
                         };
 
                         ListOfStudents.Add(tempStudent);
-
                     }
-
-                    LogDataToExcel.AddDataToExcel("read student table");
-                    LoggerClass.AddData("read student table");
-
+                    LogDataToAllFiles("read the student table");
                 }
 
             }
             catch (Exception ex)
             {
-                LoggerClass.AddData("somehting went wrong during reading from student table");
-                LogDataToExcel.AddDataToExcel("error in reading student table");
-
+                LogDataToAllFiles("something went wrong during reading the student table" + ex);                
             }
 
             return ListOfStudents; 
-
         }
 
 
         public bool DeleteStudentRow()
         {
-
             bool flag = false;
 
             using (var context = new XYZSchoolDBEntities())
             {
-               
-
-                try
+               try
                 {
                     var studentToDelete = context.Students.Find(Convert.ToInt32(Console.ReadLine()));
                     if (studentToDelete != null)
@@ -69,44 +64,31 @@ namespace DBFirstSchoolDBLayers.DAL
                         context.Students.Remove(studentToDelete);
                         context.SaveChanges();
                         
-                        LoggerClass.AddData("deleted the row in student table");
-                        LogDataToExcel.AddDataToExcel("deleted the row in student table");
+                        LogDataToAllFiles($"deleted the row with ID: {studentToDelete}in student table ");
                         flag = true;
                     }
                     else
-                    {
-                       
-                        LoggerClass.AddData("tried deleting id that is not present in table");
-                        LogDataToExcel.AddDataToExcel("tried deleting id that is not present in table");
+                    {   
+                        LogDataToAllFiles($"tried deleting the row with ID: {studentToDelete}in student table which is not present ");
                     }
                 }
                 catch (DbUpdateException ex)
                 {
-
-                    LoggerClass.AddData($"Error: {ex}");
-                    LogDataToExcel.AddDataToExcel("something went wrong");
+                    LogDataToAllFiles("something went wrong during deleting a row in student table" + ex);
                 }
-
-
             }
-
             return flag;
-
-
 
         }
 
         public bool InsertStudent()
         {
-
             bool flag = false;
             try
             {
                 using (var context = new XYZSchoolDBEntities())
                 {
-
                     // ask details
-                  
                     string newName = Console.ReadLine();
 
                     // create Student object
@@ -116,22 +98,18 @@ namespace DBFirstSchoolDBLayers.DAL
                     };
 
                     // pass it to context API 
-
                     context.Students.Add(newStudent);
                     context.SaveChanges();
                     flag = true;
-                    LoggerClass.AddData("inserted student row into table");
-                    LogDataToExcel.AddDataToExcel("inserted student row into table");
+                    LogDataToAllFiles($"inserted a student named {newName} in student table");
                 }
             }
             catch (DbUpdateException ex)
-            {               
-                LoggerClass.AddData($"{ex}");
-                LogDataToExcel.AddDataToExcel("something went wrong");
+            {
+                LogDataToAllFiles("something went wrong during inserting a row in student table" + ex);
             }
 
             return flag;
-
         }
 
 
@@ -142,9 +120,7 @@ namespace DBFirstSchoolDBLayers.DAL
             {
                 using (var context = new XYZSchoolDBEntities())
                 {
-
-                    // ask details
-                   
+                    // ask details                   
                     string newName = Console.ReadLine();
 
                     // create Student object
@@ -154,26 +130,17 @@ namespace DBFirstSchoolDBLayers.DAL
                     };
 
                     // pass it to context API 
-
                     context.Courses.Add(newCourse);
                     context.SaveChanges();
                     flag = true;
-                    LoggerClass.AddData("inserted new course into table");
-                    LogDataToExcel.AddDataToExcel("inserted new course into table");
+                    LogDataToAllFiles($"inserted a {newName} course in course table");
                 }
             }
             catch (DbUpdateException ex)
             {
-                Exception innerException = ex;
-           
-                LoggerClass.AddData("something went wrong" + ex);
-                LogDataToExcel.AddDataToExcel("something went wrong");
-
+                LogDataToAllFiles("something went wrong during inserting a row in course table" + ex);
             }
-
-
             return flag;
-
         }
 
         public List<CourseModel> ReadCourseTable()
@@ -182,14 +149,11 @@ namespace DBFirstSchoolDBLayers.DAL
             try
             {
                 using (var context = new XYZSchoolDBEntities())
-                {
-                 
-
+                {            
                     var courses = context.Courses.ToList();
 
                     foreach (var course in courses)
                     {
-
                         CourseModel tempCourse = new CourseModel()
                         {
                             CourseID = course.CourseID,
@@ -199,20 +163,14 @@ namespace DBFirstSchoolDBLayers.DAL
                         ListOfCourses.Add(tempCourse);
                      }
 
-                    LoggerClass.AddData("read the course table");
-                    LogDataToExcel.AddDataToExcel("read the course table");
+                    LogDataToAllFiles("read the course table");
                 }
             }
             catch (DbUpdateException ex)
             {
-                Exception innerException = ex;
-                
-                LoggerClass.AddData("something went wrong" + ex);
-                LogDataToExcel.AddDataToExcel("something went wrong");
+                LogDataToAllFiles("something went wrong during reading the course table" + ex);
             }
-
             return ListOfCourses;
-
         }
 
         public bool DeleteCourseRow()
@@ -232,42 +190,23 @@ namespace DBFirstSchoolDBLayers.DAL
                         context.Courses.Remove(courseToDelete);
                         context.SaveChanges();
                         flag = true;
-                        LoggerClass.AddData("deleted the row in course table ");
-                        LogDataToExcel.AddDataToExcel("deleted the row in course table");
+                        LogDataToAllFiles($"deleted a course with courseID: {courseToDelete}  in course table");
                     }
                     else
                     {
-                        LoggerClass.AddData("tried deleting id that is not present in course table");
-                        LogDataToExcel.AddDataToExcel("tried deleting id that is not present in course table");
+                        LogDataToAllFiles($"tried deleting a course with courseID: {courseToDelete}  in course table which is not present");
                     }
                 }
                 catch (DbUpdateException ex)
                 {
-                    Exception innerException = ex;
-
-                    while (innerException.InnerException != null)
-                    {
-                        innerException = innerException.InnerException;
-                    }
-
-                    LoggerClass.AddData($"Error: {innerException.Message}");
-                    LogDataToExcel.AddDataToExcel("something went wrong");
+                    LogDataToAllFiles("something went wrong during deleting a row in course table" + ex);
                 }
-
-
             }
-
             return flag;
-
-
         }
 
 
-
-
-
-
-        public bool InsertGrade()
+       public bool InsertGrade()
         {
             bool flag = false;
             try
@@ -275,8 +214,7 @@ namespace DBFirstSchoolDBLayers.DAL
                 using (var context = new XYZSchoolDBEntities())
                 {
 
-                    // ask details
-                   
+                    // ask details                   
                     string newName = Console.ReadLine();
 
                     // create Student object
@@ -285,26 +223,18 @@ namespace DBFirstSchoolDBLayers.DAL
                         GradeName = newName,
                     };
 
-                    // pass it to context API 
-
+                    // pass it to context API
                     context.Grades.Add(newGrade);
                     context.SaveChanges();
                     flag =true;
-                    LoggerClass.AddData("inserted grade into table");
-                    LogDataToExcel.AddDataToExcel("inserted grade into table");
+                    LogDataToAllFiles($"inserted a grade with grade: {newName}  in grade table");
                 }
             }
             catch (DbUpdateException ex)
             {
-
-                Exception innerException = ex;
-
-                LoggerClass.AddData($"Error: {innerException.Message}");
-                LogDataToExcel.AddDataToExcel("something went wrong");
+                LogDataToAllFiles("something went wrong during inserting a row in grade table" + ex);
             }
-
             return flag;
-
         }
 
         public List<GradeModel> ReadGradeTable()
@@ -313,13 +243,9 @@ namespace DBFirstSchoolDBLayers.DAL
 
             try
             {
-
                 using (var context = new XYZSchoolDBEntities())
-                {
-                   
-
+                {            
                     var Grades = context.Grades.ToList();
-
 
                     foreach (var Grade in Grades)
                     {
@@ -328,35 +254,26 @@ namespace DBFirstSchoolDBLayers.DAL
                             GradeID = Grade.GradeID,
                             GradeName = Grade.GradeName
                         };
-                        ListofGrades.Add (tempGrade);
-                      
+                        ListofGrades.Add (tempGrade);                      
                     }
 
-                    LoggerClass.AddData("read the grade table");
-                    LogDataToExcel.AddDataToExcel("read the grade table");
+                    LogDataToAllFiles("read the grade table");
                 }
 
             }
             catch (DbUpdateException ex)
             {
-                Exception innerException = ex;
-                
-                LoggerClass.AddData($"Error: {innerException.Message}");
-                LogDataToExcel.AddDataToExcel("something went wrong");
+                LogDataToAllFiles("something went wrong during reading the grade table" + ex);
             }
-
             return ListofGrades;
-
         }
 
         public bool DeleteGradeRow()
         {
-            bool flag = false;
-            
+            bool flag = false;           
 
             using (var context = new XYZSchoolDBEntities())
-            {
-                
+            {                
                 var GradeToDelete = context.Grades.Find(Convert.ToInt32(Console.ReadLine()));
                 try
                 {
@@ -364,37 +281,20 @@ namespace DBFirstSchoolDBLayers.DAL
                     {
                         context.Grades.Remove(GradeToDelete);
                         context.SaveChanges();
-                        flag = true;
-                      
-                        LoggerClass.AddData("deleted the row in grade table ");
-                        LogDataToExcel.AddDataToExcel("deleted the row in grade table");
+                        flag = true;                      
+                        LogDataToAllFiles($"deleted a grade with gradeID: {GradeToDelete}  in grade table");
                     }
                     else
                     {
-                        LoggerClass.AddData("tried deleting id that is not present in grade table");
-                        LogDataToExcel.AddDataToExcel("tried deleting id that is not present in grade table");
+                        LogDataToAllFiles($"tried deleting a grade with grade: {GradeToDelete}  in grade table which is not present");
                     }
                 }
                 catch (DbUpdateException ex)
                 {
-                    Exception innerException = ex;
-
-                    while (innerException.InnerException != null)
-                    {
-                        innerException = innerException.InnerException;
-                    }
-
-
-                    LoggerClass.AddData($"Error: {innerException.Message}");
-                    LogDataToExcel.AddDataToExcel("something went wrong");
+                    LogDataToAllFiles("something went wrong during deleting a row in grade table" + ex);
                 }
-
-
             }
             return flag;
-
-
-
         }
 
 
@@ -406,11 +306,8 @@ namespace DBFirstSchoolDBLayers.DAL
             bool flag = false;
 
             try
-            {
-               
-                int studentId = int.Parse(Console.ReadLine());
-
-               
+            {               
+                int studentId = int.Parse(Console.ReadLine());               
                 int gradeId = int.Parse(Console.ReadLine());
 
                 using (var context = new XYZSchoolDBEntities())
@@ -434,27 +331,18 @@ namespace DBFirstSchoolDBLayers.DAL
                         // Save changes to the database
                         context.SaveChanges();
                         flag = true;
-                        LoggerClass.AddData("Assigned student to grade.");
-                        LogDataToExcel.AddDataToExcel("Assigned student to grade.");
-
+                        LogDataToAllFiles($"assigned student with studentID: {studentId}  to grade with gradeID:{gradeId}");                        
                     }
                     else
                     {
-                        LoggerClass.AddData("Student is already assigned to the Grade.");
-                        LogDataToExcel.AddDataToExcel("Student is already assigned to the Grade.");
-
+                        LogDataToAllFiles("Student is already assigned to the Grade.");
                     }
                 }
             }
             catch (Exception ex)
             {
-
-                LoggerClass.AddData("something went wrong");
-                LogDataToExcel.AddDataToExcel("something went wrong");
-
-
+                LogDataToAllFiles("something went wrong during assigning student to grade" + ex);
             }
-
             return flag;
         }
 
@@ -466,7 +354,6 @@ namespace DBFirstSchoolDBLayers.DAL
             {
 
                 int courseId = int.Parse(Console.ReadLine());
-
                 int gradeId = int.Parse(Console.ReadLine());
 
                 using (var context = new XYZSchoolDBEntities())
@@ -481,22 +368,19 @@ namespace DBFirstSchoolDBLayers.DAL
 
                         context.SaveChanges();
                         flag = true;
-                        LoggerClass.AddData("assigned course to grade");
-                        LogDataToExcel.AddDataToExcel("assigned course to grade");
+                        LogDataToAllFiles($"assigned course with courseID: {courseId}  to grade with gradeID:{gradeId}");
+
                     }
                     else
                     {
-                        LoggerClass.AddData("error in assiging course to grade");
-                        LogDataToExcel.AddDataToExcel("error in assiging course to grade");
+                        LogDataToAllFiles($"error in assigning course with courseID: {courseId}  to grade with gradeID:{gradeId}");
                     }
                 }
             }
             catch (Exception ex)
             {
-                LoggerClass.AddData("error in assiging course to grade");
-                LogDataToExcel.AddDataToExcel("something went wrong");
+                LogDataToAllFiles("something went wrong during assigning course to grade" + ex);
             }
-
             return flag;
         }
 
@@ -506,12 +390,8 @@ namespace DBFirstSchoolDBLayers.DAL
 
             bool flag = false;
             try
-            {
-
-               
-                int courseId = int.Parse(Console.ReadLine());
-
-               
+            {               
+                int courseId = int.Parse(Console.ReadLine());               
                 int gradeId = int.Parse(Console.ReadLine());
 
                 using (var context = new XYZSchoolDBEntities())
@@ -526,20 +406,16 @@ namespace DBFirstSchoolDBLayers.DAL
 
                         context.SaveChanges();
                         flag = true; 
+                        LogDataToAllFiles($"removed course with courseID: {courseId} in grade with gradeID:{gradeId}");
 
-                        LoggerClass.AddData("removed course from grade");
-                        LogDataToExcel.AddDataToExcel("removed course from grade");
                     }
-                    
+
                 }
             }
             catch (Exception ex)
             {
-                LoggerClass.AddData("error in removing course from grade");
-                LogDataToExcel.AddDataToExcel("something went wrong");
-
+                LogDataToAllFiles("something went wrong during removing course from grade" + ex);
             }
-
             return flag;
         }
 
@@ -549,9 +425,7 @@ namespace DBFirstSchoolDBLayers.DAL
             bool flag = false;
             try
             {
-
                 int studentId = int.Parse(Console.ReadLine());
-
                 int gradeId = int.Parse(Console.ReadLine());
 
                 using (var context = new XYZSchoolDBEntities())
@@ -567,23 +441,19 @@ namespace DBFirstSchoolDBLayers.DAL
                         // Save changes to the database
                         context.SaveChanges();
                         flag = true;
-                        LoggerClass.AddData("Removed student from grade.");
-                        LogDataToExcel.AddDataToExcel("Removed student from grade.");
+                        LogDataToAllFiles($"removed student with studentID: {studentId} in grade with gradeID:{gradeId}");
+
                     }
                     else
                     {
-                        LoggerClass.AddData("Student or Grade assignment not found.");
-                        LogDataToExcel.AddDataToExcel("Student or Grade assignment not found.");
+                        LogDataToAllFiles($"error in removing student with studentID: {studentId}  in grade with gradeID:{gradeId}");
                     }
                 }
             }
             catch (Exception ex)
             {
-                LoggerClass.AddData(" something went wrong");
-                LogDataToExcel.AddDataToExcel("something went wrong");
-
+                LogDataToAllFiles("something went wrong during removing student from grade" + ex);
             }
-
             return flag;
         }
 
@@ -592,7 +462,6 @@ namespace DBFirstSchoolDBLayers.DAL
         {
 
             List<StudentGradeModel> ListOfstudentWithGrades = new List<StudentGradeModel>();
-
             try
             {
                 using (var context = new XYZSchoolDBEntities())
@@ -610,10 +479,8 @@ namespace DBFirstSchoolDBLayers.DAL
                     foreach (var studentWithGrades in studentsWithGrades)
                     {
                         var student = studentWithGrades.Student;
-
                         foreach (var grade in studentWithGrades.Grades)
-                        {
-                            
+                        {                            
                             StudentGradeModel tempstudentGrade = new StudentGradeModel()
                             {
                                  GradeID = grade.GradeID,
@@ -626,17 +493,13 @@ namespace DBFirstSchoolDBLayers.DAL
                         }
                     }
 
-                    LoggerClass.AddData("Displayed all students in grades.");
-                    LogDataToExcel.AddDataToExcel("Displayed all students in grades.");
+                    LogDataToAllFiles("Displayed all students with their grades.");
                 }
             }
             catch (Exception ex)
             {
-                LoggerClass.AddData("Something went wrong");
-                LogDataToExcel.AddDataToExcel("something went wrong");
-
+                LogDataToAllFiles("something went wrong during displaying students" + ex);
             }
-
             return ListOfstudentWithGrades;
         }
 
@@ -650,14 +513,11 @@ namespace DBFirstSchoolDBLayers.DAL
             {
                 using (var context = new XYZSchoolDBEntities())
                 {
-                    var courses = context.Courses.Include("Grades");
-
-                   
+                    var courses = context.Courses.Include("Grades");                   
                     foreach (var course in courses)
                     {
                         foreach (var grade in course.Grades)
                         {
-
                             CourseGradeModel tempcourseGrade = new CourseGradeModel()
                             {
                                 GradeID = grade.GradeID,
@@ -669,17 +529,13 @@ namespace DBFirstSchoolDBLayers.DAL
                             ListOfCourseWithGrades.Add(tempcourseGrade);
                           }
                     }
-
-                    LoggerClass.AddData("displayed all courses in grades");
-                    LogDataToExcel.AddDataToExcel("displayed all courses in grades");
+                    LogDataToAllFiles("displayed all courses with their grades");
                 }
             }
             catch (Exception ex)
             {
-                LoggerClass.AddData("something went wrong");
-                LogDataToExcel.AddDataToExcel("something went wrong");
+                LogDataToAllFiles("something went wrong during displayig courses" + ex);
             }
-
             return ListOfCourseWithGrades;
         }
 
@@ -689,13 +545,10 @@ namespace DBFirstSchoolDBLayers.DAL
         public Dictionary<GradeModel, List<StudentModel>> DisplayAllStudentsGradeWise()
         {
             Dictionary<GradeModel, List<StudentModel>> gradeStudentDict = new Dictionary<GradeModel, List<StudentModel>>();
-
-
-            try
+           try
             {
                 using (var context = new XYZSchoolDBEntities())
                 {
-
                     // Retrieve all grades with their students from the database
                     var gradesWithStudents = context.Grades
                         .Select(grade => new
@@ -733,19 +586,13 @@ namespace DBFirstSchoolDBLayers.DAL
                         gradeStudentDict.Add(tempGrade, ListOfStudents);
 
                     }
-
-                    // Log the information
-                    LoggerClass.AddData("displayed students gradewise");
-                    LogDataToExcel.AddDataToExcel("displayed students gradewise");
-
+                    LogDataToAllFiles("displayed students gradewise");
                 }
             }
             catch (Exception ex)
             {
-                LoggerClass.AddData("some error");
-                LogDataToExcel.AddDataToExcel("something went wrong");
+                LogDataToAllFiles("something went wrong during displaying students gradewise" + ex);
             }
-
             return gradeStudentDict;
         }
 
@@ -788,21 +635,16 @@ namespace DBFirstSchoolDBLayers.DAL
                             gradeCourseDict.Add(tempGrade, listOfCourses);
 
                     }
+                    LogDataToAllFiles("dispalyed all courses gradewise");
 
-                    // Log the completion
-                    LoggerClass.AddData("Retrieved courses grade-wise.");
-                    LogDataToExcel.AddDataToExcel("Retrieved courses grade-wise.");
                 }
             }
             catch (Exception ex)
             {
-                LoggerClass.AddData("Some error occurred.");
-                LogDataToExcel.AddDataToExcel("something went wrong");
+                LogDataToAllFiles("something went wrong during displaying course gradewise" + ex);
             }
-
             return gradeCourseDict;
         }
-
 
 
     }

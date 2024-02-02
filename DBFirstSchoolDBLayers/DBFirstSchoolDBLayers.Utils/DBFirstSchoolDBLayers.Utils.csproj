@@ -73,6 +73,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LogDataToCSV.cs" />
     <Compile Include="LogDataToExcel.cs" />
     <Compile Include="LoggerClass.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
