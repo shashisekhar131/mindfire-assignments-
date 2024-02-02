@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
+using System.Runtime;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -30,7 +32,19 @@ namespace DBFirstSchoolDBLayers
         DisplayAllCourseInGrades,
         DisplayAllStudentsGradeWise,
         DisplayAllCoursesGradeWise,
+        AddDataToExcel,
+        AddDataToCsv,
         Stop
+    }
+
+
+    public enum DatabaseTable
+    {
+        Student=1,
+        Course,
+        Grade,
+        StudentGrade,
+        CourseGrade
     }
 
     internal class Program
@@ -42,6 +56,7 @@ namespace DBFirstSchoolDBLayers
         static void Main(string[] args)
         {
             Program program = new Program();
+
             try
             {
                  Operation selected;
@@ -52,7 +67,7 @@ namespace DBFirstSchoolDBLayers
                         " 7. Read grades table \n 8. insert new grade \n 9. delete grade  \n 10. assign student to course \n" +
                         " 11. assgin course to grade \n 12. remove course from grade \n 13. remove student from grade \n" +
                         " 14. display all stuents and their grades \n 15. display all courses and their grades \n" +
-                        " 16. display all students gradewise \n 17. display all courses gradewise \n 18. stop");
+                        " 16. display all students gradewise \n 17. display all courses gradewise \n 18. Add data to excel \n 19. Add data to csv \n 20.stop");
 
 
                     selected = (Operation)Convert.ToInt32(Console.ReadLine());
@@ -64,6 +79,7 @@ namespace DBFirstSchoolDBLayers
                     {
                         case Operation.ReadStudentTable:
                             program.ReadStudentTable();
+
                             break;
                         case Operation.InsertStudent:
                             program.InsertStudent();
@@ -114,6 +130,14 @@ namespace DBFirstSchoolDBLayers
                         case Operation.DisplayAllCoursesGradeWise:
                             program.DisplayAllCoursesGradeWise();
                             break;
+                        case Operation.AddDataToExcel:
+                            program.AddDataToExcel();
+                            break;
+                        case Operation.AddDataToCsv: 
+                            program.AddDataToCsv();
+                            break;
+
+                    
                     }
 
                 } while (selected != Operation.Stop);
@@ -128,6 +152,109 @@ namespace DBFirstSchoolDBLayers
 
         }
 
+        private void AddDataToExcel()
+        {
+
+            string filePath = @"C:\Users\belagallus\Desktop\TableFile.xlsx";
+
+            Console.WriteLine("\nDatabase Table Options:\n" +
+                "1. Student\n" +
+                "2. Course\n" +
+                "3. Grade\n" +
+                "4. StudentGrade\n" +
+                "5. CourseGrade\n");
+
+            DatabaseTable table= (DatabaseTable)Convert.ToInt32(Console.ReadLine());
+
+            switch (table)
+            {
+                case DatabaseTable.Student:
+                    List<StudentModel> ListofStudents = service.ReadStudentTable();
+                    service.ExportDataToExcel(ListofStudents, filePath);
+                    break;
+
+                case DatabaseTable.Course:
+                    List<CourseModel> ListofCourses = service.ReadCourseTable();
+                    service.ExportDataToExcel(ListofCourses, filePath);
+                    break;
+
+                case DatabaseTable.Grade:
+                    List<GradeModel> ListofGrades = service.ReadGradeTable();
+                    service.ExportDataToExcel(ListofGrades, filePath);
+                    break;
+
+                case DatabaseTable.StudentGrade:
+                    List<StudentGradeModel> ListofStudentWithGrades = service.DisplayAllStudentInGrades();
+                    service.ExportDataToExcel(ListofStudentWithGrades,filePath);
+                    break;
+
+                case DatabaseTable.CourseGrade:
+                    List<CourseGradeModel> ListofCourseWithGrades = service.DisplayAllCoursesInGrades();
+                    service.ExportDataToExcel(ListofCourseWithGrades, filePath);
+                    break;
+
+                default:
+                    Console.WriteLine("Invalid table");
+                    break;
+            }
+
+
+
+
+        }
+
+
+
+        private void AddDataToCsv()
+        {
+
+            string filePath = @"C:\Users\belagallus\Desktop\TableFile.csv";
+
+            Console.WriteLine("\nDatabase Table Options:\n" +
+                "1. Student\n" +
+                "2. Course\n" +
+                "3. Grade\n" +
+                "4. StudentGrade\n" +
+                "5. CourseGrade\n");
+
+            DatabaseTable table = (DatabaseTable)Convert.ToInt32(Console.ReadLine());
+
+            switch (table)
+            {
+                case DatabaseTable.Student:
+                    List<StudentModel> ListofStudents = service.ReadStudentTable();
+                    service.ExportDataToCsv(ListofStudents, filePath);
+                    break;
+
+                case DatabaseTable.Course:
+                    List<CourseModel> ListofCourses = service.ReadCourseTable();
+                    service.ExportDataToCsv(ListofCourses, filePath);
+                    break;
+
+                case DatabaseTable.Grade:
+                    List<GradeModel> ListofGrades = service.ReadGradeTable();
+                    service.ExportDataToCsv(ListofGrades, filePath);
+                    break;
+
+                case DatabaseTable.StudentGrade:
+                    List<StudentGradeModel> ListofStudentWithGrades = service.DisplayAllStudentInGrades();
+                    service.ExportDataToCsv(ListofStudentWithGrades, filePath);
+                    break;
+
+                case DatabaseTable.CourseGrade:
+                    List<CourseGradeModel> ListofCourseWithGrades = service.DisplayAllCoursesInGrades();
+                    service.ExportDataToCsv(ListofCourseWithGrades, filePath);
+                    break;
+
+                default:
+                    Console.WriteLine("Invalid table");
+                    break;
+            }
+
+
+
+
+        }
 
         private void ReadStudentTable()
         {

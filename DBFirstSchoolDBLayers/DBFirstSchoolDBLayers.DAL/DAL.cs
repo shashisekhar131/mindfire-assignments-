@@ -12,12 +12,7 @@ namespace DBFirstSchoolDBLayers.DAL
 
     public class DataAccess
     {
-        public static void LogDataToAllFiles(string msg)
-        {
-            LogDataToExcel.AddDataToExcel(msg);
-            LoggerClass.AddData(msg);
-            LogDataToCSV.AddDataToCsv(msg);
-        }
+        
         public List<StudentModel> ReadStudentTable()
         {
             List<StudentModel> ListOfStudents = new List<StudentModel>();
@@ -37,13 +32,12 @@ namespace DBFirstSchoolDBLayers.DAL
 
                         ListOfStudents.Add(tempStudent);
                     }
-                    LogDataToAllFiles("read the student table");
                 }
 
             }
             catch (Exception ex)
             {
-                LogDataToAllFiles("something went wrong during reading the student table" + ex);                
+                LoggerClass.AddData("something went wrong during reading the student table" + ex);                
             }
 
             return ListOfStudents; 
@@ -62,19 +56,14 @@ namespace DBFirstSchoolDBLayers.DAL
                     if (studentToDelete != null)
                     {
                         context.Students.Remove(studentToDelete);
-                        context.SaveChanges();
-                        
-                        LogDataToAllFiles($"deleted the row with ID: {studentToDelete}in student table ");
+                        context.SaveChanges();                        
                         flag = true;
                     }
-                    else
-                    {   
-                        LogDataToAllFiles($"tried deleting the row with ID: {studentToDelete}in student table which is not present ");
-                    }
+                    
                 }
                 catch (DbUpdateException ex)
                 {
-                    LogDataToAllFiles("something went wrong during deleting a row in student table" + ex);
+                    LoggerClass.AddData("something went wrong during deleting a row in student table" + ex);
                 }
             }
             return flag;
@@ -101,12 +90,11 @@ namespace DBFirstSchoolDBLayers.DAL
                     context.Students.Add(newStudent);
                     context.SaveChanges();
                     flag = true;
-                    LogDataToAllFiles($"inserted a student named {newName} in student table");
                 }
             }
             catch (DbUpdateException ex)
             {
-                LogDataToAllFiles("something went wrong during inserting a row in student table" + ex);
+                LoggerClass.AddData("something went wrong during inserting a row in student table" + ex);
             }
 
             return flag;
@@ -133,12 +121,11 @@ namespace DBFirstSchoolDBLayers.DAL
                     context.Courses.Add(newCourse);
                     context.SaveChanges();
                     flag = true;
-                    LogDataToAllFiles($"inserted a {newName} course in course table");
                 }
             }
             catch (DbUpdateException ex)
             {
-                LogDataToAllFiles("something went wrong during inserting a row in course table" + ex);
+                LoggerClass.AddData("something went wrong during inserting a row in course table" + ex);
             }
             return flag;
         }
@@ -163,12 +150,11 @@ namespace DBFirstSchoolDBLayers.DAL
                         ListOfCourses.Add(tempCourse);
                      }
 
-                    LogDataToAllFiles("read the course table");
                 }
             }
             catch (DbUpdateException ex)
             {
-                LogDataToAllFiles("something went wrong during reading the course table" + ex);
+                LoggerClass.AddData("something went wrong during reading the course table" + ex);
             }
             return ListOfCourses;
         }
@@ -190,16 +176,12 @@ namespace DBFirstSchoolDBLayers.DAL
                         context.Courses.Remove(courseToDelete);
                         context.SaveChanges();
                         flag = true;
-                        LogDataToAllFiles($"deleted a course with courseID: {courseToDelete}  in course table");
                     }
-                    else
-                    {
-                        LogDataToAllFiles($"tried deleting a course with courseID: {courseToDelete}  in course table which is not present");
-                    }
+                   
                 }
                 catch (DbUpdateException ex)
                 {
-                    LogDataToAllFiles("something went wrong during deleting a row in course table" + ex);
+                    LoggerClass.AddData("something went wrong during deleting a row in course table" + ex);
                 }
             }
             return flag;
@@ -227,12 +209,11 @@ namespace DBFirstSchoolDBLayers.DAL
                     context.Grades.Add(newGrade);
                     context.SaveChanges();
                     flag =true;
-                    LogDataToAllFiles($"inserted a grade with grade: {newName}  in grade table");
                 }
             }
             catch (DbUpdateException ex)
             {
-                LogDataToAllFiles("something went wrong during inserting a row in grade table" + ex);
+                LoggerClass.AddData("something went wrong during inserting a row in grade table" + ex);
             }
             return flag;
         }
@@ -257,13 +238,12 @@ namespace DBFirstSchoolDBLayers.DAL
                         ListofGrades.Add (tempGrade);                      
                     }
 
-                    LogDataToAllFiles("read the grade table");
                 }
 
             }
             catch (DbUpdateException ex)
             {
-                LogDataToAllFiles("something went wrong during reading the grade table" + ex);
+                LoggerClass.AddData("something went wrong during reading the grade table" + ex);
             }
             return ListofGrades;
         }
@@ -282,16 +262,11 @@ namespace DBFirstSchoolDBLayers.DAL
                         context.Grades.Remove(GradeToDelete);
                         context.SaveChanges();
                         flag = true;                      
-                        LogDataToAllFiles($"deleted a grade with gradeID: {GradeToDelete}  in grade table");
-                    }
-                    else
-                    {
-                        LogDataToAllFiles($"tried deleting a grade with grade: {GradeToDelete}  in grade table which is not present");
                     }
                 }
                 catch (DbUpdateException ex)
                 {
-                    LogDataToAllFiles("something went wrong during deleting a row in grade table" + ex);
+                    LoggerClass.AddData("something went wrong during deleting a row in grade table" + ex);
                 }
             }
             return flag;
@@ -331,17 +306,12 @@ namespace DBFirstSchoolDBLayers.DAL
                         // Save changes to the database
                         context.SaveChanges();
                         flag = true;
-                        LogDataToAllFiles($"assigned student with studentID: {studentId}  to grade with gradeID:{gradeId}");                        
-                    }
-                    else
-                    {
-                        LogDataToAllFiles("Student is already assigned to the Grade.");
                     }
                 }
             }
             catch (Exception ex)
             {
-                LogDataToAllFiles("something went wrong during assigning student to grade" + ex);
+                LoggerClass.AddData("something went wrong during assigning student to grade" + ex);
             }
             return flag;
         }
@@ -368,18 +338,13 @@ namespace DBFirstSchoolDBLayers.DAL
 
                         context.SaveChanges();
                         flag = true;
-                        LogDataToAllFiles($"assigned course with courseID: {courseId}  to grade with gradeID:{gradeId}");
 
-                    }
-                    else
-                    {
-                        LogDataToAllFiles($"error in assigning course with courseID: {courseId}  to grade with gradeID:{gradeId}");
                     }
                 }
             }
             catch (Exception ex)
             {
-                LogDataToAllFiles("something went wrong during assigning course to grade" + ex);
+                LoggerClass.AddData("something went wrong during assigning course to grade" + ex);
             }
             return flag;
         }
@@ -406,7 +371,6 @@ namespace DBFirstSchoolDBLayers.DAL
 
                         context.SaveChanges();
                         flag = true; 
-                        LogDataToAllFiles($"removed course with courseID: {courseId} in grade with gradeID:{gradeId}");
 
                     }
 
@@ -414,7 +378,7 @@ namespace DBFirstSchoolDBLayers.DAL
             }
             catch (Exception ex)
             {
-                LogDataToAllFiles("something went wrong during removing course from grade" + ex);
+                LoggerClass.AddData("something went wrong during removing course from grade" + ex);
             }
             return flag;
         }
@@ -441,18 +405,13 @@ namespace DBFirstSchoolDBLayers.DAL
                         // Save changes to the database
                         context.SaveChanges();
                         flag = true;
-                        LogDataToAllFiles($"removed student with studentID: {studentId} in grade with gradeID:{gradeId}");
 
-                    }
-                    else
-                    {
-                        LogDataToAllFiles($"error in removing student with studentID: {studentId}  in grade with gradeID:{gradeId}");
                     }
                 }
             }
             catch (Exception ex)
             {
-                LogDataToAllFiles("something went wrong during removing student from grade" + ex);
+                LoggerClass.AddData("something went wrong during removing student from grade" + ex);
             }
             return flag;
         }
@@ -493,12 +452,11 @@ namespace DBFirstSchoolDBLayers.DAL
                         }
                     }
 
-                    LogDataToAllFiles("Displayed all students with their grades.");
                 }
             }
             catch (Exception ex)
             {
-                LogDataToAllFiles("something went wrong during displaying students" + ex);
+                LoggerClass.AddData("something went wrong during displaying students" + ex);
             }
             return ListOfstudentWithGrades;
         }
@@ -529,12 +487,11 @@ namespace DBFirstSchoolDBLayers.DAL
                             ListOfCourseWithGrades.Add(tempcourseGrade);
                           }
                     }
-                    LogDataToAllFiles("displayed all courses with their grades");
                 }
             }
             catch (Exception ex)
             {
-                LogDataToAllFiles("something went wrong during displayig courses" + ex);
+                LoggerClass.AddData("something went wrong during displayig courses" + ex);
             }
             return ListOfCourseWithGrades;
         }
@@ -586,12 +543,11 @@ namespace DBFirstSchoolDBLayers.DAL
                         gradeStudentDict.Add(tempGrade, ListOfStudents);
 
                     }
-                    LogDataToAllFiles("displayed students gradewise");
                 }
             }
             catch (Exception ex)
             {
-                LogDataToAllFiles("something went wrong during displaying students gradewise" + ex);
+                LoggerClass.AddData("something went wrong during displaying students gradewise" + ex);
             }
             return gradeStudentDict;
         }
@@ -635,13 +591,12 @@ namespace DBFirstSchoolDBLayers.DAL
                             gradeCourseDict.Add(tempGrade, listOfCourses);
 
                     }
-                    LogDataToAllFiles("dispalyed all courses gradewise");
 
                 }
             }
             catch (Exception ex)
             {
-                LogDataToAllFiles("something went wrong during displaying course gradewise" + ex);
+                LoggerClass.AddData("something went wrong during displaying course gradewise" + ex);
             }
             return gradeCourseDict;
         }
