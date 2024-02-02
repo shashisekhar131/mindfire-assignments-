@@ -94,13 +94,13 @@ namespace DBFirstSchoolDBLayers.Business
             return ListOfCourseWithGrades;
         }
 
-        public void DisplayAllCoursesGradeWise()
+        public Dictionary<GradeModel, List<CourseModel>> DisplayAllCoursesGradeWise()
         {
-            dataAccess.DisplayAllCoursesGradeWise();
+            return dataAccess.DisplayAllCoursesGradeWise();
         }
-        public void DisplayAllStudentsGradeWise()
+        public Dictionary<GradeModel, List<StudentModel>> DisplayAllStudentsGradeWise()
         {
-            dataAccess.DisplayAllStudentsGradeWise();
+             return dataAccess.DisplayAllStudentsGradeWise();
         }
 
     }

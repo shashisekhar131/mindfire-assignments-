@@ -29,7 +29,7 @@ namespace DBFirstSchoolDBLayers.Utils
                     string query = "INSERT INTO loggerTable (logData,createdDate) VALUES (@LogData,@LogDate)";
                     SqlCommand cmd = new SqlCommand(query, connection);
 
-                    cmd.Parameters.AddWithValue("@LogDate", DateTime.Now);
+                    cmd.Parameters.AddWithValue("@LogDate", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
                     cmd.Parameters.AddWithValue("@LogData", logData);
 
                     int rowsAffected = cmd.ExecuteNonQuery();

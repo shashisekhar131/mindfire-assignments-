@@ -34,7 +34,7 @@ namespace DBFirstSchoolDBLayers.DAL
 
                     }
 
-                    
+                    LogDataToExcel.AddDataToExcel("read student table");
                     LoggerClass.AddData("read student table");
 
                 }
@@ -43,7 +43,7 @@ namespace DBFirstSchoolDBLayers.DAL
             catch (Exception ex)
             {
                 LoggerClass.AddData("somehting went wrong during reading from student table");
-                
+                LogDataToExcel.AddDataToExcel("error in reading student table");
 
             }
 
@@ -70,18 +70,21 @@ namespace DBFirstSchoolDBLayers.DAL
                         context.SaveChanges();
                         
                         LoggerClass.AddData("deleted the row in student table");
+                        LogDataToExcel.AddDataToExcel("deleted the row in student table");
                         flag = true;
                     }
                     else
                     {
                        
                         LoggerClass.AddData("tried deleting id that is not present in table");
+                        LogDataToExcel.AddDataToExcel("tried deleting id that is not present in table");
                     }
                 }
                 catch (DbUpdateException ex)
                 {
 
                     LoggerClass.AddData($"Error: {ex}");
+                    LogDataToExcel.AddDataToExcel("something went wrong");
                 }
 
 
@@ -118,13 +121,13 @@ namespace DBFirstSchoolDBLayers.DAL
                     context.SaveChanges();
                     flag = true;
                     LoggerClass.AddData("inserted student row into table");
+                    LogDataToExcel.AddDataToExcel("inserted student row into table");
                 }
             }
             catch (DbUpdateException ex)
-            {
-                Exception innerException = ex;
-                
+            {               
                 LoggerClass.AddData($"{ex}");
+                LogDataToExcel.AddDataToExcel("something went wrong");
             }
 
             return flag;
@@ -156,6 +159,7 @@ namespace DBFirstSchoolDBLayers.DAL
                     context.SaveChanges();
                     flag = true;
                     LoggerClass.AddData("inserted new course into table");
+                    LogDataToExcel.AddDataToExcel("inserted new course into table");
                 }
             }
             catch (DbUpdateException ex)
@@ -163,6 +167,7 @@ namespace DBFirstSchoolDBLayers.DAL
                 Exception innerException = ex;
            
                 LoggerClass.AddData("something went wrong" + ex);
+                LogDataToExcel.AddDataToExcel("something went wrong");
 
             }
 
@@ -194,7 +199,8 @@ namespace DBFirstSchoolDBLayers.DAL
                         ListOfCourses.Add(tempCourse);
                      }
 
-                    LoggerClass.AddData("read course the table");
+                    LoggerClass.AddData("read the course table");
+                    LogDataToExcel.AddDataToExcel("read the course table");
                 }
             }
             catch (DbUpdateException ex)
@@ -202,6 +208,7 @@ namespace DBFirstSchoolDBLayers.DAL
                 Exception innerException = ex;
                 
                 LoggerClass.AddData("something went wrong" + ex);
+                LogDataToExcel.AddDataToExcel("something went wrong");
             }
 
             return ListOfCourses;
@@ -226,10 +233,12 @@ namespace DBFirstSchoolDBLayers.DAL
                         context.SaveChanges();
                         flag = true;
                         LoggerClass.AddData("deleted the row in course table ");
+                        LogDataToExcel.AddDataToExcel("deleted the row in course table");
                     }
                     else
                     {
                         LoggerClass.AddData("tried deleting id that is not present in course table");
+                        LogDataToExcel.AddDataToExcel("tried deleting id that is not present in course table");
                     }
                 }
                 catch (DbUpdateException ex)
@@ -242,6 +251,7 @@ namespace DBFirstSchoolDBLayers.DAL
                     }
 
                     LoggerClass.AddData($"Error: {innerException.Message}");
+                    LogDataToExcel.AddDataToExcel("something went wrong");
                 }
 
 
@@ -281,6 +291,7 @@ namespace DBFirstSchoolDBLayers.DAL
                     context.SaveChanges();
                     flag =true;
                     LoggerClass.AddData("inserted grade into table");
+                    LogDataToExcel.AddDataToExcel("inserted grade into table");
                 }
             }
             catch (DbUpdateException ex)
@@ -289,6 +300,7 @@ namespace DBFirstSchoolDBLayers.DAL
                 Exception innerException = ex;
 
                 LoggerClass.AddData($"Error: {innerException.Message}");
+                LogDataToExcel.AddDataToExcel("something went wrong");
             }
 
             return flag;
@@ -320,7 +332,8 @@ namespace DBFirstSchoolDBLayers.DAL
                       
                     }
 
-                    LoggerClass.AddData("read grade the table");
+                    LoggerClass.AddData("read the grade table");
+                    LogDataToExcel.AddDataToExcel("read the grade table");
                 }
 
             }
@@ -329,6 +342,7 @@ namespace DBFirstSchoolDBLayers.DAL
                 Exception innerException = ex;
                 
                 LoggerClass.AddData($"Error: {innerException.Message}");
+                LogDataToExcel.AddDataToExcel("something went wrong");
             }
 
             return ListofGrades;
@@ -353,10 +367,12 @@ namespace DBFirstSchoolDBLayers.DAL
                         flag = true;
                       
                         LoggerClass.AddData("deleted the row in grade table ");
+                        LogDataToExcel.AddDataToExcel("deleted the row in grade table");
                     }
                     else
                     {
-                      LoggerClass.AddData("tried deleting id that is not present in grade table");
+                        LoggerClass.AddData("tried deleting id that is not present in grade table");
+                        LogDataToExcel.AddDataToExcel("tried deleting id that is not present in grade table");
                     }
                 }
                 catch (DbUpdateException ex)
@@ -368,7 +384,9 @@ namespace DBFirstSchoolDBLayers.DAL
                         innerException = innerException.InnerException;
                     }
 
+
                     LoggerClass.AddData($"Error: {innerException.Message}");
+                    LogDataToExcel.AddDataToExcel("something went wrong");
                 }
 
 
@@ -389,10 +407,10 @@ namespace DBFirstSchoolDBLayers.DAL
 
             try
             {
-                Console.WriteLine("Enter Student ID:");
+               
                 int studentId = int.Parse(Console.ReadLine());
 
-                Console.WriteLine("Enter Grade ID:");
+               
                 int gradeId = int.Parse(Console.ReadLine());
 
                 using (var context = new XYZSchoolDBEntities())
@@ -417,17 +435,23 @@ namespace DBFirstSchoolDBLayers.DAL
                         context.SaveChanges();
                         flag = true;
                         LoggerClass.AddData("Assigned student to grade.");
+                        LogDataToExcel.AddDataToExcel("Assigned student to grade.");
+
                     }
                     else
                     {
                         LoggerClass.AddData("Student is already assigned to the Grade.");
+                        LogDataToExcel.AddDataToExcel("Student is already assigned to the Grade.");
+
                     }
                 }
             }
             catch (Exception ex)
             {
 
-                LoggerClass.AddData("something weng wrong");
+                LoggerClass.AddData("something went wrong");
+                LogDataToExcel.AddDataToExcel("something went wrong");
+
 
             }
 
@@ -441,10 +465,8 @@ namespace DBFirstSchoolDBLayers.DAL
             try
             {
 
-                Console.WriteLine("Enter Course ID:");
                 int courseId = int.Parse(Console.ReadLine());
 
-                Console.WriteLine("Enter Grade ID:");
                 int gradeId = int.Parse(Console.ReadLine());
 
                 using (var context = new XYZSchoolDBEntities())
@@ -460,16 +482,19 @@ namespace DBFirstSchoolDBLayers.DAL
                         context.SaveChanges();
                         flag = true;
                         LoggerClass.AddData("assigned course to grade");
+                        LogDataToExcel.AddDataToExcel("assigned course to grade");
                     }
                     else
                     {
                         LoggerClass.AddData("error in assiging course to grade");
+                        LogDataToExcel.AddDataToExcel("error in assiging course to grade");
                     }
                 }
             }
             catch (Exception ex)
             {
                 LoggerClass.AddData("error in assiging course to grade");
+                LogDataToExcel.AddDataToExcel("something went wrong");
             }
 
             return flag;
@@ -483,10 +508,10 @@ namespace DBFirstSchoolDBLayers.DAL
             try
             {
 
-                Console.WriteLine("Enter Course ID:");
+               
                 int courseId = int.Parse(Console.ReadLine());
 
-                Console.WriteLine("Enter Grade ID:");
+               
                 int gradeId = int.Parse(Console.ReadLine());
 
                 using (var context = new XYZSchoolDBEntities())
@@ -503,6 +528,7 @@ namespace DBFirstSchoolDBLayers.DAL
                         flag = true; 
 
                         LoggerClass.AddData("removed course from grade");
+                        LogDataToExcel.AddDataToExcel("removed course from grade");
                     }
                     
                 }
@@ -510,6 +536,7 @@ namespace DBFirstSchoolDBLayers.DAL
             catch (Exception ex)
             {
                 LoggerClass.AddData("error in removing course from grade");
+                LogDataToExcel.AddDataToExcel("something went wrong");
 
             }
 
@@ -523,10 +550,8 @@ namespace DBFirstSchoolDBLayers.DAL
             try
             {
 
-                Console.WriteLine("Enter Student ID:");
                 int studentId = int.Parse(Console.ReadLine());
 
-                Console.WriteLine("Enter Grade ID:");
                 int gradeId = int.Parse(Console.ReadLine());
 
                 using (var context = new XYZSchoolDBEntities())
@@ -543,16 +568,19 @@ namespace DBFirstSchoolDBLayers.DAL
                         context.SaveChanges();
                         flag = true;
                         LoggerClass.AddData("Removed student from grade.");
+                        LogDataToExcel.AddDataToExcel("Removed student from grade.");
                     }
                     else
                     {
                         LoggerClass.AddData("Student or Grade assignment not found.");
+                        LogDataToExcel.AddDataToExcel("Student or Grade assignment not found.");
                     }
                 }
             }
             catch (Exception ex)
             {
                 LoggerClass.AddData(" something went wrong");
+                LogDataToExcel.AddDataToExcel("something went wrong");
 
             }
 
@@ -599,11 +627,13 @@ namespace DBFirstSchoolDBLayers.DAL
                     }
 
                     LoggerClass.AddData("Displayed all students in grades.");
+                    LogDataToExcel.AddDataToExcel("Displayed all students in grades.");
                 }
             }
             catch (Exception ex)
             {
                 LoggerClass.AddData("Something went wrong");
+                LogDataToExcel.AddDataToExcel("something went wrong");
 
             }
 
@@ -641,11 +671,13 @@ namespace DBFirstSchoolDBLayers.DAL
                     }
 
                     LoggerClass.AddData("displayed all courses in grades");
+                    LogDataToExcel.AddDataToExcel("displayed all courses in grades");
                 }
             }
             catch (Exception ex)
             {
                 LoggerClass.AddData("something went wrong");
+                LogDataToExcel.AddDataToExcel("something went wrong");
             }
 
             return ListOfCourseWithGrades;
@@ -654,97 +686,122 @@ namespace DBFirstSchoolDBLayers.DAL
 
 
 
-        public void DisplayAllStudentsGradeWise()
+        public Dictionary<GradeModel, List<StudentModel>> DisplayAllStudentsGradeWise()
         {
+            Dictionary<GradeModel, List<StudentModel>> gradeStudentDict = new Dictionary<GradeModel, List<StudentModel>>();
+
+
             try
             {
                 using (var context = new XYZSchoolDBEntities())
                 {
-                   
+
                     // Retrieve all grades with their students from the database
                     var gradesWithStudents = context.Grades
                         .Select(grade => new
                         {
                             Grade = grade,
-                            Students = grade.StudentGrades.Select(sg => sg.Student)
+                            Students = grade.StudentGrades.Select(sg => sg.Student).ToList()
                         })
                         .ToList();
 
                     foreach (var gradeWithStudents in gradesWithStudents)
                     {
                         var grade = gradeWithStudents.Grade;
+                        var students = gradeWithStudents.Students;
 
-                        if (gradeWithStudents.Students.Any())
+                        GradeModel tempGrade = new GradeModel()
                         {
-                            Console.Write($"All Students in Grade {grade.GradeName}: ");
+                            GradeID = grade.GradeID,
+                            GradeName = grade.GradeName
+                        };
 
-                            foreach (var student in gradeWithStudents.Students)
+                        List<StudentModel> ListOfStudents = new List<StudentModel>();
+                        foreach (var student in students)
+                        {
+                            StudentModel tempStudent = new StudentModel()
                             {
-                                Console.Write($" {student.Name}. ");
-                            }
+                                StudentID = student.StudentID,
+                                Name = student.Name,
+                            };
 
-                            Console.WriteLine();
+                            ListOfStudents.Add(tempStudent);
+
                         }
-                        else
-                        {
-                            Console.WriteLine($"No Students in Grade {grade.GradeName}");
-                        }
+
+                        // Add grade and students to the dictionary
+                        gradeStudentDict.Add(tempGrade, ListOfStudents);
+
                     }
 
-                    LoggerClass.AddData("Displayed courses grade-wise.");
+                    // Log the information
+                    LoggerClass.AddData("displayed students gradewise");
+                    LogDataToExcel.AddDataToExcel("displayed students gradewise");
 
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex);
                 LoggerClass.AddData("some error");
+                LogDataToExcel.AddDataToExcel("something went wrong");
             }
+
+            return gradeStudentDict;
         }
 
 
 
-        public void DisplayAllCoursesGradeWise()
+        public Dictionary<GradeModel, List<CourseModel>> DisplayAllCoursesGradeWise()
         {
+            Dictionary<GradeModel, List<CourseModel>> gradeCourseDict = new Dictionary<GradeModel, List<CourseModel>>();
+
             try
             {
                 using (var context = new XYZSchoolDBEntities())
                 {
-                    var grades = context.Grades.Include("Courses");
+                    // Retrieve all grades with their courses from the database
+                    var gradesWithCourses = context.Grades.Include("Courses").ToList();
 
-
-
-                    foreach (var grade in grades)
+                    foreach (var grade in gradesWithCourses)
                     {
-                        if (grade.Courses.Count != 0)
+                        GradeModel tempGrade = new GradeModel()
                         {
+                            GradeID = grade.GradeID,
+                            GradeName = grade.GradeName
+                        };
 
-                            Console.Write($"All Courses in Grade {grade.GradeName}:  ");
+                        List<CourseModel> listOfCourses = new List<CourseModel>();
 
-                            foreach (var course in grade.Courses) Console.Write($" {course.CourseName}.  ");
-                            Console.WriteLine("");
-                        }
-                        else
-                        {
-                            Console.WriteLine($"No Courses in Grade {grade.GradeName} ");
+                            foreach (var course in grade.Courses)
+                            {
+                                CourseModel tempCourse = new CourseModel()
+                                {
+                                    CourseID = course.CourseID,
+                                    CourseName = course.CourseName,
+                                    // Add other properties as needed
+                                };
 
-                        }
+                                listOfCourses.Add(tempCourse);
+                            }
+
+                            // Add grade and courses to the dictionary
+                            gradeCourseDict.Add(tempGrade, listOfCourses);
 
                     }
 
-
-                    LoggerClass.AddData("displayed students grade wise ");
-
+                    // Log the completion
+                    LoggerClass.AddData("Retrieved courses grade-wise.");
+                    LogDataToExcel.AddDataToExcel("Retrieved courses grade-wise.");
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex);
-
-                LoggerClass.AddData("some error");
+                LoggerClass.AddData("Some error occurred.");
+                LogDataToExcel.AddDataToExcel("something went wrong");
             }
-        }
 
+            return gradeCourseDict;
+        }
 
 
 

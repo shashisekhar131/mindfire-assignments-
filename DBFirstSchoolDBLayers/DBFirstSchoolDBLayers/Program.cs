@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using DBFirstSchoolDBLayers.Business;
 using DBFirstSchoolDBLayers.Models;
+using DBFirstSchoolDBLayers.Utils;
 
 
 namespace DBFirstSchoolDBLayers
@@ -108,10 +109,10 @@ namespace DBFirstSchoolDBLayers
                             program.DisplayAllCoursesInGrades();
                             break;
                         case Operation.DisplayAllStudentsGradeWise:
-                            service.DisplayAllStudentsGradeWise();
+                            program.DisplayAllStudentsGradeWise();
                             break;
                         case Operation.DisplayAllCoursesGradeWise:
-                            service.DisplayAllCoursesGradeWise();
+                            program.DisplayAllCoursesGradeWise();
                             break;
                     }
 
@@ -210,24 +211,30 @@ namespace DBFirstSchoolDBLayers
 
         private void AssignStudentToGrade()
         {
+            Console.WriteLine("Enter Student ID  and Grade ID:");
             if (service.AssignStudentToGrade()) Console.WriteLine("Student assigned to Grade successfully.");
             else Console.WriteLine("something went wrong");
         }
 
         private void AssignCourseToGrade()
         {
+            Console.WriteLine("Enter course ID  and Grade ID:");
             if (service.AssignCourseToGrade()) Console.WriteLine("Course assigned to Grade successfully.");
             else Console.WriteLine("something went wrong");
         }
 
         private void RemoveCourseFromGrade()
         {
+
+            Console.WriteLine("Enter course ID  and Grade ID:");
             if (service.RemoveCourseFromGrade()) Console.WriteLine("Course removed from Grade successfully.");
             else Console.WriteLine("Course or Grade not found.");
         }
 
         private void RemoveStudentFromGrade()
         {
+
+            Console.WriteLine("Enter Student ID  and Grade ID:");
             if (service.RemoveStudentFromGrade()) Console.WriteLine("Student removed from Grade successfully.");
             else Console.WriteLine("something went wrong");
         }
@@ -253,6 +260,52 @@ namespace DBFirstSchoolDBLayers
 
             }
         }
+
+        private void DisplayAllStudentsGradeWise()
+        {
+            Dictionary<GradeModel, List<StudentModel>> gradeStudentDict = service.DisplayAllStudentsGradeWise();
+
+            foreach (var kvp in gradeStudentDict)
+            {
+                var grade = kvp.Key;
+                var students = kvp.Value;
+
+                if (students.Any())
+                {
+                    Console.Write($"All Students in Grade {grade.GradeName}: ");
+                    foreach (var student in students)Console.Write($"{student.Name}. ");
+                    Console.WriteLine();
+                }
+                else Console.WriteLine($"No Students in Grade {grade.GradeName}");
+                
+            }
+        }
+
+        private void DisplayAllCoursesGradeWise()
+        {
+
+            Dictionary<GradeModel, List<CourseModel>> gradeCourseDict = service.DisplayAllCoursesGradeWise();
+            // Print the grades and their corresponding courses
+            foreach (var kvp in gradeCourseDict)
+            {
+                var gradeModel = kvp.Key;
+                var courses = kvp.Value;
+
+                if (courses.Any())
+                {
+                    Console.Write($"All Courses in Grade {gradeModel.GradeName}: ");
+                    foreach (var course in courses) Console.Write($"{course.CourseName}. ");
+                    Console.WriteLine();
+                }
+                else Console.WriteLine($"No Courses in Grade {gradeModel.GradeName}");
+                
+            }
+
+            // Log the completion
+            LoggerClass.AddData("Displayed courses grade-wise.");
+        }
+
+
 
     }
 }
