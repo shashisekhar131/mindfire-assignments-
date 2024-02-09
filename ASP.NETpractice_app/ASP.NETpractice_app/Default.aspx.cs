@@ -7,6 +7,8 @@ using System.Web.UI.WebControls;
 
 namespace ASP.NETpractice_app
 {
+
+    // practice class for binding objects in this class and data List 
     public class Product
     {
 
@@ -33,15 +35,15 @@ namespace ASP.NETpractice_app
             SelectedInputs.Text = "None";
         }
 
+
+        // user- form submission button click 
         protected void Button1_Click(object sender, EventArgs e)
         {
 
 
             var AllSelectedInputs = "";
 
-            //text input
-            Console.WriteLine(Password.Text + "hello");
-
+          
 
 
             AllSelectedInputs += UserName.Text + EmailID.Text + Password.Text + ConfirmPassword.Text;

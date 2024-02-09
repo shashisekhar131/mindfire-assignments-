@@ -1,10 +1,16 @@
 ﻿<%@ Page Title="Home Page" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="ASP.NETpractice_app._Default" %>
 
+
+
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
 
     <main>
+
+
         
 <div>  
+
+    
     <h3> user details form </h3>
   <table class="auto-style1">  
         <tr>  
