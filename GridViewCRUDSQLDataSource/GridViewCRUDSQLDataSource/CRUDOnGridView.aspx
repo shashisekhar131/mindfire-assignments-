@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="WebForm1.aspx.cs" Inherits="GridViewCRUDSQLDataSource.WebForm1" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="CRUDOnGridView.aspx.cs" Inherits="GridViewCRUDSQLDataSource.CRUDOnGridView" %>
 
 <!DOCTYPE html>
 
@@ -9,20 +9,9 @@
 <body>
     <form id="form1" runat="server">
         <div>
-
-           <center>
-
-              <table style="width:100%;">  
-        <tr>  
-            <td class="style1">  
-                <strong>Edit Update Delete Operation in Gridview</strong></td>  
-            <td>  
-                 </td>  
-            <td>  
-                 </td>  
-        </tr>  
-        <tr>  
-            <td>  
+ 
+                <strong>Edit Update Delete Operation in Gridview</strong>  
+             
                 <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False"   
                     BorderStyle="None" BorderWidth="1px"   
                     DataKeyNames="id"   
@@ -62,26 +51,11 @@
                     </Columns>  
                    
                 </asp:GridView>  
-            </td>  
-            <td>  
-                 </td>  
-            <td>  
-                 </td>  
-        </tr>  
-        <tr>  
-            <td>  
-                 </td>  
-            <td>  
-                 </td>  
-            <td>  
-                 </td>  
-        </tr>  
-    </table>  
+             
                <asp:TextBox ID="name" runat="server"></asp:TextBox>
                <asp:TextBox ID="city" runat="server"></asp:TextBox>
                <asp:Button ID="InsertBtn" runat="server" Text="InsertRow" OnClick="InsertRow_Click" />
-           </center>
-           
+       
         </div>
     </form>
 </body>
