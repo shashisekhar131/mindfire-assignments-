@@ -10,6 +10,9 @@
         <EntityTypeShape EntityType="UserManagementModel.UserDetail" Width="1.5" PointX="0.75" PointY="1.125" IsExpanded="true" />
         <AssociationConnector Association="UserManagementModel.FK__AddressDe__UserI__3C69FB99" ManuallyRouted="false" />
         <AssociationConnector Association="UserManagementModel.FK__Notes__UserID__3F466844" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="UserManagementModel.Country" Width="1.5" PointX="5.375" PointY="1" />
+        <EntityTypeShape EntityType="UserManagementModel.State" Width="1.5" PointX="7.625" PointY="0.875" />
+        <AssociationConnector Association="UserManagementModel.FK__State__Countryid__440B1D61" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

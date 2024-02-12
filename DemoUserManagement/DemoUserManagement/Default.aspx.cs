@@ -21,8 +21,7 @@ namespace DemoUserManagement
         protected void Page_Load(object sender, EventArgs e)
         {
 
-            // if user got redirected and came to update or edit
-            // only for the first request populate the form values from db
+            // if user got redirected and came to update or edit then populate the form values from db
             if (!IsPostBack && Request.QueryString["id"] != null)
             {
                 // populate the values into every input from reading database
@@ -78,6 +77,8 @@ namespace DemoUserManagement
                 InsertNewUser(UserInfo,ListofAddresses);
             }
 
+
+
          }
 
 
@@ -87,7 +88,11 @@ namespace DemoUserManagement
             // ResultList[0] - flag 
             // ResultList[1] - NewUserId inserted into db
             Session["UserId"] = ResultList[1];
-            if (ResultList[0] == 1) Response.Redirect("~/Users.aspx?id=" + ResultList[1]);
+            // show single user
+            //  if (ResultList[0] == 1) Response.Redirect("~/Users.aspx?id=" + ResultList[1]);
+            // show multiple users
+
+            if (ResultList[0] == 1) Response.Redirect("~/Users.aspx");
 
         }
 

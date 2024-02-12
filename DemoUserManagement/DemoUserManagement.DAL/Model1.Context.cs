@@ -28,5 +28,7 @@ namespace DemoUserManagement.DAL
         public virtual DbSet<AddressDetail> AddressDetails { get; set; }
         public virtual DbSet<Note> Notes { get; set; }
         public virtual DbSet<UserDetail> UserDetails { get; set; }
+        public virtual DbSet<Country> Countries { get; set; }
+        public virtual DbSet<State> States { get; set; }
     }
 }

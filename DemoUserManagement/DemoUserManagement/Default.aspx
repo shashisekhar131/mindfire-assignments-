@@ -111,9 +111,7 @@
 
 
 
-
-      <div class="row">
-   
+      <div class="row">   
     <div class="col-sm-6">
        
         <div class="form-group">
@@ -129,6 +127,8 @@
             <asp:TextBox ID="txtPermanentAddress" runat="server" CssClass="form-control" placeholder="Enter permanent address" Text="abc"></asp:TextBox>
         </div>
     </div>
+
+
 </div>
 
 

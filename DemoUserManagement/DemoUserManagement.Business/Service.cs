@@ -47,6 +47,11 @@ namespace DemoUserManagement.Business
         {
             return dataAccess.GetNotes(UserId,Name);
         }
+
+        public List<UserDetailsModel> GetAllUsers()
+        {
+            return dataAccess.GetAllUsers();
+        }
     }
 
 }

@@ -88,6 +88,59 @@ namespace DemoUserManagement.DAL
             return Resultlist;
 
         }
+        // get all users from database 
+        public List<UserDetailsModel> GetAllUsers()
+        {
+            List<UserDetailsModel> userList = new List<UserDetailsModel>();
+
+            try
+            {
+                using (var context = new UserManagementEntities())
+                {
+                    // Retrieve all user details
+                    var userDetailEntities = context.UserDetails.ToList();
+
+                    // Map each entity to UserDetailsModel and add to the list
+                    foreach (var userDetailEntity in userDetailEntities)
+                    {
+                        UserDetailsModel userDetails = new UserDetailsModel
+                        {
+                            UserID = userDetailEntity.UserID,
+                            FirstName = userDetailEntity.FirstName,
+                            LastName = userDetailEntity.LastName,
+                            Password = userDetailEntity.Password,
+                            PhoneNumber = userDetailEntity.PhoneNumber,
+                            AlternatePhoneNumber = userDetailEntity.AlternatePhoneNumber,
+                            Email = userDetailEntity.Email,
+                            AlternateEmail = userDetailEntity.AlternateEmail,
+                            DOB = userDetailEntity.DOB,
+                            Favouritecolor = userDetailEntity.Favouritecolor,
+                            Aadhaar = userDetailEntity.Aadhaar,
+                            PAN = userDetailEntity.PAN,
+                            PreferedLanguage = userDetailEntity.PreferedLanguage,
+                            MaritalStatus = userDetailEntity.MaritalStatus,
+                            Upto10th = userDetailEntity.Upto10th,
+                            PercentageUpto10th = userDetailEntity.PercentageUpto10th,
+                            Upto12th = userDetailEntity.Upto12th,
+                            PercentageUpto12th = userDetailEntity.PercentageUpto12th,
+                            Graduation = userDetailEntity.Graduation,
+                            PercentageInGraduation = userDetailEntity.PercentageInGraduation
+                        };
+
+                        userList.Add(userDetails);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions
+            }
+
+            return userList;
+        }
+
+
+       
 
 
         // get user details and show them on grid View

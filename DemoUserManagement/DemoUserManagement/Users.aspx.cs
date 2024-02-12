@@ -22,10 +22,17 @@ namespace DemoUserManagement
             if (!IsPostBack)
             {
                 // get user with id in query string when this page gets a request 
-                UserDetailsModel UserDetails = service.GetUserDetails(int.Parse(Request.QueryString["id"]));
+
+                // for single user
+                // UserDetailsModel UserDetails = service.GetUserDetails(int.Parse(Request.QueryString["id"]));
+
+                // for list of users 
 
 
                 // becuase GridView.DataSource accepts Enumerable types 
+
+                /*
+
                 List<UserDetailsModel> UserDetailsList = new List<UserDetailsModel> { UserDetails };
 
                 userDetailsGridView.DataSource = UserDetailsList;
@@ -34,19 +41,38 @@ namespace DemoUserManagement
                 List<AddressDetailsModel> ListofAddresses = service.GetAddresses(int.Parse(Request.QueryString["id"]));
 
                 addressGridView.DataSource = ListofAddresses;
-                addressGridView.DataBind();
+                addressGridView.DataBind();*/
+
+
+                BindGridView();
             }
 
-           
+
+
+        }
+
+
+        public void BindGridView()
+        {
+
+            List<UserDetailsModel> UserDetailsList = service.GetAllUsers();
+
+            userDetailsGridView.DataSource = UserDetailsList;
+            userDetailsGridView.DataBind();
+            /*
+            List<AddressDetailsModel> AddessList = service.GetAllAddresses();
+            addressGridView.DataSource = UserDetailsList;
+            addressGridView.DataBind();*/
 
         }
 
         protected void EditBtn_Click(object sender, EventArgs e)
         {
+            Response.Redirect("~/Default.aspx?id=" + int.Parse(UserIdInput.Text) + " ");
 
-            Response.Redirect("~/Default.aspx?id=" +Request.QueryString["id"]);
+        }       
 
-
-        }
+       
+       
     }
 }
