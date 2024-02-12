@@ -55,8 +55,6 @@ namespace DemoUserManagement
             ddlPermanentCountry.DataSource = countries;
             ddlPermanentCountry.DataBind();
 
-
-
         }
 
         public void DdlPresentCountry_SelectedIndexChanged(object sender, EventArgs e)
@@ -130,8 +128,6 @@ namespace DemoUserManagement
             {
                 InsertNewUser(UserInfo,ListofAddresses);
             }
-
-
 
          }
 
