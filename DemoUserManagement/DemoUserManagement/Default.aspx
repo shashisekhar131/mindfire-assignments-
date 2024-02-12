@@ -222,7 +222,7 @@
     <asp:Button ID="btnSubmit" runat="server" Text="Submit" CssClass="btn btn-success" OnClick="BtnSubmit_Click" />
     <asp:Button ID="btnReset" runat="server" Text="Reset" CssClass="btn btn-danger" OnClick="BtnReset_Click" />
 
-
+     
 </div>
 
     </main>

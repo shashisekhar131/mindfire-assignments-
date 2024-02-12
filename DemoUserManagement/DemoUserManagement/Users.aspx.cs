@@ -70,9 +70,21 @@ namespace DemoUserManagement
         {
             Response.Redirect("~/Default.aspx?id=" + int.Parse(UserIdInput.Text) + " ");
 
-        }       
+        }
 
-       
-       
+
+        protected void UserDetailsGridView_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            // Set the new page index
+            userDetailsGridView.PageIndex = e.NewPageIndex;
+
+            // Rebind the data to the GridView with the updated page index
+            BindGridView(); // Replace with your data binding logic
+        }
+
+      
+
+
+
     }
 }

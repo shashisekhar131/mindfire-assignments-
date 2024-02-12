@@ -54,6 +54,9 @@ namespace DemoUserManagement
 
             ddlPermanentCountry.DataSource = countries;
             ddlPermanentCountry.DataBind();
+
+
+
         }
 
         public void DdlPresentCountry_SelectedIndexChanged(object sender, EventArgs e)
@@ -182,7 +185,7 @@ namespace DemoUserManagement
 
             AddressDetailsModel PresentAddress = new AddressDetailsModel
             {
-                Address = txtPresentAddress.Text + ddlPresentState.SelectedValue + ddlPresentCountry.SelectedValue,
+                Address = ddlPresentCountry.SelectedValue + ", " + ddlPresentState.SelectedValue + ", " + txtPresentAddress.Text,
                 Type = "present address",
                 /* UserID =  set this by getting max id + 1 in DAL */
 
@@ -190,7 +193,7 @@ namespace DemoUserManagement
 
             AddressDetailsModel PermanentAddress = new AddressDetailsModel
             {
-                Address = txtPermanentAddress.Text + ddlPermanentState.SelectedValue + ddlPermanentCountry.SelectedValue,
+                Address = ddlPermanentCountry.SelectedValue + ", " + ddlPermanentState.SelectedValue + ", " + txtPresentAddress.Text,
                 Type = "permanent address",
                 /* UserID = */
 
@@ -227,8 +230,55 @@ namespace DemoUserManagement
             txtIntermediatePercentage.Text = UserDetails.PercentageUpto12th.ToString();
             txtBTech.Text = UserDetails.Graduation;
             txtBTechPercentage.Text = UserDetails.PercentageInGraduation.ToString();
-            txtPermanentAddress.Text = ListofAddresses[0].Address;
-            txtPresentAddress.Text = ListofAddresses[1].Address;
+
+            // permanent address 
+            
+            string PermanentaddressString = ListofAddresses[0].Address;
+
+            if (!string.IsNullOrEmpty(PermanentaddressString))
+            {
+                string[] addressParts = PermanentaddressString.Split(',');
+
+                if (addressParts.Length >= 3)
+                {
+
+                    List<string> countries = service.GetAllCountries();
+                    for(int i = 0;i<countries.Count;i++) ddlPermanentCountry.Items.Add(countries[i]);                                      
+                    ddlPermanentCountry.SelectedValue = addressParts[0].Trim();
+
+                    List<string> StatesForCountry = service.GetStatesForCountry(addressParts[0].Trim());
+                    for (int i = 0; i < StatesForCountry.Count; i++) ddlPermanentState.Items.Add(StatesForCountry[i]);
+                    ddlPermanentState.SelectedValue = addressParts[1].Trim();
+
+
+                    txtPermanentAddress.Text = addressParts[2].Trim();
+
+                }
+            }
+
+            // present address
+            string PresentaddressString = ListofAddresses[0].Address;
+
+            if (!string.IsNullOrEmpty(PresentaddressString))
+            {
+                string[] addressParts = PresentaddressString.Split(',');
+
+                if (addressParts.Length >= 3)
+                {
+                    List<string> countries = service.GetAllCountries();
+                    for (int i = 0; i < countries.Count; i++) ddlPresentCountry.Items.Add(countries[i]);
+                    ddlPresentCountry.SelectedValue = addressParts[0].Trim();
+
+                    List<string> StatesForCountry = service.GetStatesForCountry(addressParts[0].Trim());
+                    for (int i = 0; i < StatesForCountry.Count; i++) ddlPresentState.Items.Add(StatesForCountry[i]);
+                    ddlPresentState.SelectedValue = addressParts[1].Trim();
+
+                    txtPresentAddress.Text = addressParts[2].Trim();
+
+                }
+            }
+
+
 
         }
     }

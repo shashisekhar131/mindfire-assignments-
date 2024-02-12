@@ -10,12 +10,11 @@
     <form id="form1" runat="server">
         <div>
 
-   <asp:GridView ID="userDetailsGridView" runat="server" AutoGenerateColumns="false">
+   <asp:GridView ID="userDetailsGridView" runat="server" AutoGenerateColumns="false" AllowPaging="true" PageSize="10" OnPageIndexChanging="UserDetailsGridView_PageIndexChanging">
     <Columns>
-        
-        <asp:BoundField DataField="UserID" HeaderText="user id" />        
-        <asp:BoundField DataField="FirstName" HeaderText="First Name" />
-        <asp:BoundField DataField="LastName" HeaderText="Last Name" />
+        <asp:BoundField DataField="UserID" HeaderText="User ID"  />
+    <asp:BoundField DataField="FirstName" HeaderText="First Name" />
+    <asp:BoundField DataField="LastName" HeaderText="Last Name" />   
         <asp:BoundField DataField="Password" HeaderText="Password" />
         <asp:BoundField DataField="PhoneNumber" HeaderText="Phone Number" />
         <asp:BoundField DataField="AlternatePhoneNumber" HeaderText="Alternate Phone Number" />
