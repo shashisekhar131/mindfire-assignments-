@@ -267,6 +267,78 @@ namespace DemoUserManagement
         protected global::System.Web.UI.WebControls.DropDownList language;
 
         /// <summary>
+        /// lblddlPresentCountry control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblddlPresentCountry;
+
+        /// <summary>
+        /// ddlPresentCountry control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlPresentCountry;
+
+        /// <summary>
+        /// lblddlPermanentCountry control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblddlPermanentCountry;
+
+        /// <summary>
+        /// ddlPermanentCountry control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlPermanentCountry;
+
+        /// <summary>
+        /// lblddlPresentState control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblddlPresentState;
+
+        /// <summary>
+        /// ddlPresentState control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlPresentState;
+
+        /// <summary>
+        /// lblddlPermanentState control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblddlPermanentState;
+
+        /// <summary>
+        /// ddlPermanentState control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlPermanentState;
+
+        /// <summary>
         /// lblPresentAddress control.
         /// </summary>
         /// <remarks>

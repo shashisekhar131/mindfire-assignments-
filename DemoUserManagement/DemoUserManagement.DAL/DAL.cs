@@ -362,5 +362,56 @@ namespace DemoUserManagement.DAL
 
             return ListofNotes;
         }
+
+
+
+        public List<string> GetAllCountries()
+        {
+            List<string> countriesList = new List<string>();
+            try
+            {
+                using (var context = new UserManagementEntities())
+                {
+                    // Retrieve all countries from the Country table
+                    var countries = context.Countries
+                        .Select(c => c.CountryName)
+                        .ToList();
+
+                    // Now, 'countries' contains a list of all country names
+                    countriesList.AddRange(countries);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions
+            }
+
+            return countriesList;
+        }
+
+
+
+        public List<string > GetStatesForCountry(string CountryName)
+        {
+            List<string> statesList = new List<string>();
+            try
+            {
+                using (var context = new UserManagementEntities())
+                {
+                    // Retrieve the states for the selected country from the State table
+                    statesList = context.States
+                        .Where(s => s.Country.CountryName == CountryName)
+                        .Select(s => s.StateName)
+                        .ToList();
+
+                }
+            }
+            catch (Exception ex)
+            {
+              
+            }
+
+            return statesList;
+        }
     }
 }

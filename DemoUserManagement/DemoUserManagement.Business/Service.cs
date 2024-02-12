@@ -52,6 +52,16 @@ namespace DemoUserManagement.Business
         {
             return dataAccess.GetAllUsers();
         }
+
+        public List<string> GetAllCountries()
+        {
+            return dataAccess.GetAllCountries();
+        }
+
+        public List<string> GetStatesForCountry(string SelectedCountry)
+        {
+            return dataAccess.GetStatesForCountry(SelectedCountry);
+        }
     }
 
 }

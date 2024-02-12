@@ -110,12 +110,52 @@
     </div>
 
 
+      
+<div class="row">
+  
+    <div class="col-sm-6">
+         <asp:Label ID="lblddlPresentCountry" runat="server" AssociatedControlID="ddlPresentCountry"> present country:</asp:Label>
+       
+       <asp:DropDownList ID="ddlPresentCountry" runat="server" CssClass="form-control" AutoPostBack="true" OnSelectedIndexChanged="DdlPresentCountry_SelectedIndexChanged">
+   
+</asp:DropDownList>
+ </div>
+
+     <div class="col-sm-6">
+          <asp:Label ID="lblddlPermanentCountry" runat="server" AssociatedControlID="ddlPermanentCountry"> permanent country:</asp:Label>
+       
+    <asp:DropDownList ID="ddlPermanentCountry" runat="server" CssClass="form-control" AutoPostBack="true" OnSelectedIndexChanged="DdlPermanentCountry_SelectedIndexChanged" >
+    
+</asp:DropDownList>
+ </div>
+</div>
+
+
+            
+<div class="row">
+  
+    <div class="col-sm-6">
+        <asp:Label ID="lblddlPresentState" runat="server" AssociatedControlID="ddlPresentState"> present state:</asp:Label>
+            
+     <asp:DropDownList ID="ddlPresentState" runat="server" CssClass="form-control" placeholder="Select state"></asp:DropDownList>
+
+ </div>
+
+     <div class="col-sm-6">
+         <asp:Label ID="lblddlPermanentState" runat="server" AssociatedControlID="ddlPermanentState"> permanent state:</asp:Label>
+            
+    <asp:DropDownList ID="ddlPermanentState" runat="server" CssClass="form-control" placeholder="Select state"></asp:DropDownList>
+
+ </div>
+</div>
+
+
 
       <div class="row">   
     <div class="col-sm-6">
        
         <div class="form-group">
-            <asp:Label ID="lblPresentAddress" runat="server" AssociatedControlID="txtPresentAddress"> present address:</asp:Label>
+            <asp:Label ID="lblPresentAddress" runat="server" AssociatedControlID="txtPresentAddress"> present address(street):</asp:Label>
             <asp:TextBox ID="txtPresentAddress" runat="server" CssClass="form-control" placeholder="Enter present address" Text="xyz"></asp:TextBox>
         </div>
     </div>
@@ -123,7 +163,7 @@
     <div class="col-sm-6">
        
         <div class="form-group">
-            <asp:Label ID="lblPermanentAddress" runat="server" AssociatedControlID="txtPermanentAddress">permanent Address:</asp:Label>
+            <asp:Label ID="lblPermanentAddress" runat="server" AssociatedControlID="txtPermanentAddress">permanent Address(street):</asp:Label>
             <asp:TextBox ID="txtPermanentAddress" runat="server" CssClass="form-control" placeholder="Enter permanent address" Text="abc"></asp:TextBox>
         </div>
     </div>

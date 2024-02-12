@@ -21,6 +21,13 @@ namespace DemoUserManagement
         protected void Page_Load(object sender, EventArgs e)
         {
 
+            if (!IsPostBack)
+            {
+                // load countries for the first request
+                LoadCountries();
+            }
+
+
             // if user got redirected and came to update or edit then populate the form values from db
             if (!IsPostBack && Request.QueryString["id"] != null)
             {
@@ -32,9 +39,53 @@ namespace DemoUserManagement
                 
             }
 
+           
+
         }
 
+        private void LoadCountries()
+        {
+            // Call a method to get the list of countries from the database
+            List<string> countries = service.GetAllCountries();
 
+            // Bind the countries to the ddlPresentCountry DropDownList
+            ddlPresentCountry.DataSource = countries;
+            ddlPresentCountry.DataBind();
+
+            ddlPermanentCountry.DataSource = countries;
+            ddlPermanentCountry.DataBind();
+        }
+
+        public void DdlPresentCountry_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // Get the selected country from the DropDownList
+            string selectedCountry = ddlPresentCountry.SelectedValue;
+
+            List<string> StatesForCountry = service.GetStatesForCountry(selectedCountry);
+
+
+            ddlPresentState.DataSource = StatesForCountry;
+            ddlPresentState.DataBind();
+
+
+
+
+        }
+
+        public void DdlPermanentCountry_SelectedIndexChanged(object sender,EventArgs e)
+        {
+            // Get the selected country from the DropDownList
+            string selectedCountry = ddlPermanentCountry.SelectedValue;
+
+            List<string> StatesForCountry = service.GetStatesForCountry(selectedCountry);
+
+
+            ddlPermanentState.DataSource = StatesForCountry;
+            ddlPermanentState.DataBind();
+
+
+
+        }
 
         protected void BtnReset_Click(object sender, EventArgs e)
         {
@@ -131,7 +182,7 @@ namespace DemoUserManagement
 
             AddressDetailsModel PresentAddress = new AddressDetailsModel
             {
-                Address = txtPresentAddress.Text,
+                Address = txtPresentAddress.Text + ddlPresentState.SelectedValue + ddlPresentCountry.SelectedValue,
                 Type = "present address",
                 /* UserID =  set this by getting max id + 1 in DAL */
 
@@ -139,7 +190,7 @@ namespace DemoUserManagement
 
             AddressDetailsModel PermanentAddress = new AddressDetailsModel
             {
-                Address = txtPermanentAddress.Text,
+                Address = txtPermanentAddress.Text + ddlPermanentState.SelectedValue + ddlPermanentCountry.SelectedValue,
                 Type = "permanent address",
                 /* UserID = */
 
