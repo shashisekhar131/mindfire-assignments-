@@ -1,0 +1,173 @@
+http://localhost/DemoSite/index.html
+
+
+
+
+
+                   <Columns>
+                      <asp:BoundField DataField="Id" Header="Id"/>
+                       <asp:BoundField DataField="Name" Header="Name" />
+                       <asp:BoundField DataField="Email" Header="Email" />
+                       <asp:BoundField DataField="Mobile" Header="Mobile" />
+                       <asp:CommandField ButtonType="Link" ShowEditButton="true" />
+ 
+                   </Columns>
+
+
+
+
+
+       protected void Show_Notes(object sender, EventArgs e)
+        {
+
+            string connectionString = "Data Source=.;Initial Catalog=StudentDB;Integrated Security=True;Encrypt=False";
+            try
+            {
+
+                SqlConnection con = new SqlConnection(connectionString);
+                SqlCommand cmd = new SqlCommand("select * from tbl_data", con);
+                SqlDataAdapter sda = new SqlDataAdapter(cmd);
+                DataTable dt = new DataTable();
+                sda.Fill(dt);
+                BulletNotesList.DataSource = dt;
+                BulletNotesList.DataTextField = "name"; // Replace "columnName" with your actual column name
+
+                BulletNotesList.DataBind();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+
+        }
+
+
+
+
+
+
+using System;
+using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Data;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+namespace ASP.NETpractice_app
+{
+
+    public partial class CustomControl : System.Web.UI.UserControl
+    {
+
+        public static int PageIdentifier { get; set; }
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void InsertNoteIntoDatabase()
+        {
+            try
+            {
+                string connectionString = "Data Source=.;Initial Catalog=StudentDB;Integrated Security=True;Encrypt=False";
+                using (SqlConnection con = new SqlConnection(connectionString))
+                {
+                    con.Open();
+
+                    // Assuming 'name' is the column where you want to store the notes
+                    string insertQuery = "INSERT INTO EachpageNotes (id,notes) VALUES (@id,@Note)";
+                    using (SqlCommand cmd = new SqlCommand(insertQuery, con))
+                    {
+                        cmd.Parameters.AddWithValue("@Note", NotesInput.Text);
+                        cmd.Parameters.AddWithValue("@id", PageIdentifier);
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+        }
+    }
+}
+
+
+
+
+
+
+
+
+create project name is DemoUserManagement(main), .utils , .dal , .business , .models
+add with mastr page 
+
+ 
+users.aspx list of users
+
+
+all controls should be server  side.
+(userDetails.aspx) should have all user controls in bootstrap assignment but in server side controls.
+in database in sql create tables like  add
+
+
+country table has 3 countrys and state has 2 states
+state has f.k as countryid  that referes to countryid in country table 
+
+
+address type 1 current address 2 permanant address.
+
+address has f.k user id  that refers to user id in user table.
+
+use client id mode static 
+
+
+sumbiting form on userDetails 
+
+we will take details and redirect to users.aspx and show in gridview at least 8 columns with paging and sorting.
+and we have edit button whenever edit button is clicked it should redirect to  useresDetails?id=1 so that we can 
+update userDetails again 
+
+id=0 new page for new user. 
+
+
+
+userDetails have form to submit
+users bind form details to gridview 
+
+
+
+and usercontrol aslo savennotes in userDetails page
+
+
+
+
+
+
+
+
+
+
+
+remaining  work 
+
+redirect to the url  with   Response.Redirect(users?userID=1)
+and then from that page take id of the user 
+using ADO.NET show the details of user with id = 1 in users.aspx on grid.
+
+
+
+
+
+user
+
+
+
+
+
+

@@ -1,4 +1,5 @@
 ﻿<%@ Page Title="Home Page" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="DemoUserManagement._Default" %>
+<%@ Register Src="~/CustomUserControl.ascx" TagName="CustomControl" TagPrefix="custom" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
 
@@ -75,17 +76,23 @@
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-sm-6">
-            <asp:Label ID="lblAadhaar" runat="server" AssociatedControlID="txtAadhaar" Text="Aadhaar No:"></asp:Label>
-            <asp:TextBox ID="txtAadhaar" runat="server" CssClass="form-control" placeholder="Enter here..." Text="123 456 789" name="Aadhaar"></asp:TextBox>     
-        </div>
 
-        <div class="col-sm-6">
-            <asp:Label ID="lblPAN" runat="server" AssociatedControlID="txtPAN" Text="PAN:"></asp:Label>
-            <asp:TextBox ID="txtPAN" runat="server" CssClass="form-control" placeholder="Enter here..." Text="123A123B" name="PAN"></asp:TextBox>
-        </div>
+      <div class="row">
+    <div class="col-sm-6">
+        <asp:Label ID="lblPAN" runat="server" AssociatedControlID="fuPAN">PAN Picture:</asp:Label>
+        <asp:FileUpload ID="fuPAN" runat="server" CssClass="form-control" />
+        <asp:HyperLink ID="lnkDownloadPAN" runat="server" Text="Download PAN"  Target="_blank" />
+
     </div>
+
+    <div class="col-sm-6">
+        <asp:Label ID="lblAadhar" runat="server" AssociatedControlID="fuAadhar">Aadhar picture:</asp:Label>
+        <asp:FileUpload ID="fuAadhar" runat="server" CssClass="form-control" />
+        <asp:HyperLink ID="lnkDownloadAadhaar" runat="server" Text="Download Aadhaar" Target="_blank" />
+
+      </div>
+</div>
+
 
 
       
@@ -151,6 +158,7 @@
 
 
 
+
       <div class="row">   
     <div class="col-sm-6">
        
@@ -167,11 +175,7 @@
             <asp:TextBox ID="txtPermanentAddress" runat="server" CssClass="form-control" placeholder="Enter permanent address" Text="abc"></asp:TextBox>
         </div>
     </div>
-
-
 </div>
-
-
 
 
 
@@ -218,6 +222,9 @@
 
 </div>
 
+      
+      <custom:CustomControl  runat="server" ObjectType="1" ID="NotesInUsersPage"/>         
+    
 
     <asp:Button ID="btnSubmit" runat="server" Text="Submit" CssClass="btn btn-success" OnClick="BtnSubmit_Click" />
     <asp:Button ID="btnReset" runat="server" Text="Reset" CssClass="btn btn-danger" OnClick="BtnReset_Click" />

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Services.Description;
@@ -14,7 +15,7 @@ using MyService = DemoUserManagement.Business.Service;
 namespace DemoUserManagement
 {
 
-    public partial class _Default : Page
+    public partial class _Default : Page          
     {
 
         static MyService service = new MyService();
@@ -24,9 +25,11 @@ namespace DemoUserManagement
             if (!IsPostBack)
             {
                 // load countries for the first request
-                LoadCountries();
+                LoadCountriesAndStates();
             }
 
+
+            NotesInUsersPage.Visible = false;
 
             // if user got redirected and came to update or edit then populate the form values from db
             if (!IsPostBack && Request.QueryString["id"] != null)
@@ -36,14 +39,16 @@ namespace DemoUserManagement
 
                 btnSubmit.Text = "save";
                 btnReset.Enabled = false;
-                
+               
             }
 
-           
-
+            if(Request.QueryString["id"] != null)
+            {
+                NotesInUsersPage.Visible = true;
+            }
         }
 
-        private void LoadCountries()
+        private void LoadCountriesAndStates()
         {
             // Call a method to get the list of countries from the database
             List<string> countries = service.GetAllCountries();
@@ -54,6 +59,14 @@ namespace DemoUserManagement
 
             ddlPermanentCountry.DataSource = countries;
             ddlPermanentCountry.DataBind();
+
+            List<string> states = service.GetStatesForCountry(countries[0]);            
+
+            ddlPermanentState.DataSource = states;
+            ddlPermanentState.DataBind();
+
+            ddlPresentState.DataSource = states;
+            ddlPresentState.DataBind();
 
         }
 
@@ -144,6 +157,7 @@ namespace DemoUserManagement
 
             if (ResultList[0] == 1) Response.Redirect("~/Users.aspx");
 
+
         }
 
         public void UpdateUser(UserDetailsModel NewUser, List<AddressDetailsModel> ListofAddresses,int IdToUpdate)
@@ -153,6 +167,20 @@ namespace DemoUserManagement
 
         public ( UserDetailsModel, List<AddressDetailsModel>) TakeValuesFromForm()
         {
+            string aadharFileName = String.Empty;
+            string panFileName = String.Empty;
+           
+            if (fuAadhar.HasFile)
+            {
+                aadharFileName = SaveFile(fuAadhar);
+                
+            }
+
+            if (fuPAN.HasFile)
+            {
+                panFileName = SaveFile(fuPAN);
+                
+            }
 
             string formattedDateOfBirth = DateTime.Parse(txtDOB.Text).ToString("yyyy-MM-dd");
 
@@ -167,8 +195,8 @@ namespace DemoUserManagement
                 AlternateEmail = txtAlternateEmail.Text,
                 DOB = formattedDateOfBirth,
                 Favouritecolor = txtFavouriteColor.Text,
-                Aadhaar = txtAadhaar.Text,
-                PAN = txtPAN.Text,
+                Aadhaar = aadharFileName,
+                PAN = panFileName,
                 MaritalStatus = maritalStatus.SelectedValue,
                 PreferedLanguage = language.SelectedValue,
                 Upto10th = txtPrimaryEducation.Text,
@@ -182,16 +210,16 @@ namespace DemoUserManagement
             AddressDetailsModel PresentAddress = new AddressDetailsModel
             {
                 Address = ddlPresentCountry.SelectedValue + ", " + ddlPresentState.SelectedValue + ", " + txtPresentAddress.Text,
-                Type = "present address",
-                /* UserID =  set this by getting max id + 1 in DAL */
+                Type = 0
+                /*  "present address" - 0 */
 
             };
 
             AddressDetailsModel PermanentAddress = new AddressDetailsModel
             {
                 Address = ddlPermanentCountry.SelectedValue + ", " + ddlPermanentState.SelectedValue + ", " + txtPresentAddress.Text,
-                Type = "permanent address",
-                /* UserID = */
+                Type = 1
+                /* "permanent address " - 1 */
 
             };
             List<AddressDetailsModel> ListofAddresses = new List<AddressDetailsModel>();
@@ -202,6 +230,16 @@ namespace DemoUserManagement
             return (UserInfo, ListofAddresses);
         }
 
+        protected string SaveFile(FileUpload fileUpload)
+        {
+            string fileName = Path.GetFileName(fileUpload.FileName);
+            string filePath = Server.MapPath("~/Uploads/" + fileName);
+
+            // Save the file to the server
+            fileUpload.SaveAs(filePath);
+
+            return fileName;
+        }
         public void PopulateValuesIntoForm(int UserId)
         {
             UserDetailsModel UserDetails = service.GetUserDetails(UserId);
@@ -216,8 +254,8 @@ namespace DemoUserManagement
             txtAlternateEmail.Text = UserDetails.AlternateEmail;
             txtDOB.Text = UserDetails.DOB;
             txtFavouriteColor.Text = UserDetails.Favouritecolor;
-            txtAadhaar.Text = UserDetails.Aadhaar;
-            txtPAN.Text = UserDetails.PAN;
+            lnkDownloadAadhaar.NavigateUrl = ResolveUrl("~/Uploads/" + UserDetails.Aadhaar); 
+            lnkDownloadPAN.NavigateUrl = ResolveUrl("~/Uploads/" + UserDetails.PAN); 
             maritalStatus.SelectedValue = UserDetails.MaritalStatus;
             language.SelectedValue = UserDetails.PreferedLanguage;
             txtPrimaryEducation.Text = UserDetails.Upto10th;
@@ -276,6 +314,10 @@ namespace DemoUserManagement
 
 
 
+
         }
+
+       
+
     }
 }

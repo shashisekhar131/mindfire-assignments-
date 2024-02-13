@@ -16,7 +16,7 @@ namespace DemoUserManagement.DAL
     {
         public int ID { get; set; }
         public string Address { get; set; }
-        public string Type { get; set; }
+        public Nullable<int> Type { get; set; }
         public Nullable<int> UserID { get; set; }
     
         public virtual UserDetail UserDetail { get; set; }

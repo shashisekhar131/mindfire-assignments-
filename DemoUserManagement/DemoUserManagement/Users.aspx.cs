@@ -59,10 +59,11 @@ namespace DemoUserManagement
 
             userDetailsGridView.DataSource = UserDetailsList;
             userDetailsGridView.DataBind();
-            /*
-            List<AddressDetailsModel> AddessList = service.GetAllAddresses();
-            addressGridView.DataSource = UserDetailsList;
-            addressGridView.DataBind();*/
+
+
+            List<AddressDetailsModel> AddressList = service.GetAllUsersAddresses();
+            addressGridView.DataSource = AddressList;
+            addressGridView.DataBind();
 
         }
 

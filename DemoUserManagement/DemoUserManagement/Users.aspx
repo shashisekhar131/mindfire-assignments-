@@ -13,8 +13,8 @@
    <asp:GridView ID="userDetailsGridView" runat="server" AutoGenerateColumns="false" AllowPaging="true" PageSize="10" OnPageIndexChanging="UserDetailsGridView_PageIndexChanging">
     <Columns>
         <asp:BoundField DataField="UserID" HeaderText="User ID"  />
-    <asp:BoundField DataField="FirstName" HeaderText="First Name" />
-    <asp:BoundField DataField="LastName" HeaderText="Last Name" />   
+        <asp:BoundField DataField="FirstName" HeaderText="First Name" />
+        <asp:BoundField DataField="LastName" HeaderText="Last Name" />   
         <asp:BoundField DataField="Password" HeaderText="Password" />
         <asp:BoundField DataField="PhoneNumber" HeaderText="Phone Number" />
         <asp:BoundField DataField="AlternatePhoneNumber" HeaderText="Alternate Phone Number" />
@@ -31,6 +31,7 @@
 
   <asp:GridView ID="addressGridView" runat="server" AutoGenerateColumns="False">
     <Columns>
+         <asp:BoundField DataField="UserID" HeaderText="User id"/>       
         <asp:BoundField DataField="Address" HeaderText="Address"/>
         <asp:BoundField DataField="Type" HeaderText="Type"/>
     </Columns>

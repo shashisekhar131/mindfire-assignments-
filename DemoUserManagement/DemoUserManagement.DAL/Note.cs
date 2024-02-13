@@ -16,9 +16,9 @@ namespace DemoUserManagement.DAL
     {
         public int NotesID { get; set; }
         public string NoteText { get; set; }
-        public string Page { get; set; }
         public string CreatedDate { get; set; }
         public Nullable<int> UserID { get; set; }
+        public Nullable<int> ObjectType { get; set; }
     
         public virtual UserDetail UserDetail { get; set; }
     }

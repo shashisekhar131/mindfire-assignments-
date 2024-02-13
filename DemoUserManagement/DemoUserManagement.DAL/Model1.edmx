@@ -11,7 +11,7 @@
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Address" Type="nvarchar(max)" />
-          <Property Name="Type" Type="nvarchar(max)" />
+          <Property Name="Type" Type="int" />
           <Property Name="UserID" Type="int" />
         </EntityType>
         <EntityType Name="Country">
@@ -27,7 +27,7 @@
           </Key>
           <Property Name="NotesID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="NoteText" Type="nvarchar(max)" />
-          <Property Name="Page" Type="nvarchar(max)" />
+          <Property Name="ObjectType" Type="int" />
           <Property Name="CreatedDate" Type="nvarchar(max)" />
           <Property Name="UserID" Type="int" />
         </EntityType>
@@ -76,7 +76,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Notes__UserID__3F466844">
+        <Association Name="FK__Notes__UserID__44FF419A">
           <End Role="UserDetails" Type="Self.UserDetails" Multiplicity="0..1" />
           <End Role="Notes" Type="Self.Notes" Multiplicity="*" />
           <ReferentialConstraint>
@@ -110,7 +110,7 @@
             <End Role="UserDetails" EntitySet="UserDetails" />
             <End Role="AddressDetails" EntitySet="AddressDetails" />
           </AssociationSet>
-          <AssociationSet Name="FK__Notes__UserID__3F466844" Association="Self.FK__Notes__UserID__3F466844">
+          <AssociationSet Name="FK__Notes__UserID__44FF419A" Association="Self.FK__Notes__UserID__44FF419A">
             <End Role="UserDetails" EntitySet="UserDetails" />
             <End Role="Notes" EntitySet="Notes" />
           </AssociationSet>
@@ -129,7 +129,7 @@
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Type" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Type" Type="Int32" />
           <Property Name="UserID" Type="Int32" />
           <NavigationProperty Name="UserDetail" Relationship="Self.FK__AddressDe__UserI__3C69FB99" FromRole="AddressDetails" ToRole="UserDetails" />
         </EntityType>
@@ -139,10 +139,10 @@
           </Key>
           <Property Name="NotesID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="NoteText" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Page" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="CreatedDate" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="UserID" Type="Int32" />
           <NavigationProperty Name="UserDetail" Relationship="Self.FK__Notes__UserID__3F466844" FromRole="Notes" ToRole="UserDetails" />
+          <Property Name="ObjectType" Type="Int32" />
         </EntityType>
         <EntityType Name="UserDetail">
           <Key>
@@ -262,9 +262,9 @@
           <EntitySetMapping Name="Notes">
             <EntityTypeMapping TypeName="UserManagementModel.Note">
               <MappingFragment StoreEntitySet="Notes">
+                <ScalarProperty Name="ObjectType" ColumnName="ObjectType" />
                 <ScalarProperty Name="NotesID" ColumnName="NotesID" />
                 <ScalarProperty Name="NoteText" ColumnName="NoteText" />
-                <ScalarProperty Name="Page" ColumnName="Page" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
               </MappingFragment>

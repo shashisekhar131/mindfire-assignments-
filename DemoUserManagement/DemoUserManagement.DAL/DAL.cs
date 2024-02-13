@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Text;
@@ -140,7 +141,47 @@ namespace DemoUserManagement.DAL
         }
 
 
-       
+        // get all addresses
+        // Get all address details for all users
+        public List<AddressDetailsModel> GetAllUsersAddresses()
+        {
+            List<AddressDetailsModel> ListOfAddresses = new List<AddressDetailsModel>();
+
+            try
+            {
+                using (var context = new UserManagementEntities())
+                {
+                    // Retrieve all address details
+                    var addressDetailEntities = context.AddressDetails.ToList();
+
+                    // Check if any addresses were found
+                    if (addressDetailEntities != null && addressDetailEntities.Any())
+                    {
+                        foreach (var addressDetailEntity in addressDetailEntities)
+                        {
+                            // Mapping entity properties to AddressDetailsModel
+                            var addressDetailsModel = new AddressDetailsModel
+                            {
+                                UserID = addressDetailEntity.UserID,
+                                Address = addressDetailEntity.Address,
+                                Type = addressDetailEntity.Type,
+                            };
+
+                            // Add the address details to the list
+                            ListOfAddresses.Add(addressDetailsModel);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions
+            }
+
+            return ListOfAddresses;
+        }
+
+
 
 
         // get user details and show them on grid View
@@ -268,8 +309,9 @@ namespace DemoUserManagement.DAL
                         existingUser.Graduation = UserInfo.Graduation;
                         existingUser.PercentageInGraduation = UserInfo.PercentageInGraduation;
 
-                        var presentAddress = context.AddressDetails.FirstOrDefault(a => a.UserID == IdToUpdate && a.Type == "present address");
-                        var permanentAddress = context.AddressDetails.FirstOrDefault(a => a.UserID == IdToUpdate && a.Type == "permanent address");
+                        // 0 - present   1- permanent
+                        var presentAddress = context.AddressDetails.FirstOrDefault(a => a.UserID == IdToUpdate && a.Type == 0);
+                        var permanentAddress = context.AddressDetails.FirstOrDefault(a => a.UserID == IdToUpdate && a.Type == 1);
 
                         if (presentAddress != null && permanentAddress != null)
                         {
@@ -300,7 +342,7 @@ namespace DemoUserManagement.DAL
         }
 
 
-        public bool InsertNotes(string InputNoteText, int UserId,string Page)
+        public bool InsertNotes(string InputNoteText, int UserId,int ObjectType )
         {
             bool flag = false;
 
@@ -310,9 +352,10 @@ namespace DemoUserManagement.DAL
                  {
                     Note newNote = new Note
                     {
+                       
                         NoteText = InputNoteText,
                         UserID = UserId,
-                        Page = Page,
+                        ObjectType = ObjectType,
                         CreatedDate = DateTime.Now.ToString("yyyy-MM-dd")
                     };
 
@@ -333,8 +376,8 @@ namespace DemoUserManagement.DAL
             return flag;
         }
 
-
-        public List<NoteModel> GetNotes(int UserId,string Name)
+        // ObjectType - 1 means page - userDetails 
+        public List<NoteModel> GetNotes(int UserId,int ObjectType)
         {
 
             List <NoteModel> ListofNotes = new List<NoteModel>();
@@ -344,11 +387,13 @@ namespace DemoUserManagement.DAL
                 {
 
                     var userNotes = context.Notes
-                        .Where(n => n.UserID == UserId && n.Page == Name)
+                        .Where(n => n.UserID == UserId && n.ObjectType == ObjectType)
                         .ToList();
 
                     ListofNotes = userNotes.Select(note => new NoteModel
                     {
+                        ObjectType = note.ObjectType,
+                        UserID=note.UserID,
                         NoteText=note.NoteText,
                         NotesID = note.NotesID,
                         CreatedDate = note.CreatedDate
@@ -391,7 +436,7 @@ namespace DemoUserManagement.DAL
 
 
 
-        public List<string > GetStatesForCountry(string CountryName)
+        public List<string> GetStatesForCountry(string CountryName)
         {
             List<string> statesList = new List<string>();
             try

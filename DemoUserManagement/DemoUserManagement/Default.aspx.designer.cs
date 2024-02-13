@@ -195,24 +195,6 @@ namespace DemoUserManagement
         protected global::System.Web.UI.WebControls.TextBox txtFavouriteColor;
 
         /// <summary>
-        /// lblAadhaar control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblAadhaar;
-
-        /// <summary>
-        /// txtAadhaar control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtAadhaar;
-
-        /// <summary>
         /// lblPAN control.
         /// </summary>
         /// <remarks>
@@ -222,13 +204,49 @@ namespace DemoUserManagement
         protected global::System.Web.UI.WebControls.Label lblPAN;
 
         /// <summary>
-        /// txtPAN control.
+        /// fuPAN control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtPAN;
+        protected global::System.Web.UI.WebControls.FileUpload fuPAN;
+
+        /// <summary>
+        /// lnkDownloadPAN control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink lnkDownloadPAN;
+
+        /// <summary>
+        /// lblAadhar control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblAadhar;
+
+        /// <summary>
+        /// fuAadhar control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.FileUpload fuAadhar;
+
+        /// <summary>
+        /// lnkDownloadAadhaar control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink lnkDownloadAadhaar;
 
         /// <summary>
         /// lblMaritalStatus control.
@@ -481,6 +499,15 @@ namespace DemoUserManagement
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtBTechPercentage;
+
+        /// <summary>
+        /// NotesInUsersPage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DemoUserManagement.CustomUserControl NotesInUsersPage;
 
         /// <summary>
         /// btnSubmit control.

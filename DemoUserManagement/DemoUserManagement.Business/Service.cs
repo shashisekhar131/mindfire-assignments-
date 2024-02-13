@@ -38,14 +38,14 @@ namespace DemoUserManagement.Business
 
         }
        
-        public bool InsertNotes(string InputNoteText,int UserId, string Page)
+        public bool InsertNotes(string InputNoteText,int UserId, int ObjectType)
         {
-            return dataAccess.InsertNotes(InputNoteText,UserId,Page);
+            return dataAccess.InsertNotes(InputNoteText,UserId,ObjectType);
         }
 
-        public List<NoteModel> GetNotes(int UserId,string Name)
+        public List<NoteModel> GetNotes(int UserId,int ObjectType)
         {
-            return dataAccess.GetNotes(UserId,Name);
+            return dataAccess.GetNotes(UserId,ObjectType);
         }
 
         public List<UserDetailsModel> GetAllUsers()
@@ -61,6 +61,11 @@ namespace DemoUserManagement.Business
         public List<string> GetStatesForCountry(string SelectedCountry)
         {
             return dataAccess.GetStatesForCountry(SelectedCountry);
+        }
+
+        public List<AddressDetailsModel> GetAllUsersAddresses()
+        {
+            return dataAccess.GetAllUsersAddresses();
         }
     }
 
