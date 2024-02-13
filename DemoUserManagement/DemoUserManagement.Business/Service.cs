@@ -67,6 +67,11 @@ namespace DemoUserManagement.Business
         {
             return dataAccess.GetAllUsersAddresses();
         }
+
+        public List<int> GetCountryAndStateID(string CountryName,string StateName)
+        {
+            return dataAccess.GetCountryAndStateID(CountryName, StateName);
+        }
     }
 
 }

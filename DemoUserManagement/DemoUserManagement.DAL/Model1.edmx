@@ -13,6 +13,8 @@
           <Property Name="Address" Type="nvarchar(max)" />
           <Property Name="Type" Type="int" />
           <Property Name="UserID" Type="int" />
+          <Property Name="CountryID" Type="int" />
+          <Property Name="StateID" Type="int" />
         </EntityType>
         <EntityType Name="Country">
           <Key>
@@ -64,6 +66,30 @@
           <Property Name="Graduation" Type="nvarchar(max)" />
           <Property Name="PercentageInGraduation" Type="int" />
         </EntityType>
+        <Association Name="FK__AddressDe__Count__47DBAE45">
+          <End Role="Country" Type="Self.Country" Multiplicity="0..1" />
+          <End Role="AddressDetails" Type="Self.AddressDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Country">
+              <PropertyRef Name="CountryID" />
+            </Principal>
+            <Dependent Role="AddressDetails">
+              <PropertyRef Name="CountryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__AddressDe__State__48CFD27E">
+          <End Role="State" Type="Self.State" Multiplicity="0..1" />
+          <End Role="AddressDetails" Type="Self.AddressDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="State">
+              <PropertyRef Name="StateID" />
+            </Principal>
+            <Dependent Role="AddressDetails">
+              <PropertyRef Name="StateID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__AddressDe__UserI__3C69FB99">
           <End Role="UserDetails" Type="Self.UserDetails" Multiplicity="0..1" />
           <End Role="AddressDetails" Type="Self.AddressDetails" Multiplicity="*" />
@@ -106,6 +132,14 @@
           <EntitySet Name="Notes" EntityType="Self.Notes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="State" EntityType="Self.State" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserDetails" EntityType="Self.UserDetails" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__AddressDe__Count__47DBAE45" Association="Self.FK__AddressDe__Count__47DBAE45">
+            <End Role="Country" EntitySet="Country" />
+            <End Role="AddressDetails" EntitySet="AddressDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK__AddressDe__State__48CFD27E" Association="Self.FK__AddressDe__State__48CFD27E">
+            <End Role="State" EntitySet="State" />
+            <End Role="AddressDetails" EntitySet="AddressDetails" />
+          </AssociationSet>
           <AssociationSet Name="FK__AddressDe__UserI__3C69FB99" Association="Self.FK__AddressDe__UserI__3C69FB99">
             <End Role="UserDetails" EntitySet="UserDetails" />
             <End Role="AddressDetails" EntitySet="AddressDetails" />
@@ -132,6 +166,10 @@
           <Property Name="Type" Type="Int32" />
           <Property Name="UserID" Type="Int32" />
           <NavigationProperty Name="UserDetail" Relationship="Self.FK__AddressDe__UserI__3C69FB99" FromRole="AddressDetails" ToRole="UserDetails" />
+          <Property Name="CountryID" Type="Int32" />
+          <Property Name="StateID" Type="Int32" />
+          <NavigationProperty Name="Country" Relationship="UserManagementModel.FK__AddressDe__Count__47DBAE45" FromRole="AddressDetail" ToRole="Country" />
+          <NavigationProperty Name="State" Relationship="UserManagementModel.FK__AddressDe__State__48CFD27E" FromRole="AddressDetail" ToRole="State" />
         </EntityType>
         <EntityType Name="Note">
           <Key>
@@ -213,6 +251,14 @@
             <End Role="Country" EntitySet="Countries" />
             <End Role="State" EntitySet="States" />
           </AssociationSet>
+          <AssociationSet Name="FK__AddressDe__Count__47DBAE45" Association="UserManagementModel.FK__AddressDe__Count__47DBAE45">
+            <End Role="Country" EntitySet="Countries" />
+            <End Role="AddressDetail" EntitySet="AddressDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK__AddressDe__State__48CFD27E" Association="UserManagementModel.FK__AddressDe__State__48CFD27E">
+            <End Role="State" EntitySet="States" />
+            <End Role="AddressDetail" EntitySet="AddressDetails" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Country">
           <Key>
@@ -221,6 +267,7 @@
           <Property Name="CountryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CountryName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="States" Relationship="UserManagementModel.FK__State__Countryid__440B1D61" FromRole="Country" ToRole="State" />
+          <NavigationProperty Name="AddressDetails" Relationship="UserManagementModel.FK__AddressDe__Count__47DBAE45" FromRole="Country" ToRole="AddressDetail" />
         </EntityType>
         <EntityType Name="State">
           <Key>
@@ -230,6 +277,7 @@
           <Property Name="StateName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Countryid" Type="Int32" />
           <NavigationProperty Name="Country" Relationship="UserManagementModel.FK__State__Countryid__440B1D61" FromRole="State" ToRole="Country" />
+          <NavigationProperty Name="AddressDetails" Relationship="UserManagementModel.FK__AddressDe__State__48CFD27E" FromRole="State" ToRole="AddressDetail" />
         </EntityType>
         <Association Name="FK__State__Countryid__440B1D61">
           <End Type="UserManagementModel.Country" Role="Country" Multiplicity="0..1" />
@@ -243,6 +291,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__AddressDe__Count__47DBAE45">
+          <End Type="UserManagementModel.Country" Role="Country" Multiplicity="0..1" />
+          <End Type="UserManagementModel.AddressDetail" Role="AddressDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Country">
+              <PropertyRef Name="CountryID" />
+            </Principal>
+            <Dependent Role="AddressDetail">
+              <PropertyRef Name="CountryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__AddressDe__State__48CFD27E">
+          <End Type="UserManagementModel.State" Role="State" Multiplicity="0..1" />
+          <End Type="UserManagementModel.AddressDetail" Role="AddressDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="State">
+              <PropertyRef Name="StateID" />
+            </Principal>
+            <Dependent Role="AddressDetail">
+              <PropertyRef Name="StateID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -252,6 +324,8 @@
           <EntitySetMapping Name="AddressDetails">
             <EntityTypeMapping TypeName="UserManagementModel.AddressDetail">
               <MappingFragment StoreEntitySet="AddressDetails">
+                <ScalarProperty Name="StateID" ColumnName="StateID" />
+                <ScalarProperty Name="CountryID" ColumnName="CountryID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="Address" ColumnName="Address" />
                 <ScalarProperty Name="Type" ColumnName="Type" />

@@ -18,7 +18,11 @@ namespace DemoUserManagement.DAL
         public string Address { get; set; }
         public Nullable<int> Type { get; set; }
         public Nullable<int> UserID { get; set; }
+        public Nullable<int> CountryID { get; set; }
+        public Nullable<int> StateID { get; set; }
     
         public virtual UserDetail UserDetail { get; set; }
+        public virtual Country Country { get; set; }
+        public virtual State State { get; set; }
     }
 }

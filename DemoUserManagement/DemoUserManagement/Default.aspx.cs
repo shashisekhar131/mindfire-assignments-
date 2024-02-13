@@ -207,18 +207,27 @@ namespace DemoUserManagement
                 PercentageInGraduation = int.Parse(txtBTechPercentage.Text)
             };
 
+            List<int> ids = service.GetCountryAndStateID(ddlPresentCountry.SelectedValue, ddlPresentState.SelectedValue);
+
+
             AddressDetailsModel PresentAddress = new AddressDetailsModel
             {
                 Address = ddlPresentCountry.SelectedValue + ", " + ddlPresentState.SelectedValue + ", " + txtPresentAddress.Text,
-                Type = 0
+                Type = 0,
+                CountryID = ids[0],
+                StateID = ids[1]                
                 /*  "present address" - 0 */
 
             };
 
+             ids = service.GetCountryAndStateID(ddlPermanentCountry.SelectedValue, ddlPermanentState.SelectedValue);
+
             AddressDetailsModel PermanentAddress = new AddressDetailsModel
             {
                 Address = ddlPermanentCountry.SelectedValue + ", " + ddlPermanentState.SelectedValue + ", " + txtPresentAddress.Text,
-                Type = 1
+                Type = 1,
+                CountryID = ids[0],
+                StateID = ids[1]
                 /* "permanent address " - 1 */
 
             };

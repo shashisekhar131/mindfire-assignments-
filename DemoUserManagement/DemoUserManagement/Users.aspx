@@ -34,6 +34,8 @@
          <asp:BoundField DataField="UserID" HeaderText="User id"/>       
         <asp:BoundField DataField="Address" HeaderText="Address"/>
         <asp:BoundField DataField="Type" HeaderText="Type"/>
+        <asp:BoundField DataField="StateID" HeaderText="State id" />
+        <asp:BoundField DataField="CountryID" HeaderText="Country id" />
     </Columns>
 </asp:GridView>
 

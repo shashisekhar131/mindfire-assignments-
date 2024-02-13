@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -65,14 +66,19 @@ namespace DemoUserManagement.DAL
                     {
                         Address = ListofAddresses[0].Address,
                         Type = ListofAddresses[0].Type,
-                        UserID = maxUserId
+                        UserID = maxUserId,
+                        CountryID = ListofAddresses[0].CountryID,
+                        StateID = ListofAddresses[0].StateID
                     };
 
                     var PermenantAddress = new AddressDetail
                     {
                         Address = ListofAddresses[1].Address,
                         Type = ListofAddresses[1].Type,
-                        UserID = maxUserId
+                        UserID = maxUserId,
+                        CountryID = ListofAddresses[1].CountryID,
+                        StateID = ListofAddresses[1].StateID
+
                     };
                     context.AddressDetails.Add(PermenantAddress);
                     context.AddressDetails.Add(PresentAddress);
@@ -165,6 +171,8 @@ namespace DemoUserManagement.DAL
                                 UserID = addressDetailEntity.UserID,
                                 Address = addressDetailEntity.Address,
                                 Type = addressDetailEntity.Type,
+                                CountryID = addressDetailEntity.CountryID,
+                                StateID = addressDetailEntity.StateID
                             };
 
                             // Add the address details to the list
@@ -457,6 +465,35 @@ namespace DemoUserManagement.DAL
             }
 
             return statesList;
+        }
+
+
+
+
+       public List<int> GetCountryAndStateID(string CountryName,string StateName)
+        {
+            List<int> ids = new List<int>();
+
+
+            try
+            {
+                using (var context = new UserManagementEntities())
+                {
+                    var country = context.Countries.FirstOrDefault(c => c.CountryName == CountryName);
+                    var state = context.States.FirstOrDefault(s => s.StateName == StateName);
+                    ids.Add(country.CountryID);
+                    ids.Add(state.StateID);
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+            }          
+
+            return ids;
+
         }
     }
 }
