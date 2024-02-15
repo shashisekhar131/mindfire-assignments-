@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing.Printing;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -21,28 +22,11 @@ namespace DemoUserManagement
             // should bind data to grid only for first time not for every request
             if (!IsPostBack)
             {
-                // get user with id in query string when this page gets a request 
+                
+                ViewState["SortDirection"] = "ASC";
 
-                // for single user
-                // UserDetailsModel UserDetails = service.GetUserDetails(int.Parse(Request.QueryString["id"]));
-
-                // for list of users 
-
-
-                // becuase GridView.DataSource accepts Enumerable types 
-
-                /*
-
-                List<UserDetailsModel> UserDetailsList = new List<UserDetailsModel> { UserDetails };
-
-                userDetailsGridView.DataSource = UserDetailsList;
-                userDetailsGridView.DataBind();
-
-                List<AddressDetailsModel> ListofAddresses = service.GetAddresses(int.Parse(Request.QueryString["id"]));
-
-                addressGridView.DataSource = ListofAddresses;
-                addressGridView.DataBind();*/
-
+                // Set the sort expression to the clicked column
+                ViewState["SortExpression"] = "UserID";
 
                 BindGridView();
             }
@@ -54,19 +38,36 @@ namespace DemoUserManagement
 
         public void BindGridView()
         {
-
+/*
             List<UserDetailsModel> UserDetailsList = service.GetAllUsers();
 
             userDetailsGridView.DataSource = UserDetailsList;
+            userDetailsGridView.DataBind();*/
+
+            int currentPageIndex = userDetailsGridView.PageIndex;
+            int pageSize = userDetailsGridView.PageSize;
+            string sortExpression = ViewState["SortExpression"].ToString();
+            string sortDirection = ViewState["SortDirection"]?.ToString() ?? "ASC";
+
+            int totalCount = GetTotalCount();
+
+            userDetailsGridView.VirtualItemCount = totalCount;
+
+            userDetailsGridView.DataSource = service.GetSortedAndPagedUsers(sortExpression, sortDirection, currentPageIndex * pageSize, pageSize);
             userDetailsGridView.DataBind();
 
 
-            List<AddressDetailsModel> AddressList = service.GetAllUsersAddresses();
-            addressGridView.DataSource = AddressList;
-            addressGridView.DataBind();
+            //List<AddressDetailsModel> AddressList = service.GetAllUsersAddresses();
+            //addressGridView.DataSource = AddressList;
+            //addressGridView.DataBind();
 
         }
-
+        private int GetTotalCount()
+        {
+            int TotalCount = 0;
+            TotalCount = service.TotalUsers();
+            return TotalCount;
+        }
         protected void EditBtn_Click(object sender, EventArgs e)
         {
             Response.Redirect("~/Default.aspx?id=" + int.Parse(UserIdInput.Text) + " ");
@@ -75,7 +76,7 @@ namespace DemoUserManagement
 
 
         protected void UserDetailsGridView_PageIndexChanging(object sender, GridViewPageEventArgs e)
-        {
+        {           
             // Set the new page index
             userDetailsGridView.PageIndex = e.NewPageIndex;
 
@@ -83,9 +84,23 @@ namespace DemoUserManagement
             BindGridView(); // Replace with your data binding logic
         }
 
-      
+        protected void userDetailsGridView_Sorting(object sender, GridViewSortEventArgs e)
+        {
+            // Get the current sort direction from ViewState or default to "ASC"
+            string SortDirection = ViewState["SortDirection"]?.ToString() ?? "ASC";
 
+            // Toggle the sort direction
+            SortDirection = SortDirection == "ASC" ? "DESC" : "ASC";
 
+            // Update the ViewState with the new sort direction
+            ViewState["SortDirection"] = SortDirection;
+
+            // Set the sort expression to the clicked column
+            ViewState["SortExpression"] = e.SortExpression;
+
+            BindGridView();
+            
+        }
 
     }
 }

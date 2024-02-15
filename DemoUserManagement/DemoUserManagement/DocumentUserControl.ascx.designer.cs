@@ -11,43 +11,52 @@ namespace DemoUserManagement
 {
 
 
-    public partial class Users
+    public partial class DocumentUserControl
     {
 
         /// <summary>
-        /// userDetailsGridView control.
+        /// lblUploadFile control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView userDetailsGridView;
+        protected global::System.Web.UI.WebControls.Label lblUploadFile;
 
         /// <summary>
-        /// addressGridView control.
+        /// fuFileControl control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView addressGridView;
+        protected global::System.Web.UI.WebControls.FileUpload fuFileControl;
 
         /// <summary>
-        /// UserIdInput control.
+        /// ddlFileType control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox UserIdInput;
+        protected global::System.Web.UI.WebControls.DropDownList ddlFileType;
 
         /// <summary>
-        /// EditBtn control.
+        /// BtnUpload control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button EditBtn;
+        protected global::System.Web.UI.WebControls.Button BtnUpload;
+
+        /// <summary>
+        /// DocumentGridView control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView DocumentGridView;
     }
 }

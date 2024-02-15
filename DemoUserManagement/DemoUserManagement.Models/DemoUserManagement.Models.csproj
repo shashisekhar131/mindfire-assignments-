@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddressDetailsModel.cs" />
+    <Compile Include="DocumentModel.cs" />
     <Compile Include="NoteModel.cs" />
     <Compile Include="UserDetailsModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

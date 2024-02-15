@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Web;
+using System.Web.Configuration;
 using System.Web.Services.Description;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using DemoUserManagement.Business;
 using DemoUserManagement.Models;
+using DemoUserManagement.Utils;
 
 using MyService = DemoUserManagement.Business.Service;
 
@@ -22,14 +25,17 @@ namespace DemoUserManagement
         protected void Page_Load(object sender, EventArgs e)
         {
 
-            if (!IsPostBack)
+            if (!IsPostBack && (Request.QueryString.Count ==0))
             {
-                // load countries for the first request
+                // load countries for the first request only 
+                // the request comes again from other page at that time don't load 
+                // otherwise you get countries two times 
                 LoadCountriesAndStates();
             }
 
 
             NotesInUsersPage.Visible = false;
+            UploadInUsersPage.Visible = false;
 
             // if user got redirected and came to update or edit then populate the form values from db
             if (!IsPostBack && Request.QueryString["id"] != null)
@@ -45,6 +51,7 @@ namespace DemoUserManagement
             if(Request.QueryString["id"] != null)
             {
                 NotesInUsersPage.Visible = true;
+                UploadInUsersPage.Visible = true;
             }
         }
 
@@ -77,13 +84,8 @@ namespace DemoUserManagement
 
             List<string> StatesForCountry = service.GetStatesForCountry(selectedCountry);
 
-
             ddlPresentState.DataSource = StatesForCountry;
             ddlPresentState.DataBind();
-
-
-
-
         }
 
         public void DdlPermanentCountry_SelectedIndexChanged(object sender,EventArgs e)
@@ -93,12 +95,9 @@ namespace DemoUserManagement
 
             List<string> StatesForCountry = service.GetStatesForCountry(selectedCountry);
 
-
             ddlPermanentState.DataSource = StatesForCountry;
             ddlPermanentState.DataBind();
-
-
-
+            
         }
 
         protected void BtnReset_Click(object sender, EventArgs e)
@@ -155,6 +154,21 @@ namespace DemoUserManagement
             //  if (ResultList[0] == 1) Response.Redirect("~/Users.aspx?id=" + ResultList[1]);
             // show multiple users
 
+            string aadharFileName=string.Empty;
+            string panFileName = string.Empty;
+            if (fuAadhar.HasFile)
+            {
+                aadharFileName = SaveFile(fuAadhar);
+                service.InsertDocument(fuAadhar.FileName, aadharFileName, ResultList[1], (int)Enums.ObjecType.Users, (int)Enums.DocumentType.Others);
+
+            }
+
+            if (fuPAN.HasFile)
+            {
+                panFileName = SaveFile(fuPAN);
+                service.InsertDocument(fuPAN.FileName, panFileName, ResultList[1], (int)Enums.ObjecType.Users, (int)Enums.DocumentType.Others);
+
+            }
             if (ResultList[0] == 1) Response.Redirect("~/Users.aspx");
 
 
@@ -167,21 +181,7 @@ namespace DemoUserManagement
 
         public ( UserDetailsModel, List<AddressDetailsModel>) TakeValuesFromForm()
         {
-            string aadharFileName = String.Empty;
-            string panFileName = String.Empty;
-           
-            if (fuAadhar.HasFile)
-            {
-                aadharFileName = SaveFile(fuAadhar);
-                
-            }
-
-            if (fuPAN.HasFile)
-            {
-                panFileName = SaveFile(fuPAN);
-                
-            }
-
+            
             string formattedDateOfBirth = DateTime.Parse(txtDOB.Text).ToString("yyyy-MM-dd");
 
             UserDetailsModel UserInfo = new UserDetailsModel
@@ -195,8 +195,8 @@ namespace DemoUserManagement
                 AlternateEmail = txtAlternateEmail.Text,
                 DOB = formattedDateOfBirth,
                 Favouritecolor = txtFavouriteColor.Text,
-                Aadhaar = aadharFileName,
-                PAN = panFileName,
+                Aadhaar = "",
+                PAN = "",
                 MaritalStatus = maritalStatus.SelectedValue,
                 PreferedLanguage = language.SelectedValue,
                 Upto10th = txtPrimaryEducation.Text,
@@ -212,22 +212,22 @@ namespace DemoUserManagement
 
             AddressDetailsModel PresentAddress = new AddressDetailsModel
             {
-                Address = ddlPresentCountry.SelectedValue + ", " + ddlPresentState.SelectedValue + ", " + txtPresentAddress.Text,
-                Type = 0,
+                Address =txtPresentAddress.Text,
+                Type =(int)Enums.AddressType.Present,
                 CountryID = ids[0],
                 StateID = ids[1]                
                 /*  "present address" - 0 */
 
             };
 
-             ids = service.GetCountryAndStateID(ddlPermanentCountry.SelectedValue, ddlPermanentState.SelectedValue);
+            List<int> ids2 = service.GetCountryAndStateID(ddlPermanentCountry.SelectedValue, ddlPermanentState.SelectedValue);
 
             AddressDetailsModel PermanentAddress = new AddressDetailsModel
             {
-                Address = ddlPermanentCountry.SelectedValue + ", " + ddlPermanentState.SelectedValue + ", " + txtPresentAddress.Text,
-                Type = 1,
-                CountryID = ids[0],
-                StateID = ids[1]
+                Address = txtPermanentAddress.Text,
+                Type = (int)Enums.AddressType.Permanent,
+                CountryID = ids2[0],
+                StateID = ids2[1]
                 /* "permanent address " - 1 */
 
             };
@@ -239,16 +239,31 @@ namespace DemoUserManagement
             return (UserInfo, ListofAddresses);
         }
 
+        
+
         protected string SaveFile(FileUpload fileUpload)
         {
-            string fileName = Path.GetFileName(fileUpload.FileName);
-            string filePath = Server.MapPath("~/Uploads/" + fileName);
+            string ExternalFolderPath = System.Configuration.ConfigurationManager.AppSettings.Get("ServerPath");
+            if (!Directory.Exists(ExternalFolderPath))
+            {
+                Directory.CreateDirectory(ExternalFolderPath);
+            }
 
-            // Save the file to the server
-            fileUpload.SaveAs(filePath);
 
-            return fileName;
+            // Generate a unique identifier (Guid) for the file name
+            Guid uniqueGuid = Guid.NewGuid();
+
+            string fileExtension = Path.GetExtension(fileUpload.FileName);
+
+            // Combine the Guid with the file extension to create a unique file name
+            string uniqueFileName = uniqueGuid.ToString() + fileExtension;
+
+            // save file to external folder 
+            fileUpload.SaveAs(ExternalFolderPath + uniqueFileName);
+
+            return uniqueFileName;
         }
+
         public void PopulateValuesIntoForm(int UserId)
         {
             UserDetailsModel UserDetails = service.GetUserDetails(UserId);
@@ -263,8 +278,6 @@ namespace DemoUserManagement
             txtAlternateEmail.Text = UserDetails.AlternateEmail;
             txtDOB.Text = UserDetails.DOB;
             txtFavouriteColor.Text = UserDetails.Favouritecolor;
-            lnkDownloadAadhaar.NavigateUrl = ResolveUrl("~/Uploads/" + UserDetails.Aadhaar); 
-            lnkDownloadPAN.NavigateUrl = ResolveUrl("~/Uploads/" + UserDetails.PAN); 
             maritalStatus.SelectedValue = UserDetails.MaritalStatus;
             language.SelectedValue = UserDetails.PreferedLanguage;
             txtPrimaryEducation.Text = UserDetails.Upto10th;
@@ -275,58 +288,34 @@ namespace DemoUserManagement
             txtBTechPercentage.Text = UserDetails.PercentageInGraduation.ToString();
 
             // permanent address 
-            
-            string PermanentaddressString = ListofAddresses[0].Address;
 
-            if (!string.IsNullOrEmpty(PermanentaddressString))
-            {
-                string[] addressParts = PermanentaddressString.Split(',');
+            List<string> Names = service.GetCountryAndStateNames(ListofAddresses[1].CountryID, ListofAddresses[1].StateID);
+           
+            List<string> countries = service.GetAllCountries();
+            for(int i = 0;i<countries.Count;i++) ddlPermanentCountry.Items.Add(countries[i]);
+            ddlPermanentCountry.SelectedValue = Names[0];
+             
+            List<string> StatesForCountry = service.GetStatesForCountry(Names[0]);
+            for (int i = 0; i < StatesForCountry.Count; i++) ddlPermanentState.Items.Add(StatesForCountry[i]);
+            ddlPermanentState.SelectedValue = Names[1];
 
-                if (addressParts.Length >= 3)
-                {
-
-                    List<string> countries = service.GetAllCountries();
-                    for(int i = 0;i<countries.Count;i++) ddlPermanentCountry.Items.Add(countries[i]);                                      
-                    ddlPermanentCountry.SelectedValue = addressParts[0].Trim();
-
-                    List<string> StatesForCountry = service.GetStatesForCountry(addressParts[0].Trim());
-                    for (int i = 0; i < StatesForCountry.Count; i++) ddlPermanentState.Items.Add(StatesForCountry[i]);
-                    ddlPermanentState.SelectedValue = addressParts[1].Trim();
-
-
-                    txtPermanentAddress.Text = addressParts[2].Trim();
-
-                }
-            }
+            txtPermanentAddress.Text = ListofAddresses[1].Address;
 
             // present address
-            string PresentaddressString = ListofAddresses[0].Address;
+           List<string> Names2 = service.GetCountryAndStateNames(ListofAddresses[0].CountryID, ListofAddresses[0].StateID);
 
-            if (!string.IsNullOrEmpty(PresentaddressString))
-            {
-                string[] addressParts = PresentaddressString.Split(',');
+           List<string> countries2 = service.GetAllCountries();
+            for (int i = 0; i < countries2.Count; i++) ddlPresentCountry.Items.Add(countries2[i]);
+            ddlPresentCountry.SelectedValue = Names2[0];
 
-                if (addressParts.Length >= 3)
-                {
-                    List<string> countries = service.GetAllCountries();
-                    for (int i = 0; i < countries.Count; i++) ddlPresentCountry.Items.Add(countries[i]);
-                    ddlPresentCountry.SelectedValue = addressParts[0].Trim();
+            List<string>  StatesForCountry2 = service.GetStatesForCountry(Names2[0]);
+            for (int i = 0; i < StatesForCountry2.Count; i++) ddlPresentState.Items.Add(StatesForCountry2[i]);
+            ddlPresentState.SelectedValue = Names2[1];
 
-                    List<string> StatesForCountry = service.GetStatesForCountry(addressParts[0].Trim());
-                    for (int i = 0; i < StatesForCountry.Count; i++) ddlPresentState.Items.Add(StatesForCountry[i]);
-                    ddlPresentState.SelectedValue = addressParts[1].Trim();
-
-                    txtPresentAddress.Text = addressParts[2].Trim();
-
-                }
-            }
-
-
-
+            txtPresentAddress.Text = ListofAddresses[0].Address;
 
         }
 
-       
 
     }
 }

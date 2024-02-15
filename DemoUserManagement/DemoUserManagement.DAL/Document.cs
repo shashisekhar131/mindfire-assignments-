@@ -12,17 +12,14 @@ namespace DemoUserManagement.DAL
     using System;
     using System.Collections.Generic;
     
-    public partial class AddressDetail
+    public partial class Document
     {
-        public int ID { get; set; }
-        public string Address { get; set; }
-        public int Type { get; set; }
-        public int UserID { get; set; }
-        public int CountryID { get; set; }
-        public int StateID { get; set; }
-    
-        public virtual Country Country { get; set; }
-        public virtual State State { get; set; }
-        public virtual UserDetail UserDetail { get; set; }
+        public int DocumentID { get; set; }
+        public int ObjectType { get; set; }
+        public string DocumentOriginalName { get; set; }
+        public string DocumentGuidName { get; set; }
+        public int ObjectID { get; set; }
+        public string TimeStamp { get; set; }
+        public int DocumentType { get; set; }
     }
 }

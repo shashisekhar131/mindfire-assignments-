@@ -10,10 +10,10 @@ namespace DemoUserManagement.Models
     {
         public int ID { get; set; }
         public string Address { get; set; }
-        public Nullable<int> Type { get; set; }
-        public Nullable<int> UserID { get; set; }
-        public Nullable<int> CountryID { get; set; }
-        public Nullable<int> StateID { get; set; }
+        public int Type { get; set; }
+        public int UserID { get; set; }
+        public int CountryID { get; set; }
+        public int StateID { get; set; }
 
     }
 }

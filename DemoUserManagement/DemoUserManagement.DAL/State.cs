@@ -22,10 +22,10 @@ namespace DemoUserManagement.DAL
     
         public int StateID { get; set; }
         public string StateName { get; set; }
-        public Nullable<int> Countryid { get; set; }
+        public int CountryID { get; set; }
     
-        public virtual Country Country { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AddressDetail> AddressDetails { get; set; }
+        public virtual Country Country { get; set; }
     }
 }

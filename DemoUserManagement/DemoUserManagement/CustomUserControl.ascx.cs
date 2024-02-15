@@ -13,7 +13,8 @@ namespace DemoUserManagement
 {
     public partial class CustomUserControl : System.Web.UI.UserControl
     {
-        public Nullable<int> ObjectType { get; set; }
+        public int ObjectType { get; set; }
+        public int ObjectID { get; set; }
 
         static MyService service = new MyService();
         protected void Page_Load(object sender, EventArgs e)
@@ -23,11 +24,11 @@ namespace DemoUserManagement
 
         protected void NotesBtn_Click(object sender, EventArgs e)
         {
-            int UserId = int.Parse(Request.QueryString["id"]);
+            ObjectID = int.Parse(Request.QueryString["id"]);
 
-          if (service.InsertNotes(NotesInput.Text,UserId, (int)ObjectType))
+          if (service.InsertNotes(NotesInput.Text,ObjectID,ObjectType))
             {
-               List<NoteModel> ListofNotes =  service.GetNotes(UserId,(int)ObjectType);
+               List<NoteModel> ListofNotes =  service.GetNotes(ObjectID,ObjectType);
                notesGridView.DataSource = ListofNotes;
                notesGridView.DataBind();
             }

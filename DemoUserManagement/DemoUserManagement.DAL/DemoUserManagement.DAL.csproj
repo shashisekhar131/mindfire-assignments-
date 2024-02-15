@@ -57,6 +57,9 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="DAL.cs" />
+    <Compile Include="Document.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model1.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -118,6 +121,10 @@
     <ProjectReference Include="..\DemoUserManagement.Models\DemoUserManagement.Models.csproj">
       <Project>{010be97d-ce65-439b-9290-ec7c96105d2d}</Project>
       <Name>DemoUserManagement.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DemoUserManagement.Utils\DemoUserManagement.Utils.csproj">
+      <Project>{5ceaff41-78e4-4ab8-9a31-f912380e3912}</Project>
+      <Name>DemoUserManagement.Utils</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

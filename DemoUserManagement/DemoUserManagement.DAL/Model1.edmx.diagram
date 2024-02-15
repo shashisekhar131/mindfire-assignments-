@@ -5,16 +5,16 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="0dede039ea95426ebe42ed9dd363f4ee" Name="Diagram1" ZoomLevel="87">
-        <EntityTypeShape EntityType="UserManagementModel.AddressDetail" Width="1.5" PointX="3" PointY="1.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="UserManagementModel.Note" Width="1.5" PointX="3" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="UserManagementModel.Note" Width="1.5" PointX="3.125" PointY="4.625" IsExpanded="true" />
         <EntityTypeShape EntityType="UserManagementModel.UserDetail" Width="1.5" PointX="0.75" PointY="1.125" IsExpanded="true" />
-        <AssociationConnector Association="UserManagementModel.FK__AddressDe__UserI__3C69FB99" ManuallyRouted="false" />
-        <AssociationConnector Association="UserManagementModel.FK__Notes__UserID__3F466844" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="UserManagementModel.Country" Width="1.5" PointX="5.375" PointY="1" />
-        <EntityTypeShape EntityType="UserManagementModel.State" Width="1.5" PointX="7.625" PointY="0.875" />
-        <AssociationConnector Association="UserManagementModel.FK__State__Countryid__440B1D61" />
-        <AssociationConnector Association="UserManagementModel.FK__AddressDe__Count__47DBAE45" />
-        <AssociationConnector Association="UserManagementModel.FK__AddressDe__State__48CFD27E" />
+        <EntityTypeShape EntityType="UserManagementModel.AddressDetail" Width="1.5" PointX="3.125" PointY="1" />
+        <EntityTypeShape EntityType="UserManagementModel.Country" Width="1.5" PointX="6.125" PointY="0.75" />
+        <EntityTypeShape EntityType="UserManagementModel.State" Width="1.5" PointX="8.375" PointY="0.625" />
+        <AssociationConnector Association="UserManagementModel.FK__AddressDe__Count__5FB337D6" />
+        <AssociationConnector Association="UserManagementModel.FK__AddressDe__State__60A75C0F" />
+        <AssociationConnector Association="UserManagementModel.FK__AddressDe__UserI__5EBF139D" />
+        <AssociationConnector Association="UserManagementModel.FK__State__CountryID__5BE2A6F2" />
+        <EntityTypeShape EntityType="UserManagementModel.Document" Width="1.5" PointX="5.375" PointY="3.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

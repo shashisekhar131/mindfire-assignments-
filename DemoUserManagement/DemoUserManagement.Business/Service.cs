@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.OleDb;
 using System.Linq;
 using System.Security.Policy;
 using System.Text;
@@ -72,6 +73,32 @@ namespace DemoUserManagement.Business
         {
             return dataAccess.GetCountryAndStateID(CountryName, StateName);
         }
+
+        public List<string> GetCountryAndStateNames(int CountryID, int StateID)
+        {
+            return dataAccess.GetCountryAndStateNames(CountryID, StateID);
+        }
+
+        public List<UserDetailsModel> GetSortedAndPagedUsers(string SortExpression, string SortDirection, int PageIndex, int PageSize)
+        {
+            return dataAccess.GetSortedAndPagedUsers(SortExpression, SortDirection, PageIndex, PageSize);
+        }
+
+        public int TotalUsers()
+        {
+            return dataAccess.TotalUsers();
+        }
+
+        public bool InsertDocument(string FileName, string uniqueGuid,int ObjectID,int ObjectType,int DocumentType)
+        {
+            return dataAccess.InsertDocument(FileName, uniqueGuid, ObjectID, ObjectType, DocumentType);
+        }
+
+        public List<DocumentModel> GetDocumentsForUser(int ObjectID,int ObjectType)
+        {
+            return dataAccess.GetDocumentsForUser(ObjectID, ObjectType);
+        }
+
     }
 
 }

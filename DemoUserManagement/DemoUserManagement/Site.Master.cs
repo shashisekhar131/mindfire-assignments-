@@ -13,5 +13,23 @@ namespace DemoUserManagement
         {
 
         }
+
+        public string IsActive(string pageName)
+        {
+            // Get the current page name from the HttpContext
+            string currentPage = System.IO.Path.GetFileName(Request.Path);
+
+            // Compare the current page with the specified page name
+            if (currentPage.Equals(pageName, StringComparison.OrdinalIgnoreCase))
+            {
+                return " active";
+            }
+
+            
+
+
+            return string.Empty;
+        }
+
     }
 }

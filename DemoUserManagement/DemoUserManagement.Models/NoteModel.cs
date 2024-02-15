@@ -10,8 +10,8 @@ namespace DemoUserManagement.Models
     {
         public int NotesID { get; set; }
         public string NoteText { get; set; }
-        public Nullable<int> ObjectType { get; set; }
         public string CreatedDate { get; set; }
-        public Nullable<int> UserID { get; set; }
+        public int ObjectType { get; set; }
+        public int ObjectID { get; set; }
     }
 }

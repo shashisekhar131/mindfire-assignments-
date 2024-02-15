@@ -1,6 +1,7 @@
 ﻿<%@ Page Title="Home Page" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="DemoUserManagement._Default" %>
-<%@ Register Src="~/CustomUserControl.ascx" TagName="CustomControl" TagPrefix="custom" %>
+<%@ Register Src="~/CustomUserControl.ascx" TagName="Note" TagPrefix="uc" %>
 
+<%@ Register Src="~/DocumentUserControl.ascx" TagName="DocumentUpload" TagPrefix="uc" %>
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
 
 <main>
@@ -81,14 +82,12 @@
     <div class="col-sm-6">
         <asp:Label ID="lblPAN" runat="server" AssociatedControlID="fuPAN">PAN Picture:</asp:Label>
         <asp:FileUpload ID="fuPAN" runat="server" CssClass="form-control" />
-        <asp:HyperLink ID="lnkDownloadPAN" runat="server" Text="Download PAN"  Target="_blank" />
 
     </div>
 
     <div class="col-sm-6">
         <asp:Label ID="lblAadhar" runat="server" AssociatedControlID="fuAadhar">Aadhar picture:</asp:Label>
         <asp:FileUpload ID="fuAadhar" runat="server" CssClass="form-control" />
-        <asp:HyperLink ID="lnkDownloadAadhaar" runat="server" Text="Download Aadhaar" Target="_blank" />
 
       </div>
 </div>
@@ -222,9 +221,9 @@
 
 </div>
 
-      
-      <custom:CustomControl  runat="server" ObjectType="1" ID="NotesInUsersPage"/>         
-    
+              
+    <uc:Note runat="server" ObjectType="1" ID ="NotesInUsersPage" />
+    <uc:DocumentUpload runat="server" ObjectType="1" ID="UploadInUsersPage" />
 
     <asp:Button ID="btnSubmit" runat="server" Text="Submit" CssClass="btn btn-success" OnClick="BtnSubmit_Click" />
     <asp:Button ID="btnReset" runat="server" Text="Reset" CssClass="btn btn-danger" OnClick="BtnReset_Click" />

@@ -1,0 +1,287 @@
+
+INTRO points
+
+    here we are using triclustering algorithm called TriRNSC to analyze gene expression microarray data in a three-dimensional space(G,C,T), 
+
+        gene expression means how much the gene expresses or gives information for us so that we can easily apply algorithm.
+        gives info means how easily we can get info from genes.
+
+      microarray data = slide of genes 
+
+    clustering means grouping similar items.
+    bi clustering means grouping genes based on their behavior across two things expression,conditions
+    tri clustering includes time.
+
+which domain and why clustering?
+
+    unsupervised domain(no predefined labels)
+    In clustering we don't have predefined labels we group the datapoints like using distance or some other concept.
+    by grouping them we say that each group exibhit similar patterns.
+
+why triclustering?
+    it's an addition to biclustering 
+    as time plays very important role in gene behaviour we have to consider triclustering.
+    triclustering group items based on three constraints.
+
+what is tricluster?
+ Triclusters are groups of genes that show similar behavior across conditions and time points.
+
+using which concept triclustering is done?
+
+    TriRNSC is a triclustering algorithm based on restricted neighbourhood search clustering approach. 
+    RNSC is a graph-based clustering method used to group elements based on their similarity within a restricted
+    neighborhood.
+
+what is graph clustering?
+
+    graph-based clustering involves representing data as a graph, where nodes 
+    represent data points and edges represent similarities or relationship b/w them. 
+
+    TriRNSC uses graph-based clustering. 
+
+how to say if two triclusters are similar?
+
+    if they exibhit similar behaviour accorss different conditions and time.
+
+how you evaluate the obtained triclusters?
+
+    GO and KEGG pathway analysis are two bioinformatic tools used to 
+    understand biological relavance of obtained triclusters. 
+
+why you choose RNSC for clustering?
+   
+    it is proposed by king mostly used for detecting involuted structurs in protien protien interaction networks bascially graphs.
+
+    becuase it is graph based. 
+    graph concept has more advantages.
+
+    bi and triclustering are NP-hard problems(they take non-exponential time)
+    so we use heuristic based algorithms.
+
+    i choose RNSC becuase it is heuristic + graph based
+
+    It explores the solution space of all possible clusters, minimizing cost functions reflecting inter-cluster and intra-cluster edges.
+
+how tricluster is represented?
+    it is represented in 3D space 
+    x-axis condition 
+    y-axis time 
+    z-axis gene expression or behaviour 
+
+
+Q1.what i think RNSC does in graph terms?
+
+    it is graph of connected nodes 
+    where node is gene 
+    link is relationship or pattern 
+
+    more the weight of the link more the two nodes or genes 
+    similar.
+
+    so initially we start with certain weights and using RNSC algorithm
+    which is heuristic algorithm we find out the approximate weights. 
+
+
+Q2.what RNSC does in cluster terms? 
+
+    it decomposes set of genes or vertexes or nodes or clusters into two 
+
+    highly intra-connected set of nodes:
+    set of nodes that have relationship stronger 
+
+    sparesely interconnected set of nodes: 
+    set of nodes that have weaker relationship among them.   
+
+    it decomposes the large set into smaler sets or clusters 
+    and again those sets into two kinds 
+    again each set into two kinds. 
+
+combining Q1 and Q2 
+
+    clustering of a network G =(V, E ) is equivalent to partitioning the node‐set V
+
+    we divide the node-set V into different partitions or clusters. 
+
+
+    The RNSC performs the search of all possible partitions of V for a low‐cost clustering. 
+    Initially, it starts its search using the naive cost function, which is a simple integer‐valued cost function followed by a more expressive, real‐valued and somehow less efficient cost function called as the scaled cost function.
+
+    let cost function  = no.of cross edges(edges b/w two clusters)
+
+    if more the edges b/w two clusters less effective is clustering 
+    if less edges b/w two clusters more effective is clustering.
+
+    if there is stronger edge b/w two nodes then they exibhit similar pattern why to keep them in 
+    different cluster which form cross edges. 
+
+
+
+
+methodology of TriRNSC algorithm. 
+
+
+ phases of this work 
+
+ phase-I  
+ accqurie the data: we use yest cell cycle dataset called Saccharomyces cerevisiae. 
+ data pre-processing: data cleaning occurs here to make dataset suitable for analysis. 
+
+ phase-II 
+ run the TriRNSC algorithm on yeast cell cycle dataset. 
+ This algorithm finds meaningful patterns in the gene expression data. 
+
+ phase-III 
+ once the results are generated to make sure these results are not just random numbers 
+ but have some biological sense we perform two things. 
+  i. GO term analysis 
+  ii. KEGG pathway analysis
+
+
+
+indepth phases 
+
+ phase-I(obtain graph) 
+        The goal is to create a graphical network (GCN) that shows relationships between different genes based on their expression patterns in various conditions and over multiple time points.
+
+        Initial data is a 3D matrix representing gene expressin levels.
+
+
+        expression of gene x can be represented in condtion-time plane like 
+        any gene x at n conditions and t time points can be seen as 
+        x=((x11,x12,...,x1t ),(x21,x22,...,x2t ),...(xn1,xn2,...,xnt ))
+
+        pearson correlation coefficient is calculated b/w pairs of genes based on their 
+        expression in condition-time plane. 
+
+        pearson coefficient(P) b/w gene x1 and gene x2 is calculated and like this 
+        for every possible pair we calculate. 
+      
+        P> certain threshold value 
+        consider that value 
+        and this value acts as edge b/w that pair of genes 
+          
+           x1 -- P -- x2 
+        
+        based on the obtained calculations we form graph network which represents how genes 
+        are correlated with each other based on thier expression in condition time points. 
+
+
+        summary or steps to form graph from dataset:
+        
+            represent gene in condition time plane 
+            calculate perason corellation coefficient for every pair 
+            if that is greater than some threshold value then include that edge in graph 
+            form the graph 
+
+   phase-II(apply RNSC on obtained graph)      
+
+
+     we have to find best triclusters in the graph. 
+     Triclusters are groups of genes that show similar behavior across conditions and time points.
+
+     algorithm steps:
+
+    random initialization
+        
+        The algorithm starts with a random cluster. It randomly selects a set of genes to form an initial tricluster. This serves as the starting point for the algorithm.
+
+    naive triclustering(using naive cost function):
+
+        let naive cost function be no.of cross edges. 
+
+        algorithm shits the genes from one tricluster to another aiming to minimize 
+        the naive cost function.
+        like this we can quickly identify relatively good triclusters. 
+
+    scaled triclustering(using scaled cost function):
+
+        after obtaining tricluters with the naive cost functoin, the algorithm attempts to 
+        refine the solution. It performs triclustering again but this time using a more 
+        detailed scaled cost function which provides more precise triclusters. 
+   
+     no. of iternations of above are done depending on stopping criteria. 
+
+
+     summary: 
+       initialize random genes in a cluster.
+       apply naive cost function 
+       apply scaled cost function 
+       do some iterations  
+
+
+   phase-III(validate triclusters) 
+
+    there are two methods that we use to validate obtained triclusters 
+
+        GO term analysis: 
+        validation of triclusters using gene ontology project.
+
+        GO project has database that can be used to find whehter generated tricuster 
+        has biological sense. 
+
+        GO project checks if groupd genes or obtained triclusters make sense 
+        in terms of cellular components, molecular functions and biological processes. 
+
+        KEEGG pathway analysis 
+        
+        it also has database to check biological sense of obtained triclusters. 
+
+        But it goes beyond and does mapping of genes onto known pathways and networs to understand 
+        multi-level functions. 
+
+     summary:
+     they validate the things on the level of cellular functions and pathways. 
+
+
+what parameters to set to RNSC algorithm?
+
+ tabu list: a FIFO tabu list is used to keep track of moved vertices b/w clusters. 
+ 
+ NaiveStoppingTolerance and ScaledStoppingTolerance: these are used to say when to switch b/w naive and scaled cost functions. 
+
+ diverisification frequencies: parameters used for shuffling. 
+
+ NumberOfExperiments: no. of iterations that algorithm runs.
+ 
+
+
+  
+
+what are system requirements? 
+    This framework is executed in the Matlab R2014b platform. 
+    The computational simulations are performed on a multiprocessor machine with the Intel XEON processor with 64 GB RAM and in the Linux environment.
+
+what dataset contians? 
+
+    we have 6178 number of genes analysed under 
+    6 condtions(clb2, pheromone, cln3, cdc15, cdc28 and elutriation)
+
+    final dataset has 6178 genes 4 conditions and 14 time points. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+form graph using threshold on pearson cofficient 
+apply rnsc on graph by changing edges forming cross edges by applying navie cost function and scaled cost function 
+
+
+finally obtain triclusters
+use bioinformatics tools OG and KEEGG pathway analysis 
+
+
+
+
+
+
+

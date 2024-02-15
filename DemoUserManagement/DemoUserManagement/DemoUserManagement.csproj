@@ -123,6 +123,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="CustomUserControl.ascx" />
     <Content Include="Default.aspx" />
+    <Content Include="DocumentUserControl.ascx" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\bootstrap.bundle.js" />
@@ -153,6 +154,7 @@
     <Content Include="Content\bootstrap-grid.rtl.css.map" />
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-grid.css.map" />
+    <Content Include="FileDownloadHandler.ashx" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -218,6 +220,16 @@
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
+    <Compile Include="DocumentUserControl.ascx.cs">
+      <DependentUpon>DocumentUserControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DocumentUserControl.ascx.designer.cs">
+      <DependentUpon>DocumentUserControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="FileDownloadHandler.ashx.cs">
+      <DependentUpon>FileDownloadHandler.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -274,6 +286,10 @@
     <ProjectReference Include="..\DemoUserManagement.Models\DemoUserManagement.Models.csproj">
       <Project>{010be97d-ce65-439b-9290-ec7c96105d2d}</Project>
       <Name>DemoUserManagement.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DemoUserManagement.Utils\DemoUserManagement.Utils.csproj">
+      <Project>{5ceaff41-78e4-4ab8-9a31-f912380e3912}</Project>
+      <Name>DemoUserManagement.Utils</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

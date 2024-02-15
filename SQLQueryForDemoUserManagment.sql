@@ -30,23 +30,24 @@ CREATE TABLE UserDetails(
 
 CREATE TABLE AddressDetails(
   ID INT PRIMARY KEY IDENTITY(1,1),
-  Address NVARCHAR(max),
-  Type NVARCHAR(max),
-  UserID INT FOREIGN KEY REFERENCES UserDetails(UserID)
+  Address NVARCHAR(max) NOT NULL,
+  Type INT NOT NULL,
+  UserID INT FOREIGN KEY REFERENCES UserDetails(UserID) NOT NULL,
+   CountryID INT FOREIGN KEY REFERENCES Country(CountryID) NOT NULL,
+   StateID INT FOREIGN KEY REFERENCES State(StateID) NOT NULL
 );
 
-ALTER TABLE AddressDetails
-ADD CountryID INT FOREIGN KEY REFERENCES Country(CountryID);
+CREATE TABLE Country(
+ CountryID INT PRIMARY KEY IDENTITY(1,1),
+ CountryName NVARCHAR(max) NOT NULL,
+ );
 
-ALTER TABLE AddressDetails
-ADD StateID INT FOREIGN KEY REFERENCES State(StateID);
+ CREATE TABLE State(
+ StateID INT PRIMARY KEY IDENTITY(1,1),
+ StateName NVARCHAR(max) NOT NULL,
+ CountryID INT FOREIGN KEY REFERENCES Country(CountryID) NOT NULL
+ );
 
-
-
-ALTER TABLE AddressDetails
-ALTER COLUMN Type INT;
-
-SELECT * FROM AddressDetails;
 
 CREATE TABLE Notes(
 NotesID  INT PRIMARY KEY IDENTITY(1,1),
@@ -56,24 +57,12 @@ CreatedDate nvarchar(max),
  UserID INT FOREIGN KEY REFERENCES UserDetails(UserID)
 );
 
--- First, drop the existing foreign key constraint
-ALTER TABLE Notes
-DROP CONSTRAINT FK__Notes__UserID__3F466844;
-
--- Then, rename the column and change its data type
-EXEC sp_rename 'Notes.Page', 'ObjectType', 'COLUMN';
-ALTER TABLE Notes
-ALTER COLUMN ObjectType INT;
-
--- Finally, recreate the foreign key constraint
-ALTER TABLE Notes
-ADD FOREIGN KEY (UserID) REFERENCES UserDetails(UserID);
-
 
 SELECT * FROM UserDetails;
 SELECT * FROM AddressDetails;
 SELECT * FROM Notes;
-
+SELECT * FROM Country;
+SELECT * FROM State;
 INSERT INTO UserDetails (firstname) VALUES ('hello');
 
 SELECT * FROM AddressDetails WHERE UserID = 1;
@@ -83,8 +72,14 @@ DELETE  FROM Notes;
 DELETE FROM UserDetails;
 
 
+INSERT INTO Country valueS ('India'),('US');
 
 
+INSERT INTO State values ('delhi',1),('mumbai',1),('texas',2),('california',2);
+
+
+DELETE  FROM State;
+DELETE FROM Country;
 -- Reseed UserDetails table
 DBCC CHECKIDENT ('UserDetails', RESEED, 0);
 
@@ -94,13 +89,40 @@ DBCC CHECKIDENT ('AddressDetails', RESEED, 0);
 --Reseed Notes table 
 DBCC CHECKIDENT ('Notes', RESEED, 0);
 
+DBCC CHECKIDENT ('State', RESEED, 0);
+DBCC CHECKIDENT ('Country', RESEED, 0);
 
 
---      ObjectType is type of page from which user submitedd
---     UserDetails Page  ObjectType 1
---     contact Page objectType 2 
+DROP TABLE AddressDetails;
+DROP TABLE Country;
+DROP TABLE State;
 
 
--- Type is type of address 
---    0 - present address 
---     1- permanent address
+CREATE TABLE Document(
+ DocumentID INT PRIMARY KEY IDENTITY(1,1),
+ ObjectType INT NOT NULL,
+ DocumentOriginalName nvarchar(max),
+ DocumentGuidName nvarchar(max),
+ ObjectID INT NOT NULL
+);
+
+SELECT * FROM Document;
+ALTER TABLE Document
+ADD TimeStamp nvarchar(max);
+
+
+ALTER TABLE Document
+ADD Documen Type INT NOT NULL;
+
+EXEC sp_rename 'Document.DocumenType', 'DocumentType', 'COLUMN';
+
+
+DROP TABLE Document;
+
+
+id
+document type() list item comes through property
+documentnameondisk
+documentoriginalname 
+
+list of class typename typeid in util
