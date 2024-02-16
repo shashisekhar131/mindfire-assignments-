@@ -1,0 +1,239 @@
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="UserDetails.aspx.cs" Inherits="DemoUserManagement.UserDetails" %>
+
+<%@ Register Src="~/CustomUserControl.ascx" TagName="Note" TagPrefix="uc" %>
+
+<%@ Register Src="~/DocumentUserControl.ascx" TagName="DocumentUpload" TagPrefix="uc" %>
+
+<asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
+
+    
+<main>
+ <div class="container">
+
+    <h2 class="text-center"> USER FORM </h2>
+
+  <div class="personal-details">
+
+        <h3> personal details </h3>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <asp:Label ID="lblFirstName" runat="server" AssociatedControlID="txtFirstName" Text="First Name:"></asp:Label>
+                <asp:TextBox ID="txtFirstName" runat="server" CssClass="form-control" placeholder="Enter here..." Text="ram" name="first-name"></asp:TextBox>    
+            </div>
+
+            <div class="col-sm-6">
+                <asp:Label ID="lblLastName" runat="server" AssociatedControlID="txtLastName" Text="Last Name:"></asp:Label>
+                <asp:TextBox ID="txtLastName" runat="server" CssClass="form-control" placeholder="Enter here..." Text="kumar" name="last-name"></asp:TextBox>              
+            </div>
+        </div>
+
+       <div class="row">
+
+        <div class="col-sm-6">
+            <asp:Label ID="lblPassword" runat="server" AssociatedControlID="txtPassword" Text="Password:"></asp:Label>
+            <asp:TextBox ID="txtPassword" runat="server" CssClass="form-control" TextMode="Password" Text="88888888" placeholder="Enter password" name="password"></asp:TextBox>
+        </div>
+
+        <div class="col-sm-6">
+            <asp:Label ID="lblRetypePassword" runat="server" AssociatedControlID="txtRetypePassword" Text="Re-type Password:"></asp:Label>
+            <asp:TextBox ID="txtRetypePassword" runat="server" CssClass="form-control" TextMode="Password" placeholder="Enter password" Text="88888888" name="re-type-password"></asp:TextBox>          
+        </div>
+
+     </div>
+
+
+    <div class="row">
+        <div class="col-sm-6">
+            <asp:Label ID="lblPhoneNumber" runat="server" AssociatedControlID="txtPhoneNumber" Text="Phone Number:"></asp:Label>
+            <asp:TextBox ID="txtPhoneNumber" runat="server" CssClass="form-control" placeholder="Enter here..." Text="1234567890" name="ph"></asp:TextBox>          
+        </div>
+
+        <div class="col-sm-6">
+            <asp:Label ID="lblAlternatePhoneNumber" runat="server" AssociatedControlID="txtAlternatePhoneNumber" Text="Alternate Phone Number:"></asp:Label>
+            <asp:TextBox ID="txtAlternatePhoneNumber" runat="server" CssClass="form-control" placeholder="Enter here..." Text="1234567890" name="alternate-phone-number"></asp:TextBox>            
+        </div>
+    </div>
+
+      <div class="row">
+        <div class="col-sm-6">
+            <asp:Label ID="lblEmail" runat="server" AssociatedControlID="txtEmail" Text="Email:"></asp:Label>
+            <asp:TextBox ID="txtEmail" runat="server" CssClass="form-control" placeholder="Enter here..." Text="abc@gmail.com" name="email"></asp:TextBox>
+        </div>
+
+        <div class="col-sm-6">
+            <asp:Label ID="lblAlternateEmail" runat="server" AssociatedControlID="txtAlternateEmail" Text="Alternate Email:"></asp:Label>
+            <asp:TextBox ID="txtAlternateEmail" runat="server" CssClass="form-control" placeholder="Enter here..." Text="abc@gmail.com" name="alt-email"></asp:TextBox>
+        </div>
+     </div>
+
+
+    <div class="row">
+        <div class="col-sm-6">
+            <asp:Label ID="lblDOB" runat="server" AssociatedControlID="txtDOB" Text="Date of Birth:"></asp:Label>
+           <asp:TextBox ID="txtDOB" runat="server" CssClass="form-control" TextMode="Date" placeholder="Enter here..." name="dob" Text="2024-02-10"></asp:TextBox>
+        </div>
+
+        <div class="col-sm-6">
+            <asp:Label ID="lblFavouriteColor" runat="server" AssociatedControlID="txtFavouriteColor" Text="Favorite Color:"></asp:Label>
+            <asp:TextBox ID="txtFavouriteColor" runat="server" CssClass="form-control" placeholder="Enter here..." Text="red" name="fav-color" ></asp:TextBox>
+        </div>
+    </div>
+
+
+      <div class="row">
+    <div class="col-sm-6">
+        <asp:Label ID="lblPAN" runat="server" AssociatedControlID="fuPAN">PAN Picture:</asp:Label>
+        <asp:FileUpload ID="fuPAN" runat="server" CssClass="form-control" />
+
+    </div>
+
+    <div class="col-sm-6">
+        <asp:Label ID="lblAadhar" runat="server" AssociatedControlID="fuAadhar">Aadhar picture:</asp:Label>
+        <asp:FileUpload ID="fuAadhar" runat="server" CssClass="form-control" />
+
+      </div>
+</div>
+
+
+
+      
+       <div class="row">
+        <div class="col-sm-6">
+    <asp:Label ID="lblMaritalStatus" runat="server" AssociatedControlID="maritalStatus">Marital Status:</asp:Label>
+    <asp:RadioButtonList ID="maritalStatus" runat="server" RepeatDirection="Horizontal">
+        <asp:ListItem Text="Married" Value="married" />
+        <asp:ListItem Text="Unmarried" Value="unmarried" />
+    </asp:RadioButtonList>
+   
+</div>
+        <div class="col-sm-6">
+            <asp:Label ID="lblLanguage" runat="server" Text="Preferred Language:"></asp:Label>
+            <asp:DropDownList ID="language" runat="server" CssClass="form-control">
+                <asp:ListItem Text="English" Value="English" />
+                <asp:ListItem Text="Hindi" Value="Hindi" />
+                <asp:ListItem Text="Others" Value="Others" />
+                
+            </asp:DropDownList>
+        </div>
+    </div>
+
+
+      
+<div class="row">
+  
+    <div class="col-sm-6">
+         <asp:Label ID="lblddlPresentCountry" runat="server" AssociatedControlID="ddlPresentCountry"> present country:</asp:Label>
+       
+       <asp:DropDownList ID="ddlPresentCountry" runat="server" CssClass="form-control" AutoPostBack="true" OnSelectedIndexChanged="DdlPresentCountry_SelectedIndexChanged">
+   
+</asp:DropDownList>
+ </div>
+
+     <div class="col-sm-6">
+          <asp:Label ID="lblddlPermanentCountry" runat="server" AssociatedControlID="ddlPermanentCountry"> permanent country:</asp:Label>
+       
+    <asp:DropDownList ID="ddlPermanentCountry" runat="server" CssClass="form-control" AutoPostBack="true" OnSelectedIndexChanged="DdlPermanentCountry_SelectedIndexChanged" >
+    
+</asp:DropDownList>
+ </div>
+</div>
+
+
+            
+<div class="row">
+  
+    <div class="col-sm-6">
+        <asp:Label ID="lblddlPresentState" runat="server" AssociatedControlID="ddlPresentState"> present state:</asp:Label>
+            
+     <asp:DropDownList ID="ddlPresentState" runat="server" CssClass="form-control" placeholder="Select state"></asp:DropDownList>
+
+ </div>
+
+     <div class="col-sm-6">
+         <asp:Label ID="lblddlPermanentState" runat="server" AssociatedControlID="ddlPermanentState"> permanent state:</asp:Label>
+            
+    <asp:DropDownList ID="ddlPermanentState" runat="server" CssClass="form-control" placeholder="Select state"></asp:DropDownList>
+
+ </div>
+</div>
+
+
+
+
+      <div class="row">   
+    <div class="col-sm-6">
+       
+        <div class="form-group">
+            <asp:Label ID="lblPresentAddress" runat="server" AssociatedControlID="txtPresentAddress"> present address(street):</asp:Label>
+            <asp:TextBox ID="txtPresentAddress" runat="server" CssClass="form-control" placeholder="Enter present address" Text="xyz"></asp:TextBox>
+        </div>
+    </div>
+
+    <div class="col-sm-6">
+       
+        <div class="form-group">
+            <asp:Label ID="lblPermanentAddress" runat="server" AssociatedControlID="txtPermanentAddress">permanent Address(street):</asp:Label>
+            <asp:TextBox ID="txtPermanentAddress" runat="server" CssClass="form-control" placeholder="Enter permanent address" Text="abc"></asp:TextBox>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+  </div>
+      
+  <div class="education-details">
+    <h3> Educational Details </h3>
+
+    <div class="row">
+        <div class="col-sm-6">
+            <asp:Label ID="lblPrimaryEducation" runat="server" AssociatedControlID="txtPrimaryEducation" Text="Primary Education (up to 10th):"></asp:Label>
+            <asp:TextBox ID="txtPrimaryEducation" runat="server" CssClass="form-control" placeholder="Enter here..." Text="xyz" name="primary education(upto 10th)"></asp:TextBox>
+        </div>
+        <div class="col-sm-6">
+            <asp:Label ID="lblPercentageIn10th" runat="server" AssociatedControlID="txtPercentageIn10th" Text="Percentage in 10th:"></asp:Label>
+            <asp:TextBox ID="txtPercentageIn10th" runat="server" CssClass="form-control" placeholder="Enter here..." Text="99" name="percentage in 10th" data-allowed="marks"></asp:TextBox>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-6">
+            <asp:Label ID="lblIntermediateEducation" runat="server" AssociatedControlID="txtIntermediateEducation" Text="Intermediate Education:"></asp:Label>
+            <asp:TextBox ID="txtIntermediateEducation" runat="server" CssClass="form-control" placeholder="Enter here..." Text="xyz" name="intermediate education"></asp:TextBox>
+        </div>
+        <div class="col-sm-6">
+            <asp:Label ID="lblIntermediatePercentage" runat="server" AssociatedControlID="txtIntermediatePercentage" Text="Intermediate Percentage:"></asp:Label>
+            <asp:TextBox ID="txtIntermediatePercentage" runat="server" CssClass="form-control" placeholder="Enter here..." Text="99" name="intermediate-percentage" data-allowed="marks"></asp:TextBox>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-6">
+            <asp:Label ID="lblBTech" runat="server" AssociatedControlID="txtBTech" Text="BTech:"></asp:Label>
+            <asp:TextBox ID="txtBTech" runat="server" CssClass="form-control" placeholder="Enter here..." Text="xyz" name="btech"></asp:TextBox>
+        </div>
+         <div class="col-sm-6">
+            <asp:Label ID="lblBTechPercentage" runat="server" AssociatedControlID="txtBTechPercentage" Text="BTech Percentage:"></asp:Label>
+            <asp:TextBox ID="txtBTechPercentage" runat="server" CssClass="form-control" placeholder="Enter here..." Text="99" name="btech-percentage" data-allowed="marks"></asp:TextBox>
+         </div>
+    </div>
+
+</div>
+
+              
+    <uc:Note runat="server" ObjectType="1" ID ="NotesInUsersPage" />
+    <uc:DocumentUpload runat="server" ObjectType="1" ID="UploadInUsersPage" />
+
+    <asp:Button ID="btnSubmit" runat="server" Text="Submit" CssClass="btn btn-success" OnClick="BtnSubmit_Click" />
+    <asp:Button ID="btnReset" runat="server" Text="Reset" CssClass="btn btn-danger" OnClick="BtnReset_Click" />
+
+     
+</div>
+
+    </main>
+
+</asp:Content>

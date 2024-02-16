@@ -61,6 +61,12 @@
                 <asp:Label ID="LabelObjectID" runat="server" Text='<%# Eval("ObjectID") %>'></asp:Label>
             </ItemTemplate>
         </asp:TemplateField>
+        
+        <asp:TemplateField HeaderText="TimeStamp">
+            <ItemTemplate>
+                <asp:Label ID="LabelTimeStamp" runat="server" Text='<%# Eval("TimeStamp") %>'></asp:Label>
+            </ItemTemplate>
+        </asp:TemplateField>
 
 
     </Columns>

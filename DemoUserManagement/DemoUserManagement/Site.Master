@@ -53,11 +53,15 @@
         background:gray;
     }
 
+    .custom-margin-top{
+        margin-top:15px;
+    }
+
     </style>
 </head>
 <body>
     <form runat="server">
-        <asp:ScriptManager runat="server">
+        <asp:ScriptManager runat="server" EnablePageMethods="true">
             <Scripts>
                 <%--To learn more about bundling scripts in ScriptManager see https://go.microsoft.com/fwlink/?LinkID=301884 --%>
                 <%--Framework Scripts--%>
@@ -89,19 +93,24 @@
                         <li class="nav-item<%= IsActive("About") %>"><a class="nav-link" runat="server" href="~/About">About</a></li>
                         <li class="nav-item<%= IsActive("Contact") %>"><a class="nav-link" runat="server" href="~/Contact">Contact</a></li>
                         <li class="nav-item<%= IsActive("Users") %>"><a class="nav-link" runat="server" href="~/Users">Users</a></li>
-
+                        
                     </ul>
                 </div>
             </div>
         </nav>
         <div class="container body-content">
+
             <asp:ContentPlaceHolder ID="MainContent" runat="server">
             </asp:ContentPlaceHolder>
-            <hr />
+            <hr />            
+
             <footer>
                 <p>&copy; <%: DateTime.Now.Year %> - My ASP.NET Application</p>
             </footer>
         </div>
+
+
+
     </form>
     <asp:PlaceHolder runat="server">
         <%: Scripts.Render("~/Scripts/bootstrap.js") %>

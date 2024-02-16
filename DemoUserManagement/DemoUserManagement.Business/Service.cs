@@ -16,7 +16,7 @@ namespace DemoUserManagement.Business
     {
         DataAccess dataAccess = new DataAccess();
 
-        public List<int> InsertUser(UserDetailsModel NewUser,List<AddressDetailsModel> ListofAddresses)
+        public Dictionary<string, int> InsertUser(UserDetailsModel NewUser,List<AddressDetailsModel> ListofAddresses)
         {
             return dataAccess.InsertUser(NewUser,ListofAddresses);
 
@@ -99,6 +99,10 @@ namespace DemoUserManagement.Business
             return dataAccess.GetDocumentsForUser(ObjectID, ObjectType);
         }
 
+        public Dictionary<string, int> CheckIfUserExists(string UserEmail, string UserPassword)
+        {
+            return dataAccess.CheckIfUserExists(UserEmail, UserPassword);
+        }
     }
 
 }

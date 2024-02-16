@@ -18,15 +18,13 @@ namespace DemoUserManagement.DAL
     {
 
         // insert new user into database
-        public List<int> InsertUser(UserDetailsModel NewUser,List<AddressDetailsModel> ListofAddresses)
+        public Dictionary<string, int> InsertUser(UserDetailsModel NewUser,List<AddressDetailsModel> ListofAddresses)
         {
 
-          
-            int flag = 0;
+                      
+            Dictionary<string, int> InsertedUser = new Dictionary<string, int>();
 
-            List<int> Resultlist = new List<int>();
-
-            Resultlist.Add(flag);
+            InsertedUser["flag"] = 0; // flag - 0 
 
             try
             {
@@ -66,7 +64,19 @@ namespace DemoUserManagement.DAL
                     // Get the last inserted UserID     
 
                     int lastInsertedUserId = newUser.UserID;
-                    Resultlist.Add(lastInsertedUserId);
+                    
+                    int Roleid = 1;
+
+                    InsertedUser["RoleId"] = Roleid;
+                    InsertedUser["UserID"] = lastInsertedUserId;
+                    
+
+                    var TempUserRole = new UserRole
+                    {
+                        UserID = lastInsertedUserId,
+                        RoleID = 1
+                    };
+                    context.UserRoles.Add(TempUserRole);
 
                     var PresentAddress = new AddressDetail
                     {
@@ -91,7 +101,8 @@ namespace DemoUserManagement.DAL
                     context.AddressDetails.Add(PresentAddress);
 
                     context.SaveChanges();
-                    Resultlist[0] = 1; // flag = 1
+                    InsertedUser["flag"] = 1; // flag = 1;
+                  
                 }
             }
             catch (DbUpdateException ex)
@@ -99,7 +110,7 @@ namespace DemoUserManagement.DAL
                 LoggerClass.AddData(ex);
             }
            
-            return Resultlist;
+            return InsertedUser;
 
         }
         // get all users from database 
@@ -590,7 +601,8 @@ namespace DemoUserManagement.DAL
                         DocumentGuidName = uniqueGuid,
                         ObjectType = ObjectType,
                         ObjectID = ObjectID,
-                        DocumentType = DocumentType
+                        DocumentType = DocumentType,
+                        TimeStamp = DateTime.Now.ToString(),
                     };
 
                     // Add the document to the context and save changes
@@ -625,7 +637,8 @@ namespace DemoUserManagement.DAL
                             DocumentGuidName = d.DocumentGuidName,
                             ObjectID = d.ObjectID,
                             ObjectType = d.ObjectType,
-                            DocumentType = d.DocumentType
+                            DocumentType = d.DocumentType,
+                            TimeStamp = d.TimeStamp
                          
                         })
                         .ToList();
@@ -638,6 +651,40 @@ namespace DemoUserManagement.DAL
             }
 
             return ListOfDocuments;
+        }
+
+
+        public Dictionary<string, int> CheckIfUserExists(string UserEmail, string UserPassword)
+        {
+           
+            Dictionary<string,int> User = new Dictionary<string,int>();
+            User["IsUserExists"] = 0;
+            User["RoleId"] = 2;
+            try
+            {
+                using (var context = new UserManagementEntities())
+                {
+                    // Assuming you have a User entity in your DbContext
+                    var user = context.UserDetails
+                        .FirstOrDefault(u => u.Email == UserEmail && u.Password == UserPassword);
+
+                    // If user is not null, it means a user with the provided credentials exists
+                    if (user != null)
+                    {
+                        User["IsUserExists"] = 1;                    
+                            
+                        var UserRole = context.UserRoles.FirstOrDefault(u=> u.UserID ==  user.UserID);
+                        User["RoleId"] = UserRole.RoleID;
+                    }
+
+                }
+
+            }catch (Exception ex)
+            {
+                LoggerClass.AddData(ex);
+            }
+           
+            return User;
         }
 
 

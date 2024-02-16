@@ -11,7 +11,7 @@ namespace DemoUserManagement
 {
 
 
-    public partial class _Default
+    public partial class LoginPage
     {
     }
 }

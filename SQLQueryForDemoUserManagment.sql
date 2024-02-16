@@ -120,9 +120,22 @@ EXEC sp_rename 'Document.DocumenType', 'DocumentType', 'COLUMN';
 DROP TABLE Document;
 
 
-id
-document type() list item comes through property
-documentnameondisk
-documentoriginalname 
+CREATE TABLE UserRole(
+UserRoleID INT PRIMARY KEY IDENTITY(1,1),
+UserID INT NOT NULL,
+RoleID INT NOT NULL
+);
 
-list of class typename typeid in util
+-- look up table Role it contains what are all the roles
+CREATE TABLE Role(
+RoleID INT PRIMARY KEY IDENTITY(1,1),
+RoleName nvarchar(max),
+IsDefault INT NOT NULL,
+IsAdmin INT NOT NULL
+);
+
+INSERT INTO Role VALUES ('admin',0,1);
+INSERT INTO Role VALUES ('standard user',1,0);
+
+
+

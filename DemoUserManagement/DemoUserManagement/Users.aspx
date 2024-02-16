@@ -37,8 +37,20 @@
 
            
             <h3> edit a user </h3>
-            enter Id of the user:<asp:TextBox ID="UserIdInput" runat="server"></asp:TextBox>
-            <asp:Button ID="EditBtn" runat="server" Text="Edit" CssClass="btn btn-success" OnClick="EditBtn_Click"/>
+
+            enter Id of the user:
+       <div class="row"> 
+            
+            <div class="col-md-4">
+                    <asp:TextBox ID="UserIdInput" runat="server" CssClass="form-control"></asp:TextBox>
+            </div>
+            <div class="col-md-4">
+                    <asp:Button ID="EditBtn" runat="server" Text="Edit" CssClass="btn btn-success" OnClick="EditBtn_Click"/>
+            </div>
+       </div>
+
+
+
               
         </div>
     </asp:Content>

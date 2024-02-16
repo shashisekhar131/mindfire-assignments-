@@ -15,6 +15,10 @@
         <AssociationConnector Association="UserManagementModel.FK__AddressDe__UserI__5EBF139D" />
         <AssociationConnector Association="UserManagementModel.FK__State__CountryID__5BE2A6F2" />
         <EntityTypeShape EntityType="UserManagementModel.Document" Width="1.5" PointX="5.375" PointY="3.75" />
+        <EntityTypeShape EntityType="UserManagementModel.Role" Width="1.5" PointX="0.875" PointY="8.125" />
+        <EntityTypeShape EntityType="UserManagementModel.UserRole" Width="1.5" PointX="3.125" PointY="7" />
+        <AssociationConnector Association="UserManagementModel.FK__UserRole__RoleID__76969D2E" />
+        <AssociationConnector Association="UserManagementModel.FK__UserRole__UserID__778AC167" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

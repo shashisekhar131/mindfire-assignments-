@@ -70,7 +70,7 @@ namespace DemoUserManagement
         }
         protected void EditBtn_Click(object sender, EventArgs e)
         {
-            Response.Redirect("~/Default.aspx?id=" + int.Parse(UserIdInput.Text) + " ");
+            Response.Redirect("~/UserDetails.aspx?id=" + int.Parse(UserIdInput.Text) + " ");
 
         }
 
