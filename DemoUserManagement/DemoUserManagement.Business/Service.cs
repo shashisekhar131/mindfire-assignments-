@@ -27,7 +27,7 @@ namespace DemoUserManagement.Business
             return dataAccess.GetUserDetails(id);
         }
 
-        public List<AddressDetailsModel> GetAddresses(int UserId)
+        public Dictionary<int, AddressDetailsModel> GetAddresses(int UserId)
         {
             return dataAccess.GetAddresses(UserId);
         }
@@ -69,12 +69,12 @@ namespace DemoUserManagement.Business
             return dataAccess.GetAllUsersAddresses();
         }
 
-        public List<int> GetCountryAndStateID(string CountryName,string StateName)
+        public Dictionary<string, int> GetCountryAndStateID(string CountryName,string StateName)
         {
             return dataAccess.GetCountryAndStateID(CountryName, StateName);
         }
 
-        public List<string> GetCountryAndStateNames(int CountryID, int StateID)
+        public Dictionary<string, string> GetCountryAndStateNames(int CountryID, int StateID)
         {
             return dataAccess.GetCountryAndStateNames(CountryID, StateID);
         }
@@ -103,6 +103,31 @@ namespace DemoUserManagement.Business
         {
             return dataAccess.CheckIfUserExists(UserEmail, UserPassword);
         }
+
+        public List<NoteModel> GetSortedAndPagedNotes(int ObjectID, int ObjectType, string SortExpression, string SortDirection, int PageIndex, int PageSize)
+        {
+            return dataAccess.GetSortedAndPagedNotes( ObjectID, ObjectType,  SortExpression, SortDirection, PageIndex,PageSize);
+        }
+
+        public int TotalNoteRows()
+        {
+            return dataAccess.TotalNoteRows();
+        }
+
+        public int TotalDocumentRows()
+        {
+            return dataAccess.TotalDocumentRows();
+        }
+        public List<DocumentModel> GetSortedAndPagedDocuments(int ObjectID, int ObjectType, string SortExpression, string SortDirection, int PageIndex, int PageSize)
+        {
+            return dataAccess.GetSortedAndPagedDocuments(ObjectID, ObjectType, SortExpression, SortDirection, PageIndex, PageSize);
+        }
+
+        public int CheckIfEmailExists(string Email)
+        {
+            return dataAccess.CheckIfEmailExists(Email);
+        }
+
     }
 
 }

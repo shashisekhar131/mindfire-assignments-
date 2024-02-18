@@ -120,13 +120,9 @@ EXEC sp_rename 'Document.DocumenType', 'DocumentType', 'COLUMN';
 DROP TABLE Document;
 
 
-CREATE TABLE UserRole(
-UserRoleID INT PRIMARY KEY IDENTITY(1,1),
-UserID INT NOT NULL,
-RoleID INT NOT NULL
-);
 
--- look up table Role it contains what are all the roles
+
+-- look up table Role 
 CREATE TABLE Role(
 RoleID INT PRIMARY KEY IDENTITY(1,1),
 RoleName nvarchar(max),
@@ -134,8 +130,17 @@ IsDefault INT NOT NULL,
 IsAdmin INT NOT NULL
 );
 
+CREATE TABLE UserRole(
+UserRoleID INT PRIMARY KEY IDENTITY(1,1),
+UserID INT NOT NULL,
+RoleID INT NOT NULL,
+FOREIGN KEY (RoleID) REFERENCES Role(RoleID),
+FOREIGN KEY (UserID) REFERENCES UserDetails(UserID)
+);
+
+SELECT * FROM UserRole;
 INSERT INTO Role VALUES ('admin',0,1);
 INSERT INTO Role VALUES ('standard user',1,0);
 
 
-
+SELECT * FROM Role;

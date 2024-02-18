@@ -17,7 +17,7 @@ namespace DemoUserManagement
         static MyService service = new MyService();
         protected void Page_Load(object sender, EventArgs e)
         {
-
+              
         }
 
 
@@ -26,7 +26,6 @@ namespace DemoUserManagement
         {
 
             Dictionary<string, int> User =  service.CheckIfUserExists(UserEmail, UserPassword);
-            
             return User;
         }
 

@@ -63,26 +63,27 @@ namespace DemoUserManagement.DAL
 
                     // Get the last inserted UserID     
 
-                    int lastInsertedUserId = newUser.UserID;
+                    int LastInsertedUserId = newUser.UserID;
                     
-                    int Roleid = 1;
+                    int RoleId = 1;
 
-                    InsertedUser["RoleId"] = Roleid;
-                    InsertedUser["UserID"] = lastInsertedUserId;
+                    InsertedUser["RoleId"] = RoleId;
+                    InsertedUser["UserID"] = LastInsertedUserId;
                     
 
                     var TempUserRole = new UserRole
                     {
-                        UserID = lastInsertedUserId,
+                        UserID = LastInsertedUserId,
                         RoleID = 1
                     };
+
                     context.UserRoles.Add(TempUserRole);
 
                     var PresentAddress = new AddressDetail
                     {
                         Address = ListofAddresses[0].Address,
                         Type = ListofAddresses[0].Type,
-                        UserID = lastInsertedUserId,
+                        UserID = LastInsertedUserId,
                         CountryID = ListofAddresses[0].CountryID,
                         StateID = ListofAddresses[0].StateID
                     };
@@ -91,7 +92,7 @@ namespace DemoUserManagement.DAL
                     {
                         Address = ListofAddresses[1].Address,
                         Type = ListofAddresses[1].Type,
-                        UserID = lastInsertedUserId,
+                        UserID = LastInsertedUserId,
                         CountryID = ListofAddresses[1].CountryID,
                         StateID = ListofAddresses[1].StateID
 
@@ -187,6 +188,7 @@ namespace DemoUserManagement.DAL
                 LoggerClass.AddData(ex);
             }
 
+
             return ListOfAddresses;
         }
 
@@ -243,16 +245,16 @@ namespace DemoUserManagement.DAL
 
 
         // get the address details of userId
-        public List<AddressDetailsModel> GetAddresses(int userId)
+        public Dictionary<int, AddressDetailsModel> GetAddresses(int userId)
         {
-            List<AddressDetailsModel> listOfAddresses = new List<AddressDetailsModel>();
+            List<AddressDetailsModel> ListOfAddresses = new List<AddressDetailsModel>();
 
             try
             {
                 using (var context = new UserManagementEntities())
                 {
                     // Retrieve addresses based on UserId and project them to AddressDetailsModel
-                    listOfAddresses = context.AddressDetails
+                    ListOfAddresses = context.AddressDetails
                         .Where(a => a.UserID == userId)
                         .Select(addressDetailEntity => new AddressDetailsModel
                         {
@@ -270,7 +272,11 @@ namespace DemoUserManagement.DAL
                 LoggerClass.AddData(ex);
             }
 
-            return listOfAddresses;
+
+            Dictionary<int, AddressDetailsModel> AddressDictionary = ListOfAddresses
+    .ToDictionary(address => address.Type, address => address);
+
+            return AddressDictionary;
         }
 
 
@@ -400,6 +406,108 @@ namespace DemoUserManagement.DAL
         }
 
 
+        public List<NoteModel> GetSortedAndPagedNotes(int ObjectID, int ObjectType, string SortExpression, string SortDirection, int PageIndex, int PageSize)
+     {
+            List<NoteModel> NotesList = new List<NoteModel>();
+            using (var context = new UserManagementEntities())
+            {
+                IQueryable<Note> Query = context.Notes.Where(n => n.ObjectID == ObjectID && n.ObjectType == ObjectType);
+
+                // Apply dynamic Sorting
+                Query = ApplySorting(Query, SortExpression,SortDirection);
+
+                // Apply paging
+                List<Note> Notes = Query.Skip(PageIndex * PageSize).Take(PageSize).ToList();
+
+                // Map the result to NoteModel and return the result
+                NotesList = Notes.Select(Note => new NoteModel
+                {
+                    NotesID = Note.NotesID,                    
+                    NoteText = Note.NoteText,
+                    ObjectType = Note.ObjectType,
+                    ObjectID = Note.ObjectID,
+                    CreatedDate = Note.CreatedDate
+                }).ToList();
+
+                return NotesList;
+            }
+        }
+
+        private IQueryable<Note> ApplySorting(IQueryable<Note> Query, string SortExpression, string SortDirection)
+        {
+            switch (SortExpression)
+            {
+                case "NotesID":
+                    Query = (SortDirection == "ASC") ? Query.OrderBy(n => n.NotesID) : Query.OrderByDescending(n => n.NotesID);
+                    break;
+                case "NoteText":
+                    Query = (SortDirection == "ASC") ? Query.OrderBy(n => n.NoteText) : Query.OrderByDescending(n => n.NoteText);
+                    break;
+                case "ObjectType":
+                    Query = (SortDirection == "ASC") ? Query.OrderBy(n => n.ObjectType) : Query.OrderByDescending(n => n.ObjectType);
+                    break;
+                case "ObjectID":
+                    Query = (SortDirection == "ASC") ? Query.OrderBy(n => n.ObjectID) : Query.OrderByDescending(n => n.ObjectID);
+                    break;
+                
+                    // Add more cases as needed for other properties
+            }
+
+            return Query;
+        }
+
+        public List<DocumentModel> GetSortedAndPagedDocuments(int ObjectID, int ObjectType, string SortExpression, string SortDirection, int PageIndex, int PageSize)
+        {
+            List<DocumentModel> DocumentsList = new List<DocumentModel>();
+            using (var context = new UserManagementEntities())
+            {
+                IQueryable<Document> Query = context.Documents.Where(d => d.ObjectID == ObjectID && d.ObjectType == ObjectType);
+
+                // Apply dynamic Sorting
+                Query = ApplySorting(Query, SortExpression, SortDirection);
+
+                // Apply paging
+                List<Document> Documents = Query.Skip(PageIndex * PageSize).Take(PageSize).ToList();
+
+                // Map the result to DocumentModel and return the result
+                DocumentsList = Documents.Select(doc => new DocumentModel
+                {
+                    DocumentID = doc.DocumentID,
+                    DocumentType = doc.DocumentType,
+                    ObjectType = doc.ObjectType,
+                    DocumentOriginalName = doc.DocumentOriginalName,
+                    ObjectID = doc.ObjectID,
+                    TimeStamp = doc.TimeStamp
+                }).ToList();
+
+                return DocumentsList;
+            }
+        }
+
+        private IQueryable<Document> ApplySorting(IQueryable<Document> Query, string SortExpression, string SortDirection)
+        {
+            switch (SortExpression)
+            {
+                case "DocumentID":
+                    Query = (SortDirection == "ASC") ? Query.OrderBy(d => d.DocumentID) : Query.OrderByDescending(d => d.DocumentID);
+                    break;
+                case "DocumentType":
+                    Query = (SortDirection == "ASC") ? Query.OrderBy(d => d.DocumentType) : Query.OrderByDescending(d => d.DocumentType);
+                    break;
+                case "ObjectType":
+                    Query = (SortDirection == "ASC") ? Query.OrderBy(d => d.ObjectType) : Query.OrderByDescending(d => d.ObjectType);
+                    break;
+                case "ObjectID":
+                    Query = (SortDirection == "ASC") ? Query.OrderBy(d => d.ObjectID) : Query.OrderByDescending(d => d.ObjectID);
+                    break;
+                    // Add more cases as needed for other properties
+
+            }
+
+            return Query;
+        }
+
+
 
         public List<string> GetAllCountries()
         {
@@ -452,21 +560,20 @@ namespace DemoUserManagement.DAL
 
 
 
-
-       public List<int> GetCountryAndStateID(string CountryName,string StateName)
+       public Dictionary<string,int> GetCountryAndStateID(string CountryName,string StateName)
         {
-            List<int> ids = new List<int>();
-
+         
+            Dictionary<string, int> Id = new Dictionary<string, int>();
 
             try
             {
                 using (var context = new UserManagementEntities())
                 {
-                    var country = context.Countries.FirstOrDefault(c => c.CountryName == CountryName);
-                    var state = context.States.FirstOrDefault(s => s.StateName == StateName);
-                    ids.Add(country.CountryID);
-                    ids.Add(state.StateID);
-
+                    var Country = context.Countries.FirstOrDefault(c => c.CountryName == CountryName);
+                    var State = context.States.FirstOrDefault(s => s.StateName == StateName);
+                  
+                    Id["Country"] = Country.CountryID;
+                    Id["State"] = State.StateID;
                 }
 
             }
@@ -475,21 +582,21 @@ namespace DemoUserManagement.DAL
                 LoggerClass.AddData(ex);
             }          
 
-            return ids;
+            return Id;
 
         }
 
 
 
-        public List<UserDetailsModel> GetSortedAndPagedUsers(string sortExpression, string sortDirection, int pageIndex, int pageSize)
+        public List<UserDetailsModel> GetSortedAndPagedUsers(string SortExpression, string SortDirection, int pageIndex, int pageSize)
         {
             List<UserDetailsModel> UsersList = new List<UserDetailsModel>();
             using (var context = new UserManagementEntities())
             {
                 IQueryable<UserDetail> query = context.UserDetails;
 
-                // Apply dynamic sorting
-                query = ApplySorting(query, sortExpression, sortDirection);
+                // Apply dynamic Sorting
+                query = ApplySorting(query, SortExpression, SortDirection);
 
                 // Apply paging
                 List<UserDetail> users = query.Skip(pageIndex * pageSize).Take(pageSize).ToList();
@@ -524,18 +631,18 @@ namespace DemoUserManagement.DAL
             }
         }
 
-        private IQueryable<UserDetail> ApplySorting(IQueryable<UserDetail> query, string sortExpression, string sortDirection)
+        private IQueryable<UserDetail> ApplySorting(IQueryable<UserDetail> query, string SortExpression, string SortDirection)
         {
-            switch (sortExpression)
+            switch (SortExpression)
             {
                 case "UserID":
-                    query = (sortDirection == "ASC") ? query.OrderBy(u => u.UserID) : query.OrderByDescending(u => u.UserID);
+                    query = (SortDirection == "ASC") ? query.OrderBy(u => u.UserID) : query.OrderByDescending(u => u.UserID);
                     break;
                 case "FirstName":
-                    query = (sortDirection == "ASC") ? query.OrderBy(u => u.FirstName) : query.OrderByDescending(u => u.FirstName);
+                    query = (SortDirection == "ASC") ? query.OrderBy(u => u.FirstName) : query.OrderByDescending(u => u.FirstName);
                     break;
                 case "LastName":
-                    query = (sortDirection == "ASC") ? query.OrderBy(u => u.LastName) : query.OrderByDescending(u => u.LastName);
+                    query = (SortDirection == "ASC") ? query.OrderBy(u => u.LastName) : query.OrderByDescending(u => u.LastName);
                     break;
                     // Add more cases as needed for other properties
             }
@@ -562,10 +669,47 @@ namespace DemoUserManagement.DAL
             return length;
         }
 
-
-        public List<string> GetCountryAndStateNames(int countryID, int stateID)
+        public int TotalNoteRows()
         {
-            List<string> names = new List<string>();
+            int length = 0;
+            try
+            {
+                using (var context = new UserManagementEntities())
+                {
+                    length = context.Notes.ToList().Count;
+
+                }
+            }
+            catch (Exception ex)
+            {
+                LoggerClass.AddData(ex);
+            }
+            return length;
+        }
+
+
+        public int TotalDocumentRows()
+        {
+            int length = 0;
+            try
+            {
+                using (var context = new UserManagementEntities())
+                {
+                    length = context.Documents.ToList().Count;
+
+                }
+            }
+            catch (Exception ex)
+            {
+                LoggerClass.AddData(ex);
+            }
+            return length;
+        }
+
+
+        public Dictionary<string, string> GetCountryAndStateNames(int countryID, int stateID)
+        {
+            Dictionary<string, string> NameDictionary = new Dictionary<string, string>();
 
             try
             {
@@ -574,15 +718,17 @@ namespace DemoUserManagement.DAL
                     var country = context.Countries.FirstOrDefault(c => c.CountryID == countryID);
                     var state = context.States.FirstOrDefault(s => s.StateID == stateID);
 
-                    names.Add(country.CountryName);
-                    names.Add(state.StateName);
+                    NameDictionary.Add("CountryName", country.CountryName);
+                    NameDictionary.Add("StateName", state.StateName);
                 }
-            }catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 LoggerClass.AddData(ex);
             }
-            
 
-            return names;
+
+            return NameDictionary;
         }
 
 
@@ -685,6 +831,30 @@ namespace DemoUserManagement.DAL
             }
            
             return User;
+        }
+
+        public int CheckIfEmailExists(string Email)
+        {
+            try
+            {
+                using (var context = new UserManagementEntities())
+                {
+                    // Check if any user has the provided email
+                    var UserWithSameEmail = context.UserDetails.FirstOrDefault(u => u.Email == Email);
+
+                    // If userWithSameEmail is not null, it means an account with the provided email exists
+                    if (UserWithSameEmail != null)
+                    {
+                        return 1; // Email exists
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LoggerClass.AddData(ex);
+            }
+
+            return 0; // Email does not exist
         }
 
 
