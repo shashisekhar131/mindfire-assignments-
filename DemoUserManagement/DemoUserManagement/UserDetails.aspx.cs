@@ -41,6 +41,7 @@ namespace DemoUserManagement
         public int IntermediatePercentage { get; set; }
         public string BTech { get; set; }
         public int BTechPercentage { get; set; }
+        public string UserRole { get; set; }
         // Add any other properties as needed
     }
 
@@ -100,7 +101,7 @@ namespace DemoUserManagement
         {
             // instead of UserInfo use UserDetailsModel 
 
-            (UserDetailsModel UserInfo, List<AddressDetailsModel> ListofAddresses) = TakeValuesFromForm(UserFormData);
+            (UserDetailsModel UserInfo, List<AddressDetailsModel> ListofAddresses,int RoleID) = TakeValuesFromForm(UserFormData);
 
 
             // edit user 
@@ -108,7 +109,7 @@ namespace DemoUserManagement
             {
                 Dictionary<string, int> Message = new Dictionary<string, int>();
 
-                if (service.UpdateUser(UserInfo, ListofAddresses, UserId))
+                if (service.UpdateUser(UserInfo, ListofAddresses, UserId,RoleID))
                 {
                     Message["Updated"] = 1;
                 }
@@ -121,7 +122,8 @@ namespace DemoUserManagement
             else
             {// insert new user
 
-                Dictionary<string, int> InsertedUser = service.InsertUser(UserInfo, ListofAddresses);
+                Dictionary<string, int> InsertedUser = service.InsertUser(UserInfo, ListofAddresses,RoleID);
+                
                 return InsertedUser;
             }
 
@@ -130,7 +132,7 @@ namespace DemoUserManagement
 
         }
 
-        public static (UserDetailsModel, List<AddressDetailsModel>) TakeValuesFromForm(UserFormData UserFormData)
+        public static (UserDetailsModel, List<AddressDetailsModel>, int RoleID) TakeValuesFromForm(UserFormData UserFormData)
         {
 
 
@@ -155,9 +157,13 @@ namespace DemoUserManagement
                 Upto12th = UserFormData.IntermediateEducation,
                 PercentageUpto12th = UserFormData.IntermediatePercentage,
                 Graduation = UserFormData.BTech,
-                PercentageInGraduation = UserFormData.BTechPercentage
+                PercentageInGraduation = UserFormData.BTechPercentage    
+                
 
             };
+
+            string UserSelectedRole = UserFormData.UserRole;
+            int RoleID = service.GetRoleIDForRole(UserSelectedRole);
 
             Dictionary<string, int> Id = service.GetCountryAndStateID(UserFormData.PresentCountry, UserFormData.PresentState);
 
@@ -186,7 +192,7 @@ namespace DemoUserManagement
             ListofAddresses.Add(PresentAddress);
             ListofAddresses.Add(PermanentAddress);
 
-            return (UserInfo, ListofAddresses);
+            return (UserInfo, ListofAddresses,RoleID);
         }
 
         [WebMethod]
@@ -201,6 +207,7 @@ namespace DemoUserManagement
             Dictionary<string, string> PresentName = service.GetCountryAndStateNames(PresentAddress.CountryID, PresentAddress.StateID);
             Dictionary<string, string> PermanentName = service.GetCountryAndStateNames(PermanentAddress.CountryID, PermanentAddress.StateID);
 
+            string UserRole = service.GetUserRoleForUserID(UserId);
 
             UserFormData FormData = new UserFormData
             {
@@ -227,7 +234,8 @@ namespace DemoUserManagement
                 IntermediateEducation = UserDetails.Upto12th,
                 IntermediatePercentage = (int)UserDetails.PercentageUpto12th,
                 BTech = UserDetails.Graduation,
-                BTechPercentage = (int)UserDetails.PercentageInGraduation
+                BTechPercentage = (int)UserDetails.PercentageInGraduation,
+                UserRole = UserRole
             };
 
             return FormData;

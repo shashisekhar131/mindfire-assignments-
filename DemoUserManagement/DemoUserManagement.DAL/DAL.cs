@@ -18,7 +18,7 @@ namespace DemoUserManagement.DAL
     {
 
         // insert new user into database
-        public Dictionary<string, int> InsertUser(UserDetailsModel NewUser,List<AddressDetailsModel> ListofAddresses)
+        public Dictionary<string, int> InsertUser(UserDetailsModel NewUser,List<AddressDetailsModel> ListofAddresses,int RoleID)
         {
 
                       
@@ -28,12 +28,12 @@ namespace DemoUserManagement.DAL
 
             try
             {
-                using (var context = new UserManagementEntities())
+                using (var Context = new UserManagementEntities())
                 {
 
                     // create user object
-                    var newUser = new UserDetail
-                    {
+                    var TempNewUser = new UserDetail
+                    {   
                         FirstName = NewUser.FirstName,
                         LastName = NewUser.LastName,
                         Password = NewUser.Password,
@@ -56,28 +56,27 @@ namespace DemoUserManagement.DAL
                     };
 
                     
-                    // pass it to context API 
-                    context.UserDetails.Add(newUser);
+                    // pass it to Context API 
+                    Context.UserDetails.Add(TempNewUser);
 
-                    context.SaveChanges();
+                    Context.SaveChanges();
 
                     // Get the last inserted UserID     
 
-                    int LastInsertedUserId = newUser.UserID;
+                    int LastInsertedUserId = TempNewUser.UserID;
                     
-                    int RoleId = 1;
 
-                    InsertedUser["RoleId"] = RoleId;
+                    InsertedUser["RoleId"] = RoleID;
                     InsertedUser["UserID"] = LastInsertedUserId;
                     
 
                     var TempUserRole = new UserRole
                     {
                         UserID = LastInsertedUserId,
-                        RoleID = 1
+                        RoleID = RoleID
                     };
 
-                    context.UserRoles.Add(TempUserRole);
+                    Context.UserRoles.Add(TempUserRole);
 
                     var PresentAddress = new AddressDetail
                     {
@@ -98,10 +97,10 @@ namespace DemoUserManagement.DAL
 
                     };
 
-                    context.AddressDetails.Add(PermenantAddress);
-                    context.AddressDetails.Add(PresentAddress);
+                    Context.AddressDetails.Add(PermenantAddress);
+                    Context.AddressDetails.Add(PresentAddress);
 
-                    context.SaveChanges();
+                    Context.SaveChanges();
                     InsertedUser["flag"] = 1; // flag = 1;
                   
                 }
@@ -117,36 +116,36 @@ namespace DemoUserManagement.DAL
         // get all users from database 
         public List<UserDetailsModel> GetAllUsers()
         {
-            List<UserDetailsModel> userList = new List<UserDetailsModel>();
+            List<UserDetailsModel> UserList = new List<UserDetailsModel>();
 
             try
             {
-                using (var context = new UserManagementEntities())
+                using (var Context = new UserManagementEntities())
                 {
                     // Retrieve all user details and project them to UserDetailsModel
-                    userList = context.UserDetails
-                        .Select(userDetailEntity => new UserDetailsModel
+                    UserList = Context.UserDetails
+                        .Select(UserDetailEntity => new UserDetailsModel
                         {
-                            UserID = userDetailEntity.UserID,
-                            FirstName = userDetailEntity.FirstName,
-                            LastName = userDetailEntity.LastName,
-                            Password = userDetailEntity.Password,
-                            PhoneNumber = userDetailEntity.PhoneNumber,
-                            AlternatePhoneNumber = userDetailEntity.AlternatePhoneNumber,
-                            Email = userDetailEntity.Email,
-                            AlternateEmail = userDetailEntity.AlternateEmail,
-                            DOB = userDetailEntity.DOB,
-                            Favouritecolor = userDetailEntity.Favouritecolor,
-                            Aadhaar = userDetailEntity.Aadhaar,
-                            PAN = userDetailEntity.PAN,
-                            PreferedLanguage = userDetailEntity.PreferedLanguage,
-                            MaritalStatus = userDetailEntity.MaritalStatus,
-                            Upto10th = userDetailEntity.Upto10th,
-                            PercentageUpto10th = userDetailEntity.PercentageUpto10th,
-                            Upto12th = userDetailEntity.Upto12th,
-                            PercentageUpto12th = userDetailEntity.PercentageUpto12th,
-                            Graduation = userDetailEntity.Graduation,
-                            PercentageInGraduation = userDetailEntity.PercentageInGraduation
+                            UserID = UserDetailEntity.UserID,
+                            FirstName = UserDetailEntity.FirstName,
+                            LastName = UserDetailEntity.LastName,
+                            Password = UserDetailEntity.Password,
+                            PhoneNumber = UserDetailEntity.PhoneNumber,
+                            AlternatePhoneNumber = UserDetailEntity.AlternatePhoneNumber,
+                            Email = UserDetailEntity.Email,
+                            AlternateEmail = UserDetailEntity.AlternateEmail,
+                            DOB = UserDetailEntity.DOB,
+                            Favouritecolor = UserDetailEntity.Favouritecolor,
+                            Aadhaar = UserDetailEntity.Aadhaar,
+                            PAN = UserDetailEntity.PAN,
+                            PreferedLanguage = UserDetailEntity.PreferedLanguage,
+                            MaritalStatus = UserDetailEntity.MaritalStatus,
+                            Upto10th = UserDetailEntity.Upto10th,
+                            PercentageUpto10th = UserDetailEntity.PercentageUpto10th,
+                            Upto12th = UserDetailEntity.Upto12th,
+                            PercentageUpto12th = UserDetailEntity.PercentageUpto12th,
+                            Graduation = UserDetailEntity.Graduation,
+                            PercentageInGraduation = UserDetailEntity.PercentageInGraduation
                         })
                         .ToList();
                 }
@@ -156,7 +155,7 @@ namespace DemoUserManagement.DAL
                 LoggerClass.AddData(ex);
             }
 
-            return userList;
+            return UserList;
         }
 
 
@@ -168,17 +167,17 @@ namespace DemoUserManagement.DAL
 
             try
             {
-                using (var context = new UserManagementEntities())
+                using (var Context = new UserManagementEntities())
                 {
                     // Retrieve all address details and project them to AddressDetailsModel
-                    ListOfAddresses = context.AddressDetails
-                        .Select(addressDetailEntity => new AddressDetailsModel
+                    ListOfAddresses = Context.AddressDetails
+                        .Select(AddressDetailEntity=> new AddressDetailsModel
                         {
-                            UserID = addressDetailEntity.UserID,
-                            Address = addressDetailEntity.Address,
-                            Type = addressDetailEntity.Type,
-                            CountryID = addressDetailEntity.CountryID,
-                            StateID = addressDetailEntity.StateID
+                            UserID = AddressDetailEntity.UserID,
+                            Address = AddressDetailEntity.Address,
+                            Type = AddressDetailEntity.Type,
+                            CountryID = AddressDetailEntity.CountryID,
+                            StateID = AddressDetailEntity.StateID
                         })
                         .ToList();
                 }
@@ -199,36 +198,36 @@ namespace DemoUserManagement.DAL
         // get user details and show them on grid View
         public UserDetailsModel GetUserDetails(int UserId)
         {
-            UserDetailsModel userDetails = null;
+            UserDetailsModel UserDetails = null;
             try
             {
-                using (var context = new UserManagementEntities())
+                using (var Context = new UserManagementEntities())
                 {
                     // Retrieveing user details based on UserId
-                    var userDetailEntity = context.UserDetails.FirstOrDefault(u => u.UserID == UserId);
+                    var UserDetailEntity = Context.UserDetails.FirstOrDefault(u => u.UserID == UserId);
                    
                         // Maping  entity properties to UserDetailsModel
-                        userDetails = new UserDetailsModel
+                        UserDetails = new UserDetailsModel
                         {
-                            FirstName = userDetailEntity.FirstName,
-                            LastName = userDetailEntity.LastName,
-                            Password = userDetailEntity.Password,
-                            PhoneNumber = userDetailEntity.PhoneNumber,
-                            AlternatePhoneNumber = userDetailEntity.AlternatePhoneNumber,
-                            Email = userDetailEntity.Email,
-                            AlternateEmail = userDetailEntity.AlternateEmail,
-                            DOB = userDetailEntity.DOB,
-                            Favouritecolor = userDetailEntity.Favouritecolor,
-                            Aadhaar = userDetailEntity.Aadhaar,
-                            PAN = userDetailEntity.PAN,
-                            PreferedLanguage = userDetailEntity.PreferedLanguage,
-                            MaritalStatus = userDetailEntity.MaritalStatus,
-                            Upto10th = userDetailEntity.Upto10th,
-                            PercentageUpto10th = userDetailEntity.PercentageUpto10th,
-                            Upto12th = userDetailEntity.Upto12th,
-                            PercentageUpto12th = userDetailEntity.PercentageUpto12th,
-                            Graduation = userDetailEntity.Graduation,
-                            PercentageInGraduation = userDetailEntity.PercentageInGraduation
+                            FirstName = UserDetailEntity.FirstName,
+                            LastName = UserDetailEntity.LastName,
+                            Password = UserDetailEntity.Password,
+                            PhoneNumber = UserDetailEntity.PhoneNumber,
+                            AlternatePhoneNumber = UserDetailEntity.AlternatePhoneNumber,
+                            Email = UserDetailEntity.Email,
+                            AlternateEmail = UserDetailEntity.AlternateEmail,
+                            DOB = UserDetailEntity.DOB,
+                            Favouritecolor = UserDetailEntity.Favouritecolor,
+                            Aadhaar = UserDetailEntity.Aadhaar,
+                            PAN = UserDetailEntity.PAN,
+                            PreferedLanguage = UserDetailEntity.PreferedLanguage,
+                            MaritalStatus = UserDetailEntity.MaritalStatus,
+                            Upto10th = UserDetailEntity.Upto10th,
+                            PercentageUpto10th = UserDetailEntity.PercentageUpto10th,
+                            Upto12th = UserDetailEntity.Upto12th,
+                            PercentageUpto12th = UserDetailEntity.PercentageUpto12th,
+                            Graduation = UserDetailEntity.Graduation,
+                            PercentageInGraduation = UserDetailEntity.PercentageInGraduation
                         };
 
                     }
@@ -239,7 +238,7 @@ namespace DemoUserManagement.DAL
                 LoggerClass.AddData(ex);
             }
 
-            return userDetails;
+            return UserDetails;
         }
 
 
@@ -251,18 +250,18 @@ namespace DemoUserManagement.DAL
 
             try
             {
-                using (var context = new UserManagementEntities())
+                using (var Context = new UserManagementEntities())
                 {
                     // Retrieve addresses based on UserId and project them to AddressDetailsModel
-                    ListOfAddresses = context.AddressDetails
+                    ListOfAddresses = Context.AddressDetails
                         .Where(a => a.UserID == userId)
-                        .Select(addressDetailEntity => new AddressDetailsModel
+                        .Select(AddressDetailEntity=> new AddressDetailsModel
                         {
-                            Address = addressDetailEntity.Address,
-                            Type = addressDetailEntity.Type,
-                            UserID = addressDetailEntity.UserID,
-                            StateID = addressDetailEntity.StateID,
-                            CountryID = addressDetailEntity.CountryID
+                            Address = AddressDetailEntity.Address,
+                            Type = AddressDetailEntity.Type,
+                            UserID = AddressDetailEntity.UserID,
+                            StateID = AddressDetailEntity.StateID,
+                            CountryID = AddressDetailEntity.CountryID
                         })
                         .ToList();
                 }
@@ -274,56 +273,60 @@ namespace DemoUserManagement.DAL
 
 
             Dictionary<int, AddressDetailsModel> AddressDictionary = ListOfAddresses
-    .ToDictionary(address => address.Type, address => address);
+    .ToDictionary(Address => Address.Type, Address => Address);
 
             return AddressDictionary;
         }
 
 
-        public bool UpdateUser(UserDetailsModel UserInfo,List<AddressDetailsModel> ListofAddresses,int IdToUpdate)
+        public bool UpdateUser(UserDetailsModel UserInfo,List<AddressDetailsModel> ListofAddresses,int IdToUpdate,int RoleID)
         {
             
-            bool flag = false;
+            bool Flag = false;
            
             try
             {
-                using (var context = new UserManagementEntities())
+                using (var Context = new UserManagementEntities())
                 {
                     // Retrieve the user details from the database based on the user ID
-                    var existingUser = context.UserDetails.FirstOrDefault(u => u.UserID == IdToUpdate);
+                    var ExistingUser = Context.UserDetails.FirstOrDefault(u => u.UserID == IdToUpdate);
 
                     
                         // Update user details
-                        existingUser.FirstName = UserInfo.FirstName;
-                        existingUser.LastName = UserInfo.LastName;
-                        existingUser.Password = UserInfo.Password;
-                        existingUser.PhoneNumber = UserInfo.PhoneNumber;
-                        existingUser.AlternatePhoneNumber = UserInfo.AlternatePhoneNumber;
-                        existingUser.Email = UserInfo.Email;
-                        existingUser.AlternateEmail = UserInfo.AlternateEmail;
-                        existingUser.DOB = UserInfo.DOB;
-                        existingUser.Favouritecolor = UserInfo.Favouritecolor;
-                        existingUser.Aadhaar = UserInfo.Aadhaar;
-                        existingUser.PAN = UserInfo.PAN;
-                        existingUser.MaritalStatus = UserInfo.MaritalStatus;
-                        existingUser.PreferedLanguage = UserInfo.PreferedLanguage;
-                        existingUser.Upto10th = UserInfo.Upto10th;
-                        existingUser.PercentageUpto10th = UserInfo.PercentageUpto10th;
-                        existingUser.Upto12th = UserInfo.Upto12th;
-                        existingUser.PercentageUpto12th = UserInfo.PercentageUpto12th;
-                        existingUser.Graduation = UserInfo.Graduation;
-                        existingUser.PercentageInGraduation = UserInfo.PercentageInGraduation;
+                        ExistingUser.FirstName = UserInfo.FirstName;
+                        ExistingUser.LastName = UserInfo.LastName;
+                        ExistingUser.Password = UserInfo.Password;
+                        ExistingUser.PhoneNumber = UserInfo.PhoneNumber;
+                        ExistingUser.AlternatePhoneNumber = UserInfo.AlternatePhoneNumber;
+                        ExistingUser.Email = UserInfo.Email;
+                        ExistingUser.AlternateEmail = UserInfo.AlternateEmail;
+                        ExistingUser.DOB = UserInfo.DOB;
+                        ExistingUser.Favouritecolor = UserInfo.Favouritecolor;
+                        ExistingUser.Aadhaar = UserInfo.Aadhaar;
+                        ExistingUser.PAN = UserInfo.PAN;
+                        ExistingUser.MaritalStatus = UserInfo.MaritalStatus;
+                        ExistingUser.PreferedLanguage = UserInfo.PreferedLanguage;
+                        ExistingUser.Upto10th = UserInfo.Upto10th;
+                        ExistingUser.PercentageUpto10th = UserInfo.PercentageUpto10th;
+                        ExistingUser.Upto12th = UserInfo.Upto12th;
+                        ExistingUser.PercentageUpto12th = UserInfo.PercentageUpto12th;
+                        ExistingUser.Graduation = UserInfo.Graduation;
+                        ExistingUser.PercentageInGraduation = UserInfo.PercentageInGraduation;
 
-                        var presentAddress = context.AddressDetails.FirstOrDefault(a => a.UserID == IdToUpdate && a.Type == (int)Enums.AddressType.Present);
-                        var permanentAddress = context.AddressDetails.FirstOrDefault(a => a.UserID == IdToUpdate && a.Type == (int)Enums.AddressType.Permanent);
+                        var PresentAddress = Context.AddressDetails.FirstOrDefault(a => a.UserID == IdToUpdate && a.Type == (int)Enums.AddressType.Present);
+                        var PermanentAddress = Context.AddressDetails.FirstOrDefault(a => a.UserID == IdToUpdate && a.Type == (int)Enums.AddressType.Permanent);
                                            
                             // Update addresses 
-                        presentAddress.Address = ListofAddresses[0].Address;
-                        permanentAddress.Address = ListofAddresses[1].Address;
-                            
+                        PresentAddress.Address = ListofAddresses[0].Address;
+                        PermanentAddress.Address = ListofAddresses[1].Address;
 
-                        context.SaveChanges();
-                        flag = true;
+                       // update role  
+                      var UserRole = Context.UserRoles.FirstOrDefault(u => u.UserID == IdToUpdate);
+                    UserRole.UserRoleID = RoleID; 
+                      
+
+                    Context.SaveChanges();
+                        Flag = true;
                     }
                     
                 
@@ -333,17 +336,17 @@ namespace DemoUserManagement.DAL
                 LoggerClass.AddData(ex);
             }
 
-            return flag;
+            return Flag;
         }
 
 
         public bool InsertNotes(string InputNoteText, int UserId,int ObjectType )
         {
-            bool flag = false;
+            bool Flag = false;
 
             try
             {
-                 using (var context = new UserManagementEntities())
+                 using (var Context = new UserManagementEntities())
                  {
                     Note newNote = new Note
                     {
@@ -355,13 +358,11 @@ namespace DemoUserManagement.DAL
                     };
 
                    
-                    // Add the new note to the context
-                    context.Notes.Add(newNote);
+                    // Add the new note to the Context
+                    Context.Notes.Add(newNote);
 
-                    // Save changes to the database
-                    context.SaveChanges();
-                    flag = true;
-                    // Refresh the displayed notes
+                    Context.SaveChanges();
+                    Flag = true;
                    
                 }
             }
@@ -369,7 +370,7 @@ namespace DemoUserManagement.DAL
             {
                 LoggerClass.AddData(ex);
             }
-            return flag;
+            return Flag;
         }
 
         // ObjectType - 1 means page - userDetails 
@@ -379,20 +380,20 @@ namespace DemoUserManagement.DAL
             List <NoteModel> ListofNotes = new List<NoteModel>();
             try
             {
-                using (var context = new UserManagementEntities())
+                using (var Context = new UserManagementEntities())
                 {
 
-                    var userNotes = context.Notes
+                    var UserNotes = Context.Notes
                         .Where(n => n.ObjectID == UserId && n.ObjectType == ObjectType)
                         .ToList();
 
-                    ListofNotes = userNotes.Select(note => new NoteModel
+                    ListofNotes = UserNotes.Select(Note => new NoteModel
                     {
-                        ObjectType = note.ObjectType,
-                        ObjectID=note.ObjectID,
-                        NoteText=note.NoteText,
-                        NotesID = note.NotesID,
-                        CreatedDate = note.CreatedDate
+                        ObjectType = Note.ObjectType,
+                        ObjectID=Note.ObjectID,
+                        NoteText=Note.NoteText,
+                        NotesID = Note.NotesID,
+                        CreatedDate = Note.CreatedDate
 
                     }).ToList();
                 }
@@ -409,9 +410,9 @@ namespace DemoUserManagement.DAL
         public List<NoteModel> GetSortedAndPagedNotes(int ObjectID, int ObjectType, string SortExpression, string SortDirection, int PageIndex, int PageSize)
      {
             List<NoteModel> NotesList = new List<NoteModel>();
-            using (var context = new UserManagementEntities())
+            using (var Context = new UserManagementEntities())
             {
-                IQueryable<Note> Query = context.Notes.Where(n => n.ObjectID == ObjectID && n.ObjectType == ObjectType);
+                IQueryable<Note> Query = Context.Notes.Where(n => n.ObjectID == ObjectID && n.ObjectType == ObjectType);
 
                 // Apply dynamic Sorting
                 Query = ApplySorting(Query, SortExpression,SortDirection);
@@ -419,7 +420,6 @@ namespace DemoUserManagement.DAL
                 // Apply paging
                 List<Note> Notes = Query.Skip(PageIndex * PageSize).Take(PageSize).ToList();
 
-                // Map the result to NoteModel and return the result
                 NotesList = Notes.Select(Note => new NoteModel
                 {
                     NotesID = Note.NotesID,                    
@@ -450,7 +450,6 @@ namespace DemoUserManagement.DAL
                     Query = (SortDirection == "ASC") ? Query.OrderBy(n => n.ObjectID) : Query.OrderByDescending(n => n.ObjectID);
                     break;
                 
-                    // Add more cases as needed for other properties
             }
 
             return Query;
@@ -459,9 +458,9 @@ namespace DemoUserManagement.DAL
         public List<DocumentModel> GetSortedAndPagedDocuments(int ObjectID, int ObjectType, string SortExpression, string SortDirection, int PageIndex, int PageSize)
         {
             List<DocumentModel> DocumentsList = new List<DocumentModel>();
-            using (var context = new UserManagementEntities())
+            using (var Context = new UserManagementEntities())
             {
-                IQueryable<Document> Query = context.Documents.Where(d => d.ObjectID == ObjectID && d.ObjectType == ObjectType);
+                IQueryable<Document> Query = Context.Documents.Where(d => d.ObjectID == ObjectID && d.ObjectType == ObjectType);
 
                 // Apply dynamic Sorting
                 Query = ApplySorting(Query, SortExpression, SortDirection);
@@ -469,15 +468,14 @@ namespace DemoUserManagement.DAL
                 // Apply paging
                 List<Document> Documents = Query.Skip(PageIndex * PageSize).Take(PageSize).ToList();
 
-                // Map the result to DocumentModel and return the result
-                DocumentsList = Documents.Select(doc => new DocumentModel
+                DocumentsList = Documents.Select(Doc => new DocumentModel
                 {
-                    DocumentID = doc.DocumentID,
-                    DocumentType = doc.DocumentType,
-                    ObjectType = doc.ObjectType,
-                    DocumentOriginalName = doc.DocumentOriginalName,
-                    ObjectID = doc.ObjectID,
-                    TimeStamp = doc.TimeStamp
+                    DocumentID = Doc.DocumentID,
+                    DocumentType = Doc.DocumentType,
+                    ObjectType = Doc.ObjectType,
+                    DocumentOriginalName = Doc.DocumentOriginalName,
+                    ObjectID = Doc.ObjectID,
+                    TimeStamp = Doc.TimeStamp
                 }).ToList();
 
                 return DocumentsList;
@@ -500,7 +498,6 @@ namespace DemoUserManagement.DAL
                 case "ObjectID":
                     Query = (SortDirection == "ASC") ? Query.OrderBy(d => d.ObjectID) : Query.OrderByDescending(d => d.ObjectID);
                     break;
-                    // Add more cases as needed for other properties
 
             }
 
@@ -511,18 +508,17 @@ namespace DemoUserManagement.DAL
 
         public List<string> GetAllCountries()
         {
-            List<string> countriesList = new List<string>();
+            List<string> CountriesList = new List<string>();
             try
             {
-                using (var context = new UserManagementEntities())
+                using (var Context = new UserManagementEntities())
                 {
                     // Retrieve all countries from the Country table
-                    var countries = context.Countries
+                    var Countries = Context.Countries
                         .Select(c => c.CountryName)
                         .ToList();
 
-                    // Now, 'countries' contains a list of all country names
-                    countriesList.AddRange(countries);
+                    CountriesList.AddRange(Countries);
                 }
             }
             catch (Exception ex)
@@ -530,20 +526,20 @@ namespace DemoUserManagement.DAL
                 LoggerClass.AddData(ex);
             }
 
-            return countriesList;
+            return CountriesList;
         }
 
 
 
         public List<string> GetStatesForCountry(string CountryName)
         {
-            List<string> statesList = new List<string>();
+            List<string> StatesList = new List<string>();
             try
             {
-                using (var context = new UserManagementEntities())
+                using (var Context = new UserManagementEntities())
                 {
                     // Retrieve the states for the selected country from the State table
-                    statesList = context.States
+                    StatesList = Context.States
                         .Where(s => s.Country.CountryName == CountryName)
                         .Select(s => s.StateName)
                         .ToList();
@@ -555,7 +551,7 @@ namespace DemoUserManagement.DAL
                 LoggerClass.AddData(ex);
             }
 
-            return statesList;
+            return StatesList;
         }
 
 
@@ -567,10 +563,10 @@ namespace DemoUserManagement.DAL
 
             try
             {
-                using (var context = new UserManagementEntities())
+                using (var Context = new UserManagementEntities())
                 {
-                    var Country = context.Countries.FirstOrDefault(c => c.CountryName == CountryName);
-                    var State = context.States.FirstOrDefault(s => s.StateName == StateName);
+                    var Country = Context.Countries.FirstOrDefault(c => c.CountryName == CountryName);
+                    var State = Context.States.FirstOrDefault(s => s.StateName == StateName);
                   
                     Id["Country"] = Country.CountryID;
                     Id["State"] = State.StateID;
@@ -591,39 +587,39 @@ namespace DemoUserManagement.DAL
         public List<UserDetailsModel> GetSortedAndPagedUsers(string SortExpression, string SortDirection, int pageIndex, int pageSize)
         {
             List<UserDetailsModel> UsersList = new List<UserDetailsModel>();
-            using (var context = new UserManagementEntities())
+            using (var Context = new UserManagementEntities())
             {
-                IQueryable<UserDetail> query = context.UserDetails;
+                IQueryable<UserDetail> Query = Context.UserDetails;
 
                 // Apply dynamic Sorting
-                query = ApplySorting(query, SortExpression, SortDirection);
+                Query = ApplySorting(Query, SortExpression, SortDirection);
 
                 // Apply paging
-                List<UserDetail> users = query.Skip(pageIndex * pageSize).Take(pageSize).ToList();
+                List<UserDetail> Users = Query.Skip(pageIndex * pageSize).Take(pageSize).ToList();
 
                 // Map the result to UserDetailsModel and return the result
-                UsersList = users.Select(user => new UserDetailsModel
+                UsersList = Users.Select(User => new UserDetailsModel
                 {
-                    UserID = user.UserID,
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
-                    Password = user.Password,
-                    PhoneNumber = user.PhoneNumber,
-                    AlternatePhoneNumber = user.AlternatePhoneNumber,
-                    Email = user.Email,
-                    AlternateEmail = user.AlternateEmail,
-                    DOB = user.DOB,
-                    Favouritecolor = user.Favouritecolor,
-                    Aadhaar = user.Aadhaar,
-                    PAN = user.PAN,
-                    PreferedLanguage = user.PreferedLanguage,
-                    MaritalStatus = user.MaritalStatus,
-                    Upto10th = user.Upto10th,
-                    PercentageUpto10th = user.PercentageUpto10th,
-                    Upto12th = user.Upto12th,
-                    PercentageUpto12th = user.PercentageUpto12th,
-                    Graduation = user.Graduation,
-                    PercentageInGraduation = user.PercentageInGraduation
+                    UserID = User.UserID,
+                    FirstName = User.FirstName,
+                    LastName = User.LastName,
+                    Password = User.Password,
+                    PhoneNumber = User.PhoneNumber,
+                    AlternatePhoneNumber = User.AlternatePhoneNumber,
+                    Email = User.Email,
+                    AlternateEmail = User.AlternateEmail,
+                    DOB = User.DOB,
+                    Favouritecolor = User.Favouritecolor,
+                    Aadhaar = User.Aadhaar,
+                    PAN = User.PAN,
+                    PreferedLanguage = User.PreferedLanguage,
+                    MaritalStatus = User.MaritalStatus,
+                    Upto10th = User.Upto10th,
+                    PercentageUpto10th = User.PercentageUpto10th,
+                    Upto12th = User.Upto12th,
+                    PercentageUpto12th = User.PercentageUpto12th,
+                    Graduation = User.Graduation,
+                    PercentageInGraduation = User.PercentageInGraduation
 
                 }).ToList();
 
@@ -631,34 +627,33 @@ namespace DemoUserManagement.DAL
             }
         }
 
-        private IQueryable<UserDetail> ApplySorting(IQueryable<UserDetail> query, string SortExpression, string SortDirection)
+        private IQueryable<UserDetail> ApplySorting(IQueryable<UserDetail> Query, string SortExpression, string SortDirection)
         {
             switch (SortExpression)
             {
                 case "UserID":
-                    query = (SortDirection == "ASC") ? query.OrderBy(u => u.UserID) : query.OrderByDescending(u => u.UserID);
+                    Query = (SortDirection == "ASC") ? Query.OrderBy(u => u.UserID) : Query.OrderByDescending(u => u.UserID);
                     break;
                 case "FirstName":
-                    query = (SortDirection == "ASC") ? query.OrderBy(u => u.FirstName) : query.OrderByDescending(u => u.FirstName);
+                    Query = (SortDirection == "ASC") ? Query.OrderBy(u => u.FirstName) : Query.OrderByDescending(u => u.FirstName);
                     break;
                 case "LastName":
-                    query = (SortDirection == "ASC") ? query.OrderBy(u => u.LastName) : query.OrderByDescending(u => u.LastName);
+                    Query = (SortDirection == "ASC") ? Query.OrderBy(u => u.LastName) : Query.OrderByDescending(u => u.LastName);
                     break;
-                    // Add more cases as needed for other properties
             }
 
-            return query;
+            return Query;
         }
 
 
         public int TotalUsers()
         {
-            int length = 0;
+            int Length = 0;
             try
             {
-                using (var context = new UserManagementEntities())
+                using (var Context = new UserManagementEntities())
                 {
-                    length = context.UserDetails.ToList().Count;
+                    Length = Context.UserDetails.ToList().Count;
                     
                 }
             }
@@ -666,17 +661,17 @@ namespace DemoUserManagement.DAL
             {
                 LoggerClass.AddData(ex);
             }
-            return length;
+            return Length;
         }
 
         public int TotalNoteRows()
         {
-            int length = 0;
+            int Length = 0;
             try
             {
-                using (var context = new UserManagementEntities())
+                using (var Context = new UserManagementEntities())
                 {
-                    length = context.Notes.ToList().Count;
+                    Length = Context.Notes.ToList().Count;
 
                 }
             }
@@ -684,18 +679,18 @@ namespace DemoUserManagement.DAL
             {
                 LoggerClass.AddData(ex);
             }
-            return length;
+            return Length;
         }
 
 
         public int TotalDocumentRows()
         {
-            int length = 0;
+            int Length = 0;
             try
             {
-                using (var context = new UserManagementEntities())
+                using (var Context = new UserManagementEntities())
                 {
-                    length = context.Documents.ToList().Count;
+                    Length = Context.Documents.ToList().Count;
 
                 }
             }
@@ -703,23 +698,23 @@ namespace DemoUserManagement.DAL
             {
                 LoggerClass.AddData(ex);
             }
-            return length;
+            return Length;
         }
 
 
-        public Dictionary<string, string> GetCountryAndStateNames(int countryID, int stateID)
+        public Dictionary<string, string> GetCountryAndStateNames(int CountryID, int StateID)
         {
             Dictionary<string, string> NameDictionary = new Dictionary<string, string>();
 
             try
             {
-                using (var context = new UserManagementEntities())
+                using (var Context = new UserManagementEntities())
                 {
-                    var country = context.Countries.FirstOrDefault(c => c.CountryID == countryID);
-                    var state = context.States.FirstOrDefault(s => s.StateID == stateID);
+                    var Country = Context.Countries.FirstOrDefault(c => c.CountryID == CountryID);
+                    var State = Context.States.FirstOrDefault(s => s.StateID == StateID);
 
-                    NameDictionary.Add("CountryName", country.CountryName);
-                    NameDictionary.Add("StateName", state.StateName);
+                    NameDictionary.Add("CountryName", Country.CountryName);
+                    NameDictionary.Add("StateName", State.StateName);
                 }
             }
             catch (Exception ex)
@@ -733,28 +728,28 @@ namespace DemoUserManagement.DAL
 
 
 
-        public bool InsertDocument(string FileName, string uniqueGuid, int ObjectID, int ObjectType, int DocumentType)
+        public bool InsertDocument(string FileName, string UniqueGuid, int ObjectID, int ObjectType, int DocumentType)
         {
-            bool flag = false;   
+            bool Flag = false;   
             try
             {
-                using (var context = new UserManagementEntities())
+                using (var Context = new UserManagementEntities())
                 {
                    
                     Document TempDocument = new Document
                     {
                         DocumentOriginalName = FileName,
-                        DocumentGuidName = uniqueGuid,
+                        DocumentGuidName = UniqueGuid,
                         ObjectType = ObjectType,
                         ObjectID = ObjectID,
                         DocumentType = DocumentType,
                         TimeStamp = DateTime.Now.ToString(),
                     };
 
-                    // Add the document to the context and save changes
-                    context.Documents.Add(TempDocument);
-                    context.SaveChanges();
-                    flag = true;
+                    // Add the document to the Context and save changes
+                    Context.Documents.Add(TempDocument);
+                    Context.SaveChanges();
+                    Flag = true;
                 }
             }
             catch (Exception ex)
@@ -762,20 +757,20 @@ namespace DemoUserManagement.DAL
                 LoggerClass.AddData(ex);
             }
 
-            return flag;
+            return Flag;
         }
 
 
-        public List<DocumentModel> GetDocumentsForUser(int objectID, int objectType)
+        public List<DocumentModel> GetDocumentsForUser(int ObjectID, int ObjectType)
         {
             List<DocumentModel> ListOfDocuments= new List<DocumentModel>();
 
             try
             {
-                using (var context = new UserManagementEntities())
+                using (var Context = new UserManagementEntities())
                 {
-                    ListOfDocuments = context.Documents
-                        .Where(d => d.ObjectID == objectID && d.ObjectType == objectType)
+                    ListOfDocuments = Context.Documents
+                        .Where(d => d.ObjectID == ObjectID && d.ObjectType == ObjectType)
                         .Select(d => new DocumentModel
                         {
                             DocumentID = d.DocumentID,
@@ -808,10 +803,10 @@ namespace DemoUserManagement.DAL
             User["RoleId"] = 2;
             try
             {
-                using (var context = new UserManagementEntities())
+                using (var Context = new UserManagementEntities())
                 {
                     // Assuming you have a User entity in your DbContext
-                    var user = context.UserDetails
+                    var user = Context.UserDetails
                         .FirstOrDefault(u => u.Email == UserEmail && u.Password == UserPassword);
 
                     // If user is not null, it means a user with the provided credentials exists
@@ -819,7 +814,7 @@ namespace DemoUserManagement.DAL
                     {
                         User["IsUserExists"] = 1;                    
                             
-                        var UserRole = context.UserRoles.FirstOrDefault(u=> u.UserID ==  user.UserID);
+                        var UserRole = Context.UserRoles.FirstOrDefault(u=> u.UserID ==  user.UserID);
                         User["RoleId"] = UserRole.RoleID;
                     }
 
@@ -837,10 +832,10 @@ namespace DemoUserManagement.DAL
         {
             try
             {
-                using (var context = new UserManagementEntities())
+                using (var Context = new UserManagementEntities())
                 {
                     // Check if any user has the provided email
-                    var UserWithSameEmail = context.UserDetails.FirstOrDefault(u => u.Email == Email);
+                    var UserWithSameEmail = Context.UserDetails.FirstOrDefault(u => u.Email == Email);
 
                     // If userWithSameEmail is not null, it means an account with the provided email exists
                     if (UserWithSameEmail != null)
@@ -858,5 +853,47 @@ namespace DemoUserManagement.DAL
         }
 
 
+
+        public int GetRoleIDForRole(string RoleName)
+        {
+            int RoleID = 2;
+            try
+            {
+                using (var Context = new UserManagementEntities())
+                {
+                    var Role = Context.Roles.FirstOrDefault(u => u.RoleName == RoleName);
+
+                    RoleID = Role.RoleID;
+                }
+            }
+            catch (Exception ex)
+            {
+                LoggerClass.AddData(ex);
+            }
+            return RoleID;
+
+        }
+
+
+        public string GetUserRoleForUserID(int UserID)
+        {
+            string UserRole= "Admin";
+            try
+            {
+                using (var Context = new UserManagementEntities())
+                {
+                    var UserRoleEntity = Context.UserRoles.FirstOrDefault(u => u.UserID == UserID);
+                    var RoleID = UserRoleEntity.RoleID;
+                    var Role =  Context.Roles.FirstOrDefault(u => u.RoleID == RoleID);
+                    UserRole  = Role.RoleName;
+
+                }
+            }
+            catch (Exception ex)
+            {
+                LoggerClass.AddData(ex);
+            }
+            return UserRole;
+        }
     }
 }

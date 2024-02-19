@@ -16,9 +16,9 @@ namespace DemoUserManagement.Business
     {
         DataAccess dataAccess = new DataAccess();
 
-        public Dictionary<string, int> InsertUser(UserDetailsModel NewUser,List<AddressDetailsModel> ListofAddresses)
+        public Dictionary<string, int> InsertUser(UserDetailsModel NewUser,List<AddressDetailsModel> ListofAddresses,int RoleID)
         {
-            return dataAccess.InsertUser(NewUser,ListofAddresses);
+            return dataAccess.InsertUser(NewUser,ListofAddresses,RoleID);
 
         }
 
@@ -33,9 +33,9 @@ namespace DemoUserManagement.Business
         }
 
 
-        public bool UpdateUser(UserDetailsModel UserInfo,List<AddressDetailsModel> ListofAddresses,int IdToUpdate)
+        public bool UpdateUser(UserDetailsModel UserInfo,List<AddressDetailsModel> ListofAddresses,int IdToUpdate,int RoleID)
         {
-            return dataAccess.UpdateUser(UserInfo,ListofAddresses,IdToUpdate);
+            return dataAccess.UpdateUser(UserInfo,ListofAddresses,IdToUpdate,RoleID);
 
         }
        
@@ -126,6 +126,16 @@ namespace DemoUserManagement.Business
         public int CheckIfEmailExists(string Email)
         {
             return dataAccess.CheckIfEmailExists(Email);
+        }
+
+        public int GetRoleIDForRole(string RoleName)
+        {
+            return dataAccess.GetRoleIDForRole(RoleName);
+        }
+
+        public string GetUserRoleForUserID(int UserID)
+        {
+            return dataAccess.GetUserRoleForUserID(UserID);
         }
 
     }

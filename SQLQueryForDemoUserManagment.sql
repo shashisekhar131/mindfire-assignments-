@@ -63,6 +63,8 @@ SELECT * FROM AddressDetails;
 SELECT * FROM Notes;
 SELECT * FROM Country;
 SELECT * FROM State;
+
+SELECT * FROM UserRole;
 INSERT INTO UserDetails (firstname) VALUES ('hello');
 
 SELECT * FROM AddressDetails WHERE UserID = 1;
@@ -70,7 +72,7 @@ SELECT * FROM AddressDetails WHERE UserID = 1;
 DELETE FROM AddressDetails;
 DELETE  FROM Notes;
 DELETE FROM UserDetails;
-
+DELETE FROM UserRole;
 
 INSERT INTO Country valueS ('India'),('US');
 
@@ -121,7 +123,6 @@ DROP TABLE Document;
 
 
 
-
 -- look up table Role 
 CREATE TABLE Role(
 RoleID INT PRIMARY KEY IDENTITY(1,1),
@@ -139,8 +140,8 @@ FOREIGN KEY (UserID) REFERENCES UserDetails(UserID)
 );
 
 SELECT * FROM UserRole;
-INSERT INTO Role VALUES ('admin',0,1);
-INSERT INTO Role VALUES ('standard user',1,0);
+INSERT INTO Role VALUES ('Admin',0,1);
+INSERT INTO Role VALUES ('StandardUser',1,0);
 
 
 SELECT * FROM Role;

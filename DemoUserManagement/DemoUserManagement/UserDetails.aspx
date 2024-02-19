@@ -199,6 +199,20 @@
     </div>
 
 
+
+      
+    <div class="row">       
+        <div class="col-sm-6">            
+        <label for="UserRole">select your role</label>
+        <select id="UserRole" class="form-control" data-custom="user-input">
+            <option value="StandardUser">standard user</option>
+            <option value="Admin">Admin</option>
+    
+        </select>
+        <span id="RoleMessage"></span>
+        </div>
+    </div>
+
 </div>
 
               
@@ -382,6 +396,8 @@
                             $('#' + property).val(value);
                         }
                     }
+                    var userRoleDropDown = $('#RoleMessage').html("your currently" + userData.UserRole);
+
 
                 },
                 error: function (xhr, status, error) {

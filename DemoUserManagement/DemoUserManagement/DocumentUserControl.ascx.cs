@@ -108,7 +108,8 @@ namespace DemoUserManagement
             ObjectID = int.Parse(Request.QueryString["id"]);
             DocumentType= Convert.ToInt32(ddlFileType.SelectedValue);
 
-            if (service.InsertDocument(fuFileControl.FileName,uniqueFileName, ObjectID, ObjectType,DocumentType))
+
+            if (service.InsertDocument(fuFileControl.FileName, uniqueFileName, ObjectID, ObjectType,DocumentType))
             {
                 BindGridView();
             }

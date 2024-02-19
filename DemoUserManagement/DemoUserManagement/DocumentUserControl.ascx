@@ -50,7 +50,7 @@ AllowSorting="True" OnSorting="DocumentGridView_Sorting" AllowCustomPaging="true
 
         <asp:TemplateField HeaderText="DocumentOriginalName" SortExpression="DocumentOriginalName">
             <ItemTemplate>
-                 <asp:HyperLink ID="lnkDownloadFile" runat="server" Text='<%# Bind("DocumentOriginalName") %>' NavigateUrl='<%# "FileDownloadHandler.ashx?fileName=" + Eval("DocumentGuidName") %>' Target="_blank"  />
+                 <asp:HyperLink ID="lnkDownloadFile" runat="server" Text='<%# Bind("DocumentGuidName") %>' NavigateUrl='<%# "FileDownloadHandler.ashx?fileName=" + Eval("DocumentGuidName") %>' Target="_blank"  />
 
             </ItemTemplate>
         </asp:TemplateField>

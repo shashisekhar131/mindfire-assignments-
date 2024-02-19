@@ -57,6 +57,8 @@
         margin-top:15px;
     }
 
+  
+
     </style>
 </head>
 <body>
@@ -93,7 +95,7 @@
                         <li class="nav-item<%= IsActive("About") %>"><a class="nav-link" runat="server" href="~/About">About</a></li>
                         <li class="nav-item<%= IsActive("Contact") %>"><a class="nav-link" runat="server" href="~/Contact">Contact</a></li>
                         <li class="nav-item<%= IsActive("Users") %>"><a class="nav-link" runat="server" href="~/Users">Users</a></li>
-                        
+
                     </ul>
                 </div>
             </div>
