@@ -124,6 +124,7 @@ namespace DemoUserManagement
 
                 Dictionary<string, int> InsertedUser = service.InsertUser(UserInfo, ListofAddresses,RoleID);
                 
+                
                 return InsertedUser;
             }
 
@@ -163,6 +164,9 @@ namespace DemoUserManagement
             };
 
             string UserSelectedRole = UserFormData.UserRole;
+
+            HttpContext.Current.Session["UserRole"] = UserSelectedRole;
+
             int RoleID = service.GetRoleIDForRole(UserSelectedRole);
 
             Dictionary<string, int> Id = service.GetCountryAndStateID(UserFormData.PresentCountry, UserFormData.PresentState);

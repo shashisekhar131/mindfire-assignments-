@@ -56,13 +56,13 @@
       <div class="row">
         <div class="col-sm-6">
             <label for="Email">Email:</label>
-            <input type="text" id="Email" class="form-control" placeholder="Enter here..." value="abc@gmail.com" name="email" data-custom="user-input">
+            <input type="email" id="Email" class="form-control" placeholder="Enter here..."  name="email" data-custom="user-input" required >
             <span id="EmailErrorTip"></span>
         </div>
 
         <div class="col-sm-6">
             <label for="AlternateEmail">Alternate Email:</label>
-            <input type="text" id="AlternateEmail" class="form-control" placeholder="Enter here..." value="abc@gmail.com" name="alt-email" data-custom="user-input">
+            <input type="text" id="AlternateEmail" class="form-control" placeholder="Enter here..."  name="alt-email" data-custom="user-input">
         </div>
     </div>
 
@@ -205,8 +205,8 @@
         <div class="col-sm-6">            
         <label for="UserRole">select your role</label>
         <select id="UserRole" class="form-control" data-custom="user-input">
-            <option value="StandardUser">standard user</option>
             <option value="Admin">Admin</option>
+            <option value="StandardUser">StandardUser</option>            
     
         </select>
         <span id="RoleMessage"></span>
@@ -220,8 +220,8 @@
     <uc:DocumentUpload runat="server" ObjectType="1" ID="UploadInUsersPage" />
 
     <span id="MainError"></span>
-     <button type="button" id="BtnSubmit" class="btn btn-success" >Submit</button>
-    <button type="button" id="BtnReset" class="btn btn-danger" onclick="BtnReset_Click()">Reset</button>
+     <button type="button" id="BtnSubmit" class="btn btn-success custom-margin-top" >Submit</button>
+    <button type="button" id="BtnReset" class="btn btn-danger custom-margin-top" onclick="BtnReset_Click()">Reset</button>
 
 
 </div>
@@ -396,8 +396,12 @@
                             $('#' + property).val(value);
                         }
                     }
-                    var userRoleDropDown = $('#RoleMessage').html("your currently" + userData.UserRole);
-
+                  $('#RoleMessage').html("user is currently " + userData.UserRole);
+                    if (userData.UserRole == "StandardUser") {
+                        $('#UserRole').hide();
+                    } else {
+                        $('#UserRole').show();
+                    }
 
                 },
                 error: function (xhr, status, error) {

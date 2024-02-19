@@ -92,9 +92,10 @@
                 <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item<%= IsActive("Default.aspx") %>"><a class="nav-link" runat="server" href="~/">Home</a></li>
-                        <li class="nav-item<%= IsActive("About") %>"><a class="nav-link" runat="server" href="~/About">About</a></li>
-                        <li class="nav-item<%= IsActive("Contact") %>"><a class="nav-link" runat="server" href="~/Contact">Contact</a></li>
-                        <li class="nav-item<%= IsActive("Users") %>"><a class="nav-link" runat="server" href="~/Users">Users</a></li>
+                        <li class="nav-item<%= IsActive("About") %>"><a class="nav-link" runat="server" href="~/About.aspx">About</a></li>
+                        <li class="nav-item<%= IsActive("Contact") %>"><a class="nav-link" runat="server" href="~/Contact.aspx">Contact</a></li>
+                        <li class="nav-item<%= IsActive("Users") %>"><a class="nav-link" runat="server" href="~/Users.aspx">Users</a></li>
+                        <li class="nav-item<%= IsActive("LogoutPage") %> "><a class="nav-link" runat="server" href="~/LogoutPage.aspx">Logout</a></li>
 
                     </ul>
                 </div>

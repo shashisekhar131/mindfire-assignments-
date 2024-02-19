@@ -19,7 +19,7 @@
     
     <div class="row">    
         <div class="col-md-4">
-            <button id="SubmitBtn" onclick="AuthenticateUser(); return false;" class="btn btn-success custom-margin-top">Login</button>
+            <button id="SubmitBtn"  class="btn btn-success custom-margin-top">Login</button>
         </div>
     </div>
 
@@ -28,43 +28,62 @@
     <div class="row custom-margin-top">    
     <div class="col-md-4">
         New User?
-        <button id="NewUserBtn" onclick="GoToRegisterPage(); return false;" class="btn btn-success">Register</button>
+        <button id="NewUserBtn"  class="btn btn-success">Register</button>
     </div>
 </div>
 
       
     <script type="text/javascript">
 
-        function AuthenticateUser() {
-            var UserEmail = document.getElementById('UserEmail').value;  
-            var UserPassword = document.getElementById('UserPassword').value;
+     
+
+        function AuthenticateUser(UserEmail,UserPassword) {
+            $.ajax({
+                url: 'LoginPage.aspx/CheckIfUserExists',
+                type: 'POST',
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify({UserEmail,UserPassword }), // Send the countryName parameter
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data.d);
+                    var User = data.d;
+                    if (User["IsUserExists"]) {
+                        console.log("your a valid user");
+                        document.getElementById("tip").innerHTML = "your a valid user";
+
+                        if (User["RoleID"] == 1) window.location.href = "/Users.aspx";
+                        else window.location.href = "/UserDetails.aspx?id=" + User["UserID"];
+                    } else {
+                        console.log("please first sign up");
+                        document.getElementById("tip").innerHTML = "please create an account";
+                    }
 
 
-            PageMethods.CheckIfUserExists(UserEmail,UserPassword,onSucess,onError);
-            function onSucess(User) {
-                
-
-                if (User["IsUserExists"]) {
-                    console.log("your a valid user");
-                    document.getElementById("tip").innerHTML = "your a valid user";
-
-
-                    window.location.href = "/Users.aspx";
-                } else {
-                    console.log("please first sign up");
-                    document.getElementById("tip").innerHTML = "please create an account";               
+                },
+                error: function (xhr, status, error) {
+                    console.log('Error loading states: ', error);
+                    console.log(xhr.responseText);
                 }
-            }
-
-            function onError(IsUserExists) {
-                             
-            }
-        } 
-
-        function GoToRegisterPage() {
-
-            window.location.href = "/UserDetails.aspx";    
+            });
         }
+       
+
+        $(document).ready(function () {
+
+            $('#SubmitBtn').on('click', function (event) {
+                event.preventDefault(); // Prevent the default form submission
+                console.log("entered" + $('#UserEmail').val()+ $('#UserPassword').val());
+                AuthenticateUser($('#UserEmail').val(), $('#UserPassword').val());
+
+            });
+
+            $('#NewUserBtn').on('click', function (event) {
+                event.preventDefault();
+                window.location.href = "/UserDetails.aspx"; 
+            })
+
+        });
+
     </script>
 
 </asp:Content>

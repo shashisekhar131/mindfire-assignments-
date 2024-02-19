@@ -1,6 +1,41 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true"  CodeBehind="DocumentUserControl.ascx.cs" Inherits="DemoUserManagement.DocumentUserControl" %>
 
+<style type="text/css">
+    /* Add your styles for the user control here */
+    .row {
+        margin-bottom: 10px;
+    }
 
+    .form-control {
+        width: 100%;
+    }
+
+    .btn-success {
+        /* Add your button styles here */
+    }
+
+    /* Add styles for the GridView here */
+    .grid-style {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+    }
+
+    .grid-style th, .grid-style td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+
+    .grid-style th {
+        background-color: #f2f2f2;
+    }
+
+    /* Add additional styles for hyperlinks or other elements if needed */
+    .hyperlink-style {
+        /* Your hyperlink styles here */
+    }
+</style>
 <asp:UpdatePanel runat="server" UpdateMode="Conditional">
     <ContentTemplate>
         <div>
@@ -8,7 +43,7 @@
 
             <div class="row">
                 <div class="col-md-4">
-                    <asp:FileUpload ID="fuFileControl" runat="server" CssClass="form-control" />
+                    <asp:FileUpload ID="fuFileControl" runat="server" CssClass="form-control" ClientIDMode="Static"  />
                 </div>
 
                 <div class="col-md-4">

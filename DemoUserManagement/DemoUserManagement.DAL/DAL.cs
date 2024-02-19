@@ -121,11 +121,11 @@ namespace DemoUserManagement.DAL
             try
             {
                 using (var Context = new UserManagementEntities())
-                {
+                { 
                     // Retrieve all user details and project them to UserDetailsModel
                     UserList = Context.UserDetails
                         .Select(UserDetailEntity => new UserDetailsModel
-                        {
+                        { 
                             UserID = UserDetailEntity.UserID,
                             FirstName = UserDetailEntity.FirstName,
                             LastName = UserDetailEntity.LastName,
@@ -146,7 +146,7 @@ namespace DemoUserManagement.DAL
                             PercentageUpto12th = UserDetailEntity.PercentageUpto12th,
                             Graduation = UserDetailEntity.Graduation,
                             PercentageInGraduation = UserDetailEntity.PercentageInGraduation
-                        })
+                        }) 
                         .ToList();
                 }
             }
@@ -322,7 +322,7 @@ namespace DemoUserManagement.DAL
 
                        // update role  
                       var UserRole = Context.UserRoles.FirstOrDefault(u => u.UserID == IdToUpdate);
-                    UserRole.UserRoleID = RoleID; 
+                    UserRole.RoleID = RoleID; 
                       
 
                     Context.SaveChanges();
@@ -800,7 +800,7 @@ namespace DemoUserManagement.DAL
            
             Dictionary<string,int> User = new Dictionary<string,int>();
             User["IsUserExists"] = 0;
-            User["RoleId"] = 2;
+            User["RoleID"] = 2;
             try
             {
                 using (var Context = new UserManagementEntities())
@@ -815,7 +815,9 @@ namespace DemoUserManagement.DAL
                         User["IsUserExists"] = 1;                    
                             
                         var UserRole = Context.UserRoles.FirstOrDefault(u=> u.UserID ==  user.UserID);
-                        User["RoleId"] = UserRole.RoleID;
+                        User["RoleID"] = UserRole.RoleID;
+                        User["UserID"] = user.UserID;
+                       
                     }
 
                 }

@@ -19,6 +19,12 @@ namespace DemoUserManagement
         protected void Page_Load(object sender, EventArgs e)
         {
 
+            string UserRole = HttpContext.Current.Session["UserRole"] as string;
+
+            if (UserRole!= "Admin")
+            {
+                Response.Redirect("~/LoginPage.aspx");
+            }
             // should bind data to grid only for first time not for every request
             if (!IsPostBack)
             {

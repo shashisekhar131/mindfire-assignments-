@@ -23,13 +23,12 @@ namespace DemoUserManagement
             if (currentPage.Equals(pageName, StringComparison.OrdinalIgnoreCase))
             {
                 return " active";
-            }
-
-            
+            }           
 
 
             return string.Empty;
         }
 
+       
     }
 }

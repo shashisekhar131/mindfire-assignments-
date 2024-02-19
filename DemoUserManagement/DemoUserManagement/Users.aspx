@@ -3,6 +3,11 @@
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
         <div>
 
+    
+<asp:UpdatePanel ID="UpdatePanelUsers" runat="server">
+
+    <ContentTemplate> 
+
    <asp:GridView ID="userDetailsGridView" runat="server" 
        AutoGenerateColumns="false" AllowCustomPaging="True" 
        PageSize="1" OnPageIndexChanging="UserDetailsGridView_PageIndexChanging" 
@@ -52,5 +57,9 @@
 
 
               
+         </ContentTemplate>  
+
+</asp:UpdatePanel>  
+
         </div>
     </asp:Content>
