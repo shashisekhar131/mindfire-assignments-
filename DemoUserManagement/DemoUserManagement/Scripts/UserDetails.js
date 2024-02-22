@@ -1,5 +1,4 @@
-﻿
-function loadCountries() {
+﻿function loadCountries() {
     $.ajax({
         url: 'UserDetails.aspx/GetCountries', // Replace with your actual server endpoint
         type: 'POST',  // Use POST for WebMethods
@@ -124,10 +123,9 @@ function PostFormData(UserFormData) {
 
             if (UserId == 0) {
                 var InsertedUser = data.d;
+                console.log("uploading the file");
+                UploadFile(InsertedUser);
 
-                if (InsertedUser.RoleId == 1) window.location.href = "/Users.aspx";
-                else window.location.href = "/Users.aspx?id=" + InsertedUser.UserID;
-                UploadFile(InsertedUser.UserID);
             } else {
                 var Message = data.d;
                 window.location.href = "/Users.aspx";
@@ -145,33 +143,37 @@ function PostFormData(UserFormData) {
 }
 
 
-        function UploadFile(UserId) {
-            // Get the file input element
-            var fileInput = document.getElementById('fileInput');
+function UploadFile(InsertedUser) {
+    // Get the file input element
 
-            // Create FormData object and append file and UserId
-            var formData = new FormData();
-            formData.append('file', fileInput.files[0]); // Assuming only one file is selected
-            formData.append('UserId', UserId);
-            
+    var fileInput = document.getElementById('fileInputPAN');
 
-            $.ajax({
-                url: 'UploadHandler.ashx',
-                type: 'POST',
-                processData: false,  
-                contentType: false,  
-                data: formData,
-                dataType: 'json',
-                success: function (data) {
-                    // Handle file upload success if needed
-                    console.log("file uploaded");
-                },
-                error: function (xhr, status, error) {
-                    console.log('Error uploading file: ', error);
-                    console.log(xhr.responseText);
-                }
-            });
+    // Create FormData object and append file and UserId
+    var formData = new FormData();
+    formData.append('file', fileInput.files[0]); // Assuming only one file is selected
+    formData.append('UserID', InsertedUser.UserID);
+
+
+    $.ajax({
+        url: 'UploadHandler.ashx',
+        type: 'POST',
+        processData: false,  // Important! Don't process the files
+        contentType: false,  // Important! Set content type to false
+        data: formData,
+        dataType: 'json',
+        success: function (data) {
+            // Handle file upload success if needed
+            console.log("file uploaded");
+            if (InsertedUser.RoleId == 1) window.location.href = "/Users.aspx";
+            else window.location.href = "/Users.aspx?id=" + InsertedUser.UserID;
+
+        },
+        error: function (xhr, status, error) {
+            console.log('Error uploading file: ', error);
+            console.log(xhr.responseText);
         }
+    });
+}
 function PopulateValuesFromDBIntoForm(UserId) {
 
     $.ajax({
@@ -254,7 +256,7 @@ function CheckIfEmailExists(email) {
     console.log(id);
     var id = new URLSearchParams(window.location.search).get('id');
     if (id == null) id = 0;
-    
+
     // Send AJAX request to the backend
     $.ajax({
         type: "POST",
@@ -335,5 +337,4 @@ $(document).ready(function () {
 
 
 });
-
 

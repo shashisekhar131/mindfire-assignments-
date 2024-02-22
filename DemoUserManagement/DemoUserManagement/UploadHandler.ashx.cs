@@ -54,6 +54,7 @@ namespace DemoUserManagement
                     
                     int ObjectID = int.Parse(context.Request["UserID"]);
                     int DocumentType;
+                    int ObjectType = int.Parse(context.Request["ObjectType"]);
 
                     if (context.Request["FileType"] != null)
                     {
@@ -67,7 +68,7 @@ namespace DemoUserManagement
 
 
 
-                    service.InsertDocument(fileUpload.FileName, uniqueFileName, ObjectID, (int)Enums.ObjecType.Users, DocumentType);
+                    service.InsertDocument(fileUpload.FileName, uniqueFileName, ObjectID, ObjectType, DocumentType);
 
                     var jsonResponse = new
                     {

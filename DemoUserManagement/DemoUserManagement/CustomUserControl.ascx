@@ -4,7 +4,7 @@
 
 <h4>Add notes in this page</h4>
 
-
+     
 <div class="row">
     <div class="col-md-4">
         <input type="text" id="NotesInput" class="form-control" />
@@ -44,42 +44,4 @@
    
 
 
-
-<script type="text/javascript">
-
-    $(document).ready(function () {
-
-
-        $('#NotesBtn').on('click', function (event) {
-            event.preventDefault();
-            let urlParams = new URLSearchParams(window.location.search);
-            let UserID = urlParams.get('id');
-            let ObjectType = 1;
-            let NoteText = $('#NotesInput').val();
-            $.ajax({
-                url: 'UserDetails.aspx/InsertNotes',
-                type: 'POST',
-                contentType: 'application/json; charset=utf-8',
-                data: JSON.stringify({ NoteText, UserID, ObjectType }),
-                dataType: 'json',
-                success: function (data) {
-                    console.log(data.d);
-                    
-
-                },
-                error: function (xhr, status, error) {
-                    console.log('Error loading states: ', error);
-                    console.log(xhr.responseText);
-                }
-            });
-
-        });
-    });
-
-    
-
-
-
-
-
-</script>
+<script type="text/javascript" src="Scripts/CustomNoteUserControl.js"></script>
