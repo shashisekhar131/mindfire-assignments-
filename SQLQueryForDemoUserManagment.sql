@@ -63,6 +63,7 @@ SELECT * FROM AddressDetails;
 SELECT * FROM Notes;
 SELECT * FROM Country;
 SELECT * FROM State;
+SELECT * FROM Role;
 
 SELECT * FROM UserRole;
 INSERT INTO UserDetails (firstname) VALUES ('hello');
@@ -91,6 +92,7 @@ DBCC CHECKIDENT ('AddressDetails', RESEED, 0);
 --Reseed Notes table 
 DBCC CHECKIDENT ('Notes', RESEED, 0);
 
+DBCC CHECKIDENT ('UserRole',RESEED,0);
 DBCC CHECKIDENT ('State', RESEED, 0);
 DBCC CHECKIDENT ('Country', RESEED, 0);
 
@@ -143,5 +145,9 @@ SELECT * FROM UserRole;
 INSERT INTO Role VALUES ('Admin',0,1);
 INSERT INTO Role VALUES ('StandardUser',1,0);
 
+Delete from Role;
 
 SELECT * FROM Role;
+
+DBCC CHECKIDENT ('Role', RESEED, 0);
+SELECT * FROM Document;

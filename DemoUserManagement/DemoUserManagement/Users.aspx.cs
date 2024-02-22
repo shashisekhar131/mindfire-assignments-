@@ -12,19 +12,25 @@ using MyService = DemoUserManagement.Business.Service;
 
 namespace DemoUserManagement
 {
-    public partial class Users : System.Web.UI.Page
+    public partial class Users : BasePage
     {
 
         static MyService service = new MyService();
         protected void Page_Load(object sender, EventArgs e)
         {
-
-            string UserRole = HttpContext.Current.Session["UserRole"] as string;
-
-            if (UserRole!= "Admin")
+/*
+            if (!AuthenticateUser())
             {
                 Response.Redirect("~/LoginPage.aspx");
+
             }
+
+            if (!AuthorizeUser())
+            {
+                Response.Redirect("~/Unauthorized.aspx");
+            }*/
+          
+
             // should bind data to grid only for first time not for every request
             if (!IsPostBack)
             {

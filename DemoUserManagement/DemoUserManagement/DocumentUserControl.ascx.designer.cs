@@ -15,40 +15,13 @@ namespace DemoUserManagement
     {
 
         /// <summary>
-        /// lblUploadFile control.
+        /// UpdatePanelDocuments control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblUploadFile;
-
-        /// <summary>
-        /// fuFileControl control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.FileUpload fuFileControl;
-
-        /// <summary>
-        /// ddlFileType control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlFileType;
-
-        /// <summary>
-        /// BtnUpload control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button BtnUpload;
+        protected global::System.Web.UI.UpdatePanel UpdatePanelDocuments;
 
         /// <summary>
         /// DocumentGridView control.

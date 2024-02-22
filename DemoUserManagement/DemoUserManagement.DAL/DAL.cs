@@ -18,7 +18,7 @@ namespace DemoUserManagement.DAL
     {
 
         // insert new user into database
-        public Dictionary<string, int> InsertUser(UserDetailsModel NewUser,List<AddressDetailsModel> ListofAddresses,int RoleID)
+        public Dictionary<string, int> InsertUser(UserDetailsModel NewUser)
         {
 
                       
@@ -66,34 +66,34 @@ namespace DemoUserManagement.DAL
                     int LastInsertedUserId = TempNewUser.UserID;
                     
 
-                    InsertedUser["RoleId"] = RoleID;
+                    InsertedUser["RoleID"] = NewUser.RoleID;
                     InsertedUser["UserID"] = LastInsertedUserId;
                     
 
                     var TempUserRole = new UserRole
                     {
                         UserID = LastInsertedUserId,
-                        RoleID = RoleID
+                        RoleID = NewUser.RoleID
                     };
 
                     Context.UserRoles.Add(TempUserRole);
 
                     var PresentAddress = new AddressDetail
                     {
-                        Address = ListofAddresses[0].Address,
-                        Type = ListofAddresses[0].Type,
+                        Address = NewUser.PresentAddress.Address,
+                        Type = NewUser.PresentAddress.Type,
                         UserID = LastInsertedUserId,
-                        CountryID = ListofAddresses[0].CountryID,
-                        StateID = ListofAddresses[0].StateID
+                        CountryID = NewUser.PresentAddress.CountryID,
+                        StateID = NewUser.PresentAddress.StateID
                     };
 
                     var PermenantAddress = new AddressDetail
                     {
-                        Address = ListofAddresses[1].Address,
-                        Type = ListofAddresses[1].Type,
+                        Address = NewUser.PermanentAddress.Address,
+                        Type = NewUser.PermanentAddress.Type,
                         UserID = LastInsertedUserId,
-                        CountryID = ListofAddresses[1].CountryID,
-                        StateID = ListofAddresses[1].StateID
+                        CountryID = NewUser.PermanentAddress.CountryID,
+                        StateID = NewUser.PermanentAddress.StateID
 
                     };
 
@@ -205,9 +205,21 @@ namespace DemoUserManagement.DAL
                 {
                     // Retrieveing user details based on UserId
                     var UserDetailEntity = Context.UserDetails.FirstOrDefault(u => u.UserID == UserId);
-                   
-                        // Maping  entity properties to UserDetailsModel
-                        UserDetails = new UserDetailsModel
+
+                        List<AddressDetailsModel> ListOfAddresses = Context.AddressDetails
+                       .Where(a => a.UserID == UserId)
+                       .Select(AddressDetailEntity => new AddressDetailsModel
+                       {
+                           Address = AddressDetailEntity.Address,
+                           Type = AddressDetailEntity.Type,
+                           UserID = AddressDetailEntity.UserID,
+                           StateID = AddressDetailEntity.StateID,
+                           CountryID = AddressDetailEntity.CountryID
+                       })
+                       .ToList();
+
+                    // Maping  entity properties to UserDetailsModel
+                    UserDetails = new UserDetailsModel
                         {
                             FirstName = UserDetailEntity.FirstName,
                             LastName = UserDetailEntity.LastName,
@@ -227,8 +239,11 @@ namespace DemoUserManagement.DAL
                             Upto12th = UserDetailEntity.Upto12th,
                             PercentageUpto12th = UserDetailEntity.PercentageUpto12th,
                             Graduation = UserDetailEntity.Graduation,
-                            PercentageInGraduation = UserDetailEntity.PercentageInGraduation
-                        };
+                            PercentageInGraduation = UserDetailEntity.PercentageInGraduation,
+                            PresentAddress = ListOfAddresses.FirstOrDefault(a => a.Type == (int)Enums.AddressType.Present),
+                            PermanentAddress = ListOfAddresses.FirstOrDefault(a => a.Type == (int)Enums.AddressType.Permanent)
+
+                    };                    
 
                     }
                 
@@ -243,8 +258,8 @@ namespace DemoUserManagement.DAL
 
 
 
-        // get the address details of userId
-        public Dictionary<int, AddressDetailsModel> GetAddresses(int userId)
+        // get the address details of userId not in use adjusted in above function get all userDetails 
+        public Dictionary<int, AddressDetailsModel> GetAddresses(int UserId)
         {
             List<AddressDetailsModel> ListOfAddresses = new List<AddressDetailsModel>();
 
@@ -254,7 +269,7 @@ namespace DemoUserManagement.DAL
                 {
                     // Retrieve addresses based on UserId and project them to AddressDetailsModel
                     ListOfAddresses = Context.AddressDetails
-                        .Where(a => a.UserID == userId)
+                        .Where(a => a.UserID == UserId)
                         .Select(AddressDetailEntity=> new AddressDetailsModel
                         {
                             Address = AddressDetailEntity.Address,
@@ -279,11 +294,11 @@ namespace DemoUserManagement.DAL
         }
 
 
-        public bool UpdateUser(UserDetailsModel UserInfo,List<AddressDetailsModel> ListofAddresses,int IdToUpdate,int RoleID)
+        public bool UpdateUser(UserDetailsModel UserInfo)
         {
             
             bool Flag = false;
-           
+            int IdToUpdate = UserInfo.UserID;
             try
             {
                 using (var Context = new UserManagementEntities())
@@ -316,13 +331,21 @@ namespace DemoUserManagement.DAL
                         var PresentAddress = Context.AddressDetails.FirstOrDefault(a => a.UserID == IdToUpdate && a.Type == (int)Enums.AddressType.Present);
                         var PermanentAddress = Context.AddressDetails.FirstOrDefault(a => a.UserID == IdToUpdate && a.Type == (int)Enums.AddressType.Permanent);
                                            
-                            // Update addresses 
-                        PresentAddress.Address = ListofAddresses[0].Address;
-                        PermanentAddress.Address = ListofAddresses[1].Address;
+                            // Update addresses                           
+                         
+
+                    PresentAddress.Address = UserInfo.PermanentAddress.Address;
+                    PresentAddress.StateID = UserInfo.PresentAddress.StateID;
+                    PresentAddress.CountryID = UserInfo.PresentAddress.CountryID;
+
+                    PermanentAddress.Address = UserInfo.PresentAddress.Address;
+                    PermanentAddress.StateID = UserInfo.PermanentAddress.StateID;
+                    PermanentAddress.CountryID = UserInfo.PermanentAddress.CountryID;
+                   
 
                        // update role  
                       var UserRole = Context.UserRoles.FirstOrDefault(u => u.UserID == IdToUpdate);
-                    UserRole.RoleID = RoleID; 
+                    UserRole.RoleID = UserInfo.RoleID; 
                       
 
                     Context.SaveChanges();
@@ -474,6 +497,7 @@ namespace DemoUserManagement.DAL
                     DocumentType = Doc.DocumentType,
                     ObjectType = Doc.ObjectType,
                     DocumentOriginalName = Doc.DocumentOriginalName,
+                    DocumentGuidName = Doc.DocumentGuidName,
                     ObjectID = Doc.ObjectID,
                     TimeStamp = Doc.TimeStamp
                 }).ToList();
@@ -506,42 +530,54 @@ namespace DemoUserManagement.DAL
 
 
 
-        public List<string> GetAllCountries()
+       public List<CountryModel> GetAllCountries() {
+
+    List<CountryModel> CountriesList = new List<CountryModel>();
+    try
+    {
+        using (var Context = new UserManagementEntities())
         {
-            List<string> CountriesList = new List<string>();
-            try
+            // Retrieve all countries from the Country table
+            var Countries = Context.Countries
+                .Select(c => new { c.CountryID, c.CountryName })
+                .ToList();
+
+            foreach (var country in Countries)
             {
-                using (var Context = new UserManagementEntities())
+                var TempCountry = new CountryModel
                 {
-                    // Retrieve all countries from the Country table
-                    var Countries = Context.Countries
-                        .Select(c => c.CountryName)
-                        .ToList();
-
-                    CountriesList.AddRange(Countries);
-                }
+                    CountryID = country.CountryID,
+                    CountryName = country.CountryName,
+                };
+                CountriesList.Add(TempCountry);
             }
-            catch (Exception ex)
-            {
-                LoggerClass.AddData(ex);
-            }
-
-            return CountriesList;
         }
+    }
+    catch (Exception ex)
+    {
+        LoggerClass.AddData(ex);
+    }
+
+    return CountriesList;
+}
 
 
 
-        public List<string> GetStatesForCountry(string CountryName)
+        public List<StateModel> GetStatesForCountry(int SelectedCountryID)
         {
-            List<string> StatesList = new List<string>();
+            List<StateModel> StatesList = new List<StateModel>();
             try
             {
                 using (var Context = new UserManagementEntities())
                 {
                     // Retrieve the states for the selected country from the State table
                     StatesList = Context.States
-                        .Where(s => s.Country.CountryName == CountryName)
-                        .Select(s => s.StateName)
+                        .Where(s => s.Country.CountryID == SelectedCountryID)
+                        .Select(s => new StateModel
+                        {
+                            StateID = s.StateID,
+                            StateName = s.StateName,
+                        })
                         .ToList();
 
                 }
@@ -584,7 +620,7 @@ namespace DemoUserManagement.DAL
 
 
 
-        public List<UserDetailsModel> GetSortedAndPagedUsers(string SortExpression, string SortDirection, int pageIndex, int pageSize)
+        public List<UserDetailsModel> GetSortedAndPagedUsers(string SortExpression, string SortDirection, int PageIndex, int PageSize)
         {
             List<UserDetailsModel> UsersList = new List<UserDetailsModel>();
             using (var Context = new UserManagementEntities())
@@ -595,7 +631,7 @@ namespace DemoUserManagement.DAL
                 Query = ApplySorting(Query, SortExpression, SortDirection);
 
                 // Apply paging
-                List<UserDetail> Users = Query.Skip(pageIndex * pageSize).Take(pageSize).ToList();
+                List<UserDetail> Users = Query.Skip(PageIndex * PageSize).Take(PageSize).ToList();
 
                 // Map the result to UserDetailsModel and return the result
                 UsersList = Users.Select(User => new UserDetailsModel
@@ -726,6 +762,41 @@ namespace DemoUserManagement.DAL
             return NameDictionary;
         }
 
+        public string GetCountryName(int CountryID)
+        {
+            string CountryName = "";
+            try
+            {
+                using (var Context = new UserManagementEntities())
+                {
+                    var Country = Context.Countries.FirstOrDefault(c => c.CountryID == CountryID);
+                    CountryName = Country.CountryName;
+                }
+            }
+            catch (Exception ex)
+            {
+                LoggerClass.AddData(ex);
+            }
+
+            return CountryName;
+        }
+        public string GetStateName(int StateID)
+        {
+            string StateName = "";
+            try
+            {
+                using (var Context = new UserManagementEntities())
+                {
+                    var State = Context.States.FirstOrDefault(s => s.StateID == StateID);
+                    StateName = State.StateName;
+                }
+            }
+            catch (Exception ex)
+            {
+                LoggerClass.AddData(ex);
+            }
+            return StateName;
+        }
 
 
         public bool InsertDocument(string FileName, string UniqueGuid, int ObjectID, int ObjectType, int DocumentType)
@@ -805,20 +876,23 @@ namespace DemoUserManagement.DAL
             {
                 using (var Context = new UserManagementEntities())
                 {
-                    // Assuming you have a User entity in your DbContext
-                    var user = Context.UserDetails
-                        .FirstOrDefault(u => u.Email == UserEmail && u.Password == UserPassword);
 
-                    // If user is not null, it means a user with the provided credentials exists
-                    if (user != null)
+                    var user = Context.UserDetails
+    .FirstOrDefault(u => u.Email == UserEmail);
+
+                    // Check password case-sensitively
+                    if (user != null && user.Password == UserPassword)
                     {
-                        User["IsUserExists"] = 1;                    
-                            
-                        var UserRole = Context.UserRoles.FirstOrDefault(u=> u.UserID ==  user.UserID);
+                        User["IsUserExists"] = 1;
+
+                        var UserRole = Context.UserRoles.FirstOrDefault(u => u.UserID == user.UserID);
                         User["RoleID"] = UserRole.RoleID;
                         User["UserID"] = user.UserID;
-                       
                     }
+                    
+
+
+                    
 
                 }
 
@@ -830,14 +904,14 @@ namespace DemoUserManagement.DAL
             return User;
         }
 
-        public int CheckIfEmailExists(string Email)
+        public int CheckIfEmailExists(string Email,int UserID)
         {
             try
             {
                 using (var Context = new UserManagementEntities())
                 {
                     // Check if any user has the provided email
-                    var UserWithSameEmail = Context.UserDetails.FirstOrDefault(u => u.Email == Email);
+                    var UserWithSameEmail = Context.UserDetails.FirstOrDefault(u => u.Email == Email && u.UserID != UserID);
 
                     // If userWithSameEmail is not null, it means an account with the provided email exists
                     if (UserWithSameEmail != null)

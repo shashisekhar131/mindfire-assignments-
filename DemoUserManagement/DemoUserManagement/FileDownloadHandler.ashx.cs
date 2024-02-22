@@ -24,7 +24,9 @@ namespace DemoUserManagement
             context.Response.ContentType = MimeMapping.GetMimeMapping(fileName);
 
             // Set the content-disposition header to force the browser to prompt for download
-            context.Response.AppendHeader("Content-Disposition", "attachment; filename=" + fileName);
+            context.Response.AppendHeader("Content-Disposition", "inline; filename=" + fileName);
+
+            // attachment for downloading and inline for direct showing 
 
             // Write the file content to the response
             context.Response.WriteFile(filePath);
@@ -36,8 +38,8 @@ namespace DemoUserManagement
         public bool IsReusable
         {
             get
-            {
-                return false;
+            { 
+                return false; 
             }
         }
     }

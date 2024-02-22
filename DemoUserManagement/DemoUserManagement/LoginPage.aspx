@@ -8,7 +8,7 @@
             <input type="text" id="UserEmail" class="form-control">
         </div> 
     </div>
-
+                                              
     <div class="row">    
         <div class="col-md-4">
             <label for="UserPassword">Password:</label>
@@ -23,7 +23,7 @@
         </div>
     </div>
 
-    <div id="tip" class="custom-margin-top"></div>
+      <div id="tip" class="custom-margin-top"></div>
 
     <div class="row custom-margin-top">    
     <div class="col-md-4">
@@ -39,7 +39,7 @@
 
         function AuthenticateUser(UserEmail,UserPassword) {
             $.ajax({
-                url: 'LoginPage.aspx/CheckIfUserExists',
+                url: 'LoginPage.aspx/CheckIfUserExists',                
                 type: 'POST',
                 contentType: 'application/json; charset=utf-8',
                 data: JSON.stringify({UserEmail,UserPassword }), // Send the countryName parameter
@@ -50,9 +50,7 @@
                     if (User["IsUserExists"]) {
                         console.log("your a valid user");
                         document.getElementById("tip").innerHTML = "your a valid user";
-
-                        if (User["RoleID"] == 1) window.location.href = "/Users.aspx";
-                        else window.location.href = "/UserDetails.aspx?id=" + User["UserID"];
+                        window.location.href = "/UserDetails.aspx?id=" + User["UserID"];
                     } else {
                         console.log("please first sign up");
                         document.getElementById("tip").innerHTML = "please create an account";

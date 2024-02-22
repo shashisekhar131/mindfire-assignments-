@@ -33,7 +33,7 @@ namespace DemoUserManagement
             if (Request.QueryString["id"] != null)
             {
                 BindGridView();
-                }
+            }
         }
 
         static MyService service = new MyService();
@@ -82,38 +82,6 @@ namespace DemoUserManagement
             BindGridView();
 
         }
-        // saving file in server 
-        protected void BtnUpload_Click(object sender, EventArgs e)
-        {
-
-            string ExternalFolderPath = System.Configuration.ConfigurationManager.AppSettings.Get("ServerPath");
-            if(!Directory.Exists(ExternalFolderPath))
-            {
-                Directory.CreateDirectory(ExternalFolderPath);
-            }
-
-
-            // Generate a unique identifier (Guid) for the file name
-            Guid uniqueGuid = Guid.NewGuid();
-
-            string fileExtension = Path.GetExtension(fuFileControl.FileName);
-
-            // Combine the Guid with the file extension to create a unique file name
-            string uniqueFileName = uniqueGuid.ToString() + fileExtension;
-
-            // save file to external folder 
-            fuFileControl.SaveAs(ExternalFolderPath + uniqueFileName);
-
-
-            ObjectID = int.Parse(Request.QueryString["id"]);
-            DocumentType= Convert.ToInt32(ddlFileType.SelectedValue);
-
-
-            if (service.InsertDocument(fuFileControl.FileName, uniqueFileName, ObjectID, ObjectType,DocumentType))
-            {
-                BindGridView();
-            }
-
-        }
+        
     }
 }

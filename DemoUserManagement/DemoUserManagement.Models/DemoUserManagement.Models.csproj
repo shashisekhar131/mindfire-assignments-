@@ -42,8 +42,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddressDetailsModel.cs" />
+    <Compile Include="CountryModel.cs" />
     <Compile Include="DocumentModel.cs" />
     <Compile Include="NoteModel.cs" />
+    <Compile Include="StateModel.cs" />
     <Compile Include="UserDetailsModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

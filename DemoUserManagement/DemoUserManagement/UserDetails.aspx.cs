@@ -12,11 +12,15 @@ using DemoUserManagement.Business;
 
 using MyService = DemoUserManagement.Business.Service;
 using System.Web.Services;
+using static System.Net.Mime.MediaTypeNames;
+
+
 namespace DemoUserManagement
 {
 
     public class UserFormData
     {
+
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Password { get; set; }
@@ -42,56 +46,61 @@ namespace DemoUserManagement
         public string BTech { get; set; }
         public int BTechPercentage { get; set; }
         public string UserRole { get; set; }
+
+        public CountryModel CountryModel { get; set; }
+        public StateModel StateModel { get; set; }
         // Add any other properties as needed
     }
 
 
-    public partial class UserDetails : System.Web.UI.Page
+    public partial class UserDetails : BasePage
     {
 
         static MyService service = new MyService();
 
-
-
         protected void Page_Load(object sender, EventArgs e)
         {
 
-
-
+                      
 
             NotesInUsersPage.Visible = false;
             UploadInUsersPage.Visible = false;
 
             if (Request.QueryString["id"] != null)
             {
+                /*if (!AuthenticateUser())
+                {
+                    Response.Redirect("~/LoginPage.aspx");
+                }*/
+               
                 NotesInUsersPage.Visible = true;
                 UploadInUsersPage.Visible = true;
             }
 
         }
 
-        [WebMethod]
-        public static List<string> GetCountries()
+       /* [WebMethod]
+        public static List<CountryModel> GetCountries()
         {
-            List<string> Countries = service.GetAllCountries();
+            List<CountryModel> Countries = service.GetAllCountries();
 
             return Countries;
         }
 
         [WebMethod]
-        public static List<string> GetStatesForCountry(string CountryName)
+        public static List<StateModel> GetStatesForCountry(int SelectedCountryID)
         {
 
-            List<string> States = service.GetStatesForCountry(CountryName);
+            List<StateModel> States = service.GetStatesForCountry(SelectedCountryID);
 
             return States;
         }
 
         [WebMethod]
-        public static int CheckIfEmailExists(string Email)
+        public static int CheckIfEmailExists(string Email,int UserID)
         {
 
-            int IsEmailExists = service.CheckIfEmailExists(Email);
+            int IsEmailExists = service.CheckIfEmailExists(Email,UserID);
 
             return IsEmailExists;
         }
@@ -101,7 +110,7 @@ namespace DemoUserManagement
         {
             // instead of UserInfo use UserDetailsModel 
 
-            (UserDetailsModel UserInfo, List<AddressDetailsModel> ListofAddresses,int RoleID) = TakeValuesFromForm(UserFormData);
+            UserDetailsModel UserInfo = TakeValuesFromForm(UserFormData);
 
 
             // edit user 
@@ -109,22 +118,24 @@ namespace DemoUserManagement
             {
                 Dictionary<string, int> Message = new Dictionary<string, int>();
 
-                if (service.UpdateUser(UserInfo, ListofAddresses, UserId,RoleID))
+                UserInfo.UserID = UserId;
+                if (service.UpdateUser(UserInfo))
                 {
                     Message["Updated"] = 1;
                 }
                 else
                 {
-                    Message["Updated"] = 1;
+                    Message["Updated"] = 0;
                 }
                 return Message;
             }
             else
             {// insert new user
 
-                Dictionary<string, int> InsertedUser = service.InsertUser(UserInfo, ListofAddresses,RoleID);
-                
-                
+                Dictionary<string, int> InsertedUser = service.InsertUser(UserInfo);
+
+                HttpContext.Current.Session["UserID"] = InsertedUser["UserID"];
+
                 return InsertedUser;
             }
 
@@ -133,7 +144,7 @@ namespace DemoUserManagement
 
         }
 
-        public static (UserDetailsModel, List<AddressDetailsModel>, int RoleID) TakeValuesFromForm(UserFormData UserFormData)
+        public static UserDetailsModel TakeValuesFromForm(UserFormData UserFormData)
         {
 
 
@@ -158,61 +169,43 @@ namespace DemoUserManagement
                 Upto12th = UserFormData.IntermediateEducation,
                 PercentageUpto12th = UserFormData.IntermediatePercentage,
                 Graduation = UserFormData.BTech,
-                PercentageInGraduation = UserFormData.BTechPercentage    
-                
+                PercentageInGraduation = UserFormData.BTechPercentage, 
+                PresentAddress = new AddressDetailsModel
+                {
+                    Address = UserFormData.PresentAddress,
+                    Type = (int)Enums.AddressType.Present,
+                    CountryID = int.Parse(UserFormData.PresentCountry),
+                    StateID = int.Parse(UserFormData.PresentState),
 
-            };
+                },
+                PermanentAddress = new AddressDetailsModel
+                {
+                    Address = UserFormData.PermanentAddress,
+                    Type = (int)Enums.AddressType.Permanent,
+                    CountryID = int.Parse(UserFormData.PermanentCountry),
+                    StateID = int.Parse(UserFormData.PermanentState)
+
+                }
+
+
+        };
 
             string UserSelectedRole = UserFormData.UserRole;
-
             HttpContext.Current.Session["UserRole"] = UserSelectedRole;
+            int RoleID = service.GetRoleIDForRole(UserSelectedRole);           
+            
+            UserInfo.RoleID = RoleID;
 
-            int RoleID = service.GetRoleIDForRole(UserSelectedRole);
-
-            Dictionary<string, int> Id = service.GetCountryAndStateID(UserFormData.PresentCountry, UserFormData.PresentState);
-
-
-            AddressDetailsModel PresentAddress = new AddressDetailsModel
-            {
-                Address = UserFormData.PresentAddress,
-                Type = (int)Enums.AddressType.Present,
-                CountryID = Id["Country"],
-                StateID = Id["State"],
-
-            };
-
-            Dictionary<string, int> Id2 = service.GetCountryAndStateID(UserFormData.PermanentCountry, UserFormData.PermanentState);
-
-            AddressDetailsModel PermanentAddress = new AddressDetailsModel
-            {
-                Address = UserFormData.PermanentAddress,
-                Type = (int)Enums.AddressType.Permanent,
-                CountryID = Id2["Country"],
-                StateID = Id2["State"]
-
-            };
-            List<AddressDetailsModel> ListofAddresses = new List<AddressDetailsModel>();
-
-            ListofAddresses.Add(PresentAddress);
-            ListofAddresses.Add(PermanentAddress);
-
-            return (UserInfo, ListofAddresses,RoleID);
+            return (UserInfo);
         }
 
         [WebMethod]
         public static UserFormData GetUserData(int UserId)
         {
             UserDetailsModel UserDetails = service.GetUserDetails(UserId);
-            Dictionary<int, AddressDetailsModel> Address = service.GetAddresses(UserId);
 
-            AddressDetailsModel PermanentAddress = Address[(int)Enums.AddressType.Permanent];
-            AddressDetailsModel PresentAddress = Address[(int)Enums.AddressType.Present];
-
-            Dictionary<string, string> PresentName = service.GetCountryAndStateNames(PresentAddress.CountryID, PresentAddress.StateID);
-            Dictionary<string, string> PermanentName = service.GetCountryAndStateNames(PermanentAddress.CountryID, PermanentAddress.StateID);
 
             string UserRole = service.GetUserRoleForUserID(UserId);
-
             UserFormData FormData = new UserFormData
             {
                 FirstName = UserDetails.FirstName,
@@ -227,24 +220,37 @@ namespace DemoUserManagement
                 FavoriteColor = UserDetails.Favouritecolor,
                 MaritalStatus = UserDetails.MaritalStatus,
                 PreferredLanguage = UserDetails.PreferedLanguage,
-                PresentCountry = PresentName["CountryName"],
-                PermanentCountry = PermanentName["CountryName"],
-                PresentState = PresentName["StateName"],
-                PermanentState = PermanentName["StateName"],
-                PresentAddress = PresentAddress.Address, // You may need to set a value depending on your logic
-                PermanentAddress = PermanentAddress.Address, // You may need to set a value depending on your logic
+                PresentCountry = UserDetails.PresentAddress.CountryID.ToString(),
+                PermanentCountry = UserDetails.PermanentAddress.CountryID.ToString(),
+                PresentState = UserDetails.PresentAddress.StateID.ToString(),
+                PermanentState = UserDetails.PermanentAddress.StateID.ToString(),
+                PresentAddress = UserDetails.PresentAddress.Address, // You may need to set a value depending on your logic
+                PermanentAddress = UserDetails.PermanentAddress.Address, // You may need to set a value depending on your logic
                 PrimaryEducation = UserDetails.Upto10th,
                 PercentageIn10th = (int)UserDetails.PercentageUpto10th,
                 IntermediateEducation = UserDetails.Upto12th,
                 IntermediatePercentage = (int)UserDetails.PercentageUpto12th,
                 BTech = UserDetails.Graduation,
                 BTechPercentage = (int)UserDetails.PercentageInGraduation,
-                UserRole = UserRole
+                UserRole = UserRole,
+                
             };
 
             return FormData;
         }
 
+        [WebMethod]
+        public static string GetCountryName(int CountryID)
+        {
+            string Name= service.GetCountryName(CountryID);
+            return Name;
+        }
+        [WebMethod]
+        public static string GetStateName(int StateID)
+        {
+            string Name= service.GetStateName(StateID);
+            return Name;
+        }
 
         protected string SaveFile(FileUpload fileUpload)
         {
@@ -267,7 +273,7 @@ namespace DemoUserManagement
             fileUpload.SaveAs(ExternalFolderPath + uniqueFileName);
 
             return uniqueFileName;
-        }
+        }*/
             /*
             private void LoadCountriesAndStates()
             {
@@ -430,7 +436,9 @@ namespace DemoUserManagement
                     Type = (int)Enums.AddressType.Present,
                     CountryID = ids[0],
                     StateID = ids[1]
-                    *//*  "present address" - 0 *//*
+                    *//*  "present address" - 0 */
+        
+        /*
 
                 };
 

@@ -36,30 +36,36 @@
         /* Your hyperlink styles here */
     }
 </style>
-<asp:UpdatePanel runat="server" UpdateMode="Conditional">
-    <ContentTemplate>
-        <div>
-            <asp:Label ID="lblUploadFile" runat="server" AssociatedControlID="fuFileControl">Upload File:</asp:Label>
 
+
+        <div>
+            
             <div class="row">
                 <div class="col-md-4">
-                    <asp:FileUpload ID="fuFileControl" runat="server" CssClass="form-control" ClientIDMode="Static"  />
+                    
+                     <label for="fileInput">select file:</label>
+                    <input type="file" id="fileInput" class="form-control" />
                 </div>
 
                 <div class="col-md-4">
-                    <asp:DropDownList ID="ddlFileType" runat="server" CssClass="form-control">
-                        <asp:ListItem Text="Aadhar" Value="2" />
-                        <asp:ListItem Text="PAN" Value="3" />
-                        <asp:ListItem Text="Passport" Value="1" />
-                        <asp:ListItem Text="Others" Value="4" />
-                    </asp:DropDownList>
+
+                     <label for="fileType">select file type:</label>
+                 <select id="fileType" class="form-control" >
+                     <option value="1">Aadhar</option>
+                     <option value="2">PAN</option>
+                     <option value="3">Others</option>
+                 </select>
                 </div>
 
                 <div class="col-md-4">
-                    <asp:Button ID="BtnUpload" runat="server" Text="UploadFile" OnClick="BtnUpload_Click" CssClass="btn btn-success"/>
+                    <button id="BtnUpload" class="btn btn-success custom-margin-top" > upload file </button>
                 </div>
             </div>
 
+            
+<asp:UpdatePanel ID="UpdatePanelDocuments" runat="server">
+
+    <ContentTemplate> 
      <asp:GridView ID="DocumentGridView" runat="server" AutoGenerateColumns="False" DataKeyNames="DocumentID" CssClass="grid-style" EmptyDataText="no records to display"
                       OnPageIndexChanging="DocumentGridView_PageIndexChanging" 
 AllowSorting="True" OnSorting="DocumentGridView_Sorting" AllowCustomPaging="true" AllowPaging="True" PageSize="3">
@@ -85,7 +91,7 @@ AllowSorting="True" OnSorting="DocumentGridView_Sorting" AllowCustomPaging="true
 
         <asp:TemplateField HeaderText="DocumentOriginalName" SortExpression="DocumentOriginalName">
             <ItemTemplate>
-                 <asp:HyperLink ID="lnkDownloadFile" runat="server" Text='<%# Bind("DocumentGuidName") %>' NavigateUrl='<%# "FileDownloadHandler.ashx?fileName=" + Eval("DocumentGuidName") %>' Target="_blank"  />
+                 <asp:HyperLink ID="lnkDownloadFile" runat="server" Text='<%# Bind("DocumentOriginalName") %>' NavigateUrl='<%# "FileDownloadHandler.ashx?fileName=" + Eval("DocumentGuidName") %>' Target="_blank"  />
 
             </ItemTemplate>
         </asp:TemplateField>
@@ -105,13 +111,59 @@ AllowSorting="True" OnSorting="DocumentGridView_Sorting" AllowCustomPaging="true
 
 
     </Columns>
-                         <PagerSettings Mode="NextPreviousFirstLast" FirstPageText="First" 
+        <PagerSettings Mode="NextPreviousFirstLast" FirstPageText="First" 
 LastPageText="Last" NextPageText="Next" PreviousPageText="Previous" />  
             </asp:GridView>
-
-        </div>
-    </ContentTemplate>
-    <Triggers>
-        <asp:AsyncPostBackTrigger ControlID="BtnUpload" EventName="Click" />
-    </Triggers>
+         </ContentTemplate> 
 </asp:UpdatePanel>
+
+  
+        </div>
+   
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+     
+       
+        $('#BtnUpload').on('click', function (event) {
+            // Get the selected file
+            event.preventDefault();
+            var fileInput = $('#fileInput')[0];
+            var file = fileInput.files[0];
+
+            var urlParams = new URLSearchParams(window.location.search);
+            var id = urlParams.get('id');
+
+            var fileTypeValue = parseInt($('#fileType').val());
+
+            if (file) {
+                // Create FormData object and append the file
+                var formData = new FormData();
+                formData.append('file', file);
+                formData.append('UserID', id);
+                formData.append('FileType', fileTypeValue);
+                
+                $.ajax({
+                    url: '/UploadHandler.ashx', 
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function (response) {
+                        // Handle the success response
+                        console.log("uploaded");
+                    },
+                    error: function (xhr, status, error) {
+                        console.log(" not uploaded");
+                    }
+                });
+            } else {
+                console.log("select a filie");
+            }
+
+        });
+    });
+
+</script>

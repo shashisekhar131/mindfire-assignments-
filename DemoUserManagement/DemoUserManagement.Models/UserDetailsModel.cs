@@ -30,5 +30,10 @@ namespace DemoUserManagement.Models
         public string Graduation { get; set; }
         public Nullable<int> PercentageInGraduation { get; set; }
 
+        // other useful properties
+        public int RoleID { get; set; }
+        public AddressDetailsModel PresentAddress { get; set; }
+        public AddressDetailsModel PermanentAddress { get; set; }
+
     }
 }

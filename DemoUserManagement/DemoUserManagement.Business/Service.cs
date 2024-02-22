@@ -16,9 +16,9 @@ namespace DemoUserManagement.Business
     {
         DataAccess dataAccess = new DataAccess();
 
-        public Dictionary<string, int> InsertUser(UserDetailsModel NewUser,List<AddressDetailsModel> ListofAddresses,int RoleID)
+        public Dictionary<string, int> InsertUser(UserDetailsModel NewUser)
         {
-            return dataAccess.InsertUser(NewUser,ListofAddresses,RoleID);
+            return dataAccess.InsertUser(NewUser);
 
         }
 
@@ -33,9 +33,9 @@ namespace DemoUserManagement.Business
         }
 
 
-        public bool UpdateUser(UserDetailsModel UserInfo,List<AddressDetailsModel> ListofAddresses,int IdToUpdate,int RoleID)
+        public bool UpdateUser(UserDetailsModel UserInfo)
         {
-            return dataAccess.UpdateUser(UserInfo,ListofAddresses,IdToUpdate,RoleID);
+            return dataAccess.UpdateUser(UserInfo);
 
         }
        
@@ -54,14 +54,14 @@ namespace DemoUserManagement.Business
             return dataAccess.GetAllUsers();
         }
 
-        public List<string> GetAllCountries()
+        public List<CountryModel> GetAllCountries()
         {
             return dataAccess.GetAllCountries();
         }
 
-        public List<string> GetStatesForCountry(string SelectedCountry)
+        public List<StateModel> GetStatesForCountry(int SelectedCountryID)
         {
-            return dataAccess.GetStatesForCountry(SelectedCountry);
+            return dataAccess.GetStatesForCountry(SelectedCountryID);
         }
 
         public List<AddressDetailsModel> GetAllUsersAddresses()
@@ -79,6 +79,14 @@ namespace DemoUserManagement.Business
             return dataAccess.GetCountryAndStateNames(CountryID, StateID);
         }
 
+        public string GetCountryName(int CountryID)
+        {
+            return dataAccess.GetCountryName( CountryID);
+        }
+        public string GetStateName(int StateID)
+        {
+            return dataAccess.GetStateName(StateID);
+        }
         public List<UserDetailsModel> GetSortedAndPagedUsers(string SortExpression, string SortDirection, int PageIndex, int PageSize)
         {
             return dataAccess.GetSortedAndPagedUsers(SortExpression, SortDirection, PageIndex, PageSize);
@@ -123,9 +131,9 @@ namespace DemoUserManagement.Business
             return dataAccess.GetSortedAndPagedDocuments(ObjectID, ObjectType, SortExpression, SortDirection, PageIndex, PageSize);
         }
 
-        public int CheckIfEmailExists(string Email)
+        public int CheckIfEmailExists(string Email,int UserID)
         {
-            return dataAccess.CheckIfEmailExists(Email);
+            return dataAccess.CheckIfEmailExists(Email,UserID);
         }
 
         public int GetRoleIDForRole(string RoleName)

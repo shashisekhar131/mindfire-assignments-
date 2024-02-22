@@ -12,8 +12,8 @@ using MyService = DemoUserManagement.Business.Service;
 
 namespace DemoUserManagement
 {
-    public partial class LoginPage : System.Web.UI.Page
-    {
+    public partial class LoginPage : BasePage
+    {                                                                                                                                          
         static MyService service = new MyService();
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -21,14 +21,6 @@ namespace DemoUserManagement
         }
 
 
-       [WebMethod] 
-        public static Dictionary<string, int> CheckIfUserExists(string UserEmail,string UserPassword)
-        {
-
-            Dictionary<string, int> User =  service.CheckIfUserExists(UserEmail, UserPassword);
-            return User;
-        }
-
-
+                                                 
     }
 }

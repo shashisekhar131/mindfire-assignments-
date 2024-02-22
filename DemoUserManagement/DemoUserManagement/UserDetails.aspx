@@ -80,13 +80,13 @@
 
       <div class="row">
     <div class="col-sm-6">
-        <asp:Label runat="server" ID="lblPAN" AssociatedControlID="fuPAN">PAN Picture:</asp:Label>
-        <asp:FileUpload runat="server" ID="fuPAN" CssClass="form-control"/>
+        <label for="fileInputPAN">PAN file:</label>
+        <input type="file" id="fileInputPAN" CssClass="form-control" />
     </div>
 
     <div class="col-sm-6">
-        <asp:Label runat="server" ID="lblAadhar" AssociatedControlID="fuAadhar">Aadhar Picture:</asp:Label>
-        <asp:FileUpload runat="server" ID="fuAadhar" CssClass="form-control"/>
+        <label for="fileInputAadhaar">Aadhaar file:</label>
+        <input type="file" id="fileInputAadhaar" CssClass="form-control" />
     </div>
 </div>
 
@@ -229,7 +229,7 @@
     </main>
 
     
-    <script type="text/javascript">
+    <script  type="text/javascript">
 
 
         function loadCountries() {
@@ -237,7 +237,7 @@
                 url: 'UserDetails.aspx/GetCountries', // Replace with your actual server endpoint
                 type: 'POST',  // Use POST for WebMethods
                 contentType: 'application/json; charset=utf-8',
-                success: function (data) {                 
+                success: function (data) {
 
                     var countries = data.d;
 
@@ -252,15 +252,13 @@
 
                         // Clear existing options
                         Countrydropdown.empty();
-                        
+
                         // Add options from the received data
                         for (var j = 0; j < countries.length; j++) {
-                            Countrydropdown.append($('<option>', { value: countries[j], text: countries[j] }));
+                            Countrydropdown.append($('<option>', { value: countries[j].CountryID, text: countries[j].CountryName }));
                         }
-                        // Add default option
-                        Countrydropdown.append($('<option>', { value: countries[0], text: countries[0] }));
 
-                        LoadStatesForCountry(countries[0], Statedropdowns[i]);
+                        LoadStatesForCountry(countries[0].CountryID, Statedropdowns[i]);
 
                     }
 
@@ -275,26 +273,26 @@
 
 
 
-        function LoadStatesForCountry(CountryName,StatedropdownId) {
+        function LoadStatesForCountry(CountryID, StatedropdownId) {
             $.ajax({
                 url: 'UserDetails.aspx/GetStatesForCountry',
                 type: 'POST',
                 contentType: 'application/json; charset=utf-8',
-                data: JSON.stringify({ CountryName }), // Send the countryName parameter
+                data: JSON.stringify({ SelectedCountryID: CountryID }), // Send the countryName parameter
                 dataType: 'json',
                 success: function (data) {
 
-                        var states = data.d;
-                        var Statedropdown = $('#' + StatedropdownId);
+                    var states = data.d;
 
-                        Statedropdown.empty();
-                        
-                        $.each(states, function (index, state) {
-                            Statedropdown.append($('<option>', { value: state, text: state }));
-                        });
-                    Statedropdown.append($('<option>', { value: states[0], text: states[0] }));
+                    var Statedropdown = $('#' + StatedropdownId);
 
-                    
+                    Statedropdown.empty();
+
+                    $.each(states, function (index, state) {
+                        Statedropdown.append($('<option>', { value: state.StateID, text: state.StateName }));
+                    });
+
+
 
                 },
                 error: function (xhr, status, error) {
@@ -304,15 +302,15 @@
             });
         }
 
-        function CountrySelected(CountrydropdownId,StatedropdownId) {
+        function CountrySelected(CountrydropdownId, StatedropdownId) {
             var selectedCountry = $('#' + CountrydropdownId).val();
-            LoadStatesForCountry(selectedCountry,StatedropdownId);
+            LoadStatesForCountry(selectedCountry, StatedropdownId);
         }
 
         function collectFormData() {
             // Clear UserInfo and ListofAddresses if needed
             var UserInfo = {};
-            
+
 
             // Collect personal details
             $('[data-custom="user-input"]').each(function () {
@@ -320,14 +318,15 @@
                 var propertyValue;
                 var propertyName = element.attr('id') || element.attr('name');
 
-                if (element.is('input') || element.is('select')) {                   
+                if (element.is('input') || element.is('select')) {
                     propertyValue = element.val();
                     UserInfo[propertyName] = propertyValue;
                 }
 
+
                 if (element.is('input[type="radio"]')) {
-                    if (element.prop('checked')) {                         
-                         propertyValue = element.val();                        
+                    if (element.prop('checked')) {
+                        propertyValue = element.val();
                         UserInfo[propertyName] = propertyValue;
                     }
                 }
@@ -335,7 +334,7 @@
                 if (element.is('input[type="file"]')) {
                     UserInfo[propertyName] = element;
                 }
-                
+
             });
             console.log(UserInfo);
             PostFormData(UserInfo);
@@ -345,7 +344,7 @@
 
         function PostFormData(UserFormData) {
             let urlParams = new URLSearchParams(window.location.search);
-            let UserId = urlParams.get('id');           
+            let UserId = urlParams.get('id');
             if (UserId == null) UserId = 0;
 
             $.ajax({
@@ -358,16 +357,15 @@
 
                     if (UserId == 0) {
                         var InsertedUser = data.d;
-
-                        if (InsertedUser.RoleId == 1) window.location.href = "/Users.aspx";
-                        else window.location.href = "/Users.aspx?id=" + InsertedUser.UserID;
-
+                        console.log("uploading the file");
+                        UploadFile(InsertedUser);
+                        
                     } else {
-                        var Message = data.d;                       
+                        var Message = data.d;
                         window.location.href = "/Users.aspx";
 
                     }
-                    
+
 
                 },
                 error: function (xhr, status, error) {
@@ -378,25 +376,62 @@
 
         }
 
+
+        function UploadFile(InsertedUser) {
+            // Get the file input element
+            
+            var fileInput = document.getElementById('fileInputPAN');
+
+            // Create FormData object and append file and UserId
+            var formData = new FormData();
+            formData.append('file', fileInput.files[0]); // Assuming only one file is selected
+            formData.append('UserID', InsertedUser.UserID);
+
+
+            $.ajax({
+                url: 'UploadHandler.ashx',
+                type: 'POST',
+                processData: false,  // Important! Don't process the files
+                contentType: false,  // Important! Set content type to false
+                data: formData,
+                dataType: 'json',
+                success: function (data) {
+                    // Handle file upload success if needed
+                    console.log("file uploaded");
+                    if (InsertedUser.RoleId == 1) window.location.href = "/Users.aspx";
+                    else window.location.href = "/Users.aspx?id=" + InsertedUser.UserID;
+
+                },
+                error: function (xhr, status, error) {
+                    console.log('Error uploading file: ', error);
+                    console.log(xhr.responseText);
+                }
+            });
+        }
         function PopulateValuesFromDBIntoForm(UserId) {
 
             $.ajax({
                 url: 'UserDetails.aspx/GetUserData',
                 type: 'POST',
                 contentType: 'application/json; charset=utf-8',
-                data: JSON.stringify({UserId}),
+                data: JSON.stringify({ UserId }),
                 dataType: 'json',
                 success: function (data) {
 
-                     var userData = data.d;
+                    var userData = data.d;
+                    console.log(userData.PresentState + "big thans");
                     for (var property in userData) {
                         if (userData.hasOwnProperty(property)) {
                             var value = userData[property];
-                            // property names match the id attributes of the form fields so we can use loop other wise manually set values by getting each element
+
+                            // update all other fields as property name is same as id
                             $('#' + property).val(value);
+                            // update dropdowns
+                            if (property == "PresentState" || property == "PermanentState") updateStateDropDown(property, value);
+                            if (property == "PresentCountry" || property == "PermanentCountry") updateCountryDropDown(property, value);
                         }
                     }
-                  $('#RoleMessage').html("user is currently " + userData.UserRole);
+                    $('#RoleMessage').html("user is currently " + userData.UserRole);
                     if (userData.UserRole == "StandardUser") {
                         $('#UserRole').hide();
                     } else {
@@ -411,17 +446,60 @@
             });
         }
 
+        function updateStateDropDown(statedropdown, stateID) {
+
+            $.ajax({
+                url: 'UserDetails.aspx/GetStateName',
+                type: 'POST',
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify({ StateID: parseInt(stateID) }),
+                dataType: 'json',
+                success: function (data) {
+                    console.log(stateID, data.d);
+                    //$('#' + statedropdown).val(stateID);
+                    //$('#' + statedropdown + ' option:selected').text(data.d); 
+                    $('#' + statedropdown + ' option[value="' + stateID.toString() + '"]').prop('selected', true);
+                },
+                error: function (xhr, status, error) {
+                    console.log('Error loading states: ', error);
+                    console.log(xhr.responseText);
+                }
+            });
+        }
+
+        function updateCountryDropDown(countrydropdown, countryID) {
+
+            $.ajax({
+                url: 'UserDetails.aspx/GetCountryName',
+                type: 'POST',
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify({ CountryID: parseInt(countryID) }),
+                dataType: 'json',
+                success: function (data) {
+                    console.log(countryID, data.d);
+                    $('#' + countrydropdown + ' option[value="' + countryID.toString() + '"]').prop('selected', true);
+
+                },
+                error: function (xhr, status, error) {
+                    console.log('Error loading states: ', error);
+                    console.log(xhr.responseText);
+                }
+            });
+        }
         function CheckIfEmailExists(email) {
+            console.log(id);
+            var id = new URLSearchParams(window.location.search).get('id');
+            if (id == null) id = 0;
 
             // Send AJAX request to the backend
             $.ajax({
                 type: "POST",
                 url: "UserDetails.aspx/CheckIfEmailExists", // Replace with your actual backend endpoint
                 contentType: 'application/json; charset=utf-8',
-                data: JSON.stringify({ Email: email }),
+                data: JSON.stringify({ Email: email, UserID: id }),
                 dataType: 'json',
                 success: function (response) {
-                    
+
                     if (response.d) {
                         $('#EmailErrorTip').html("email already exists").css('color', 'red');
                     } else {
@@ -433,7 +511,7 @@
                 error: function () {
                 }
             });
-       }
+        }
 
 
 
@@ -442,7 +520,7 @@
 
 
 
-        
+
 
         $(document).ready(function () {
 
@@ -451,10 +529,10 @@
 
             // user selected country
             $('#PresentCountry').on('change', function () {
-                CountrySelected('PresentCountry','PresentState');
+                CountrySelected('PresentCountry', 'PresentState');
             });
             $('#PermanentCountry').on('change', function () {
-                CountrySelected('PermanentCountry','PermanentState');
+                CountrySelected('PermanentCountry', 'PermanentState');
             });
 
 
@@ -468,8 +546,8 @@
                 $('#BtnSubmit').html("Submit");
                 $('#BtnReset').show();
             }
-            
-            
+
+
 
             $('#BtnSubmit').on('click', function (event) {
                 event.preventDefault(); // Prevent the default form submission
@@ -484,19 +562,19 @@
 
             });
 
-            $("#Email").on('input',function () {
+            $("#Email").on('input', function () {
                 var email = $(this).val();
-              
+
                 CheckIfEmailExists(email);
-            });       
+            });
 
 
 
         });
 
-        
 
-        
+
+
 
     </script>
 

@@ -14,7 +14,7 @@ namespace DemoUserManagement
     public partial class CustomUserControl : System.Web.UI.UserControl
     {
         public int ObjectType { get; set; }
-        public int ObjectID { get; set; }
+        public int ObjectID { get; set; }  
 
         static MyService service = new MyService();
         protected void Page_Load(object sender, EventArgs e)
@@ -77,15 +77,9 @@ namespace DemoUserManagement
 
             BindGridView();
 
-        }
-        protected void NotesBtn_Click(object sender, EventArgs e)
-        {
-            ObjectID = int.Parse(Request.QueryString["id"]);
+        } 
 
-            service.InsertNotes(NotesInput.Text, ObjectID, ObjectType);
-            
-
-        }
+       
 
         
     }
