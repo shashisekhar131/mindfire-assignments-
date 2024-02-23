@@ -79,7 +79,7 @@ function collectFormData() {
 
 
     // Collect personal details
-    $('[data-custom="user-input"]').each(function () {
+    $('[data-input="user-input"]').each(function () {
         var element = $(this);
         var propertyValue;
         var propertyName = element.attr('id') || element.attr('name');
@@ -194,7 +194,9 @@ function PopulateValuesFromDBIntoForm(UserId) {
                     $('#' + property).val(value);
                     // update dropdowns
                     if (property == "PresentState" || property == "PermanentState") updateStateDropDown(property, value);
-                    if (property == "PresentCountry" || property == "PermanentCountry") updateCountryDropDown(property, value);
+                    if (property == "PresentCountry" || property == "PermanentCountry") {
+                        updateCountryDropDown(property, value);
+                    }
                 }
             }
             $('#RoleMessage').html("user is currently " + userData.UserRole);
@@ -213,7 +215,8 @@ function PopulateValuesFromDBIntoForm(UserId) {
 }
 
 function updateStateDropDown(statedropdown, stateID) {
-
+    
+    
     $.ajax({
         url: 'UserDetails.aspx/GetStateName',
         type: 'POST',
@@ -221,10 +224,9 @@ function updateStateDropDown(statedropdown, stateID) {
         data: JSON.stringify({ StateID: parseInt(stateID) }),
         dataType: 'json',
         success: function (data) {
-            console.log(stateID, data.d);
-            //$('#' + statedropdown).val(stateID);
-            //$('#' + statedropdown + ' option:selected').text(data.d); 
+            console.log(stateID);
             $('#' + statedropdown + ' option[value="' + stateID.toString() + '"]').prop('selected', true);
+            console.log($('#' + statedropdown).val());
         },
         error: function (xhr, status, error) {
             console.log('Error loading states: ', error);
@@ -235,6 +237,12 @@ function updateStateDropDown(statedropdown, stateID) {
 
 function updateCountryDropDown(countrydropdown, countryID) {
 
+    if (countrydropdown == "PresentCountry") LoadStatesForCountry(countryID, "PresentState");
+
+    if(countrydropdown == "PermanentCountry")LoadStatesForCountry(countryID, "PermanentState");
+
+
+
     $.ajax({
         url: 'UserDetails.aspx/GetCountryName',
         type: 'POST',
@@ -242,7 +250,7 @@ function updateCountryDropDown(countrydropdown, countryID) {
         data: JSON.stringify({ CountryID: parseInt(countryID) }),
         dataType: 'json',
         success: function (data) {
-            console.log(countryID, data.d);
+           
             $('#' + countrydropdown + ' option[value="' + countryID.toString() + '"]').prop('selected', true);
 
         },
@@ -293,6 +301,7 @@ $(document).ready(function () {
     // for the first time
     loadCountries();
 
+
     // user selected country
     $('#PresentCountry').on('change', function () {
         CountrySelected('PresentCountry', 'PresentState');
@@ -333,8 +342,6 @@ $(document).ready(function () {
 
         CheckIfEmailExists(email);
     });
-
-
 
 });
 

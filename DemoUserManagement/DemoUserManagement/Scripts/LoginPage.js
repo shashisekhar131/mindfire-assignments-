@@ -37,9 +37,9 @@ $(document).ready(function () {
 
     });
 
-    $('#NewUserBtn').on('click', function (event) {
+    $('#RegisterBtn').on('click', function (event) {
         event.preventDefault();
-        window.location.href = "/UserDetails.aspx";
+        window.location.href = "UserDetails.aspx";
     })
 
 });

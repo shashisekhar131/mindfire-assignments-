@@ -94,7 +94,7 @@ namespace DemoUserManagement.DAL
                         UserID = LastInsertedUserId,
                         CountryID = NewUser.PermanentAddress.CountryID,
                         StateID = NewUser.PermanentAddress.StateID
-
+                          
                     };
 
                     Context.AddressDetails.Add(PermenantAddress);
@@ -350,8 +350,7 @@ namespace DemoUserManagement.DAL
 
                     Context.SaveChanges();
                         Flag = true;
-                    }
-                    
+                    }                   
                 
             }
             catch (DbUpdateException ex)
@@ -950,7 +949,23 @@ namespace DemoUserManagement.DAL
 
         }
 
+        public List<UserRole> GetRoles()
+        {
+            List<UserRole> Roles = new List<UserRole>();
+            try
+            {
+                using (var Context = new UserManagementEntities())
+                {
+                    Roles = Context.UserRoles.ToList();                   
 
+                }
+            }
+            catch (Exception ex)
+            {
+                LoggerClass.AddData(ex);
+            }
+            return Roles;
+        }
         public string GetUserRoleForUserID(int UserID)
         {
             string UserRole= "Admin";

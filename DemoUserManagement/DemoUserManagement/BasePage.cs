@@ -23,16 +23,14 @@ namespace DemoUserManagement
         {
             string PageName = Path.GetFileNameWithoutExtension(Page.AppRelativeVirtualPath);
 
-            // not login and accessed other pages
-            if (PageName != "LoginPage" && !AuthenticateUser())
-            {       
-                Response.Redirect("~/LoginPage.aspx");
-            }
+            
 
             //  access users.aspx
-            if (PageName == "Users" && !AuthorizeUser())
+            if (PageName == "Users")
             {
-                Response.Redirect("~/Unauthorized.aspx");
+
+                if (!AuthenticateUser()) Response.Redirect("~/LoginPage.aspx");
+                if (!AuthorizeUser()) Response.Redirect("~/Unauthorized.aspx");
             }
 
             // login but again came to login so redirect to page accordingly admin/standard
@@ -46,7 +44,7 @@ namespace DemoUserManagement
            if(PageName == "UserDetails")
             {
                 if (Request.QueryString["id"] != null)
-                {
+                {   
                     if (AuthorizeUser())
                     {
                         
@@ -60,9 +58,11 @@ namespace DemoUserManagement
                         Response.Redirect("~/UserDetails.aspx?id=" + StoredSession.UserID);
                     }
                 }
-            }        
 
-            
+               
+            }
+
+          
         }
 
         protected bool AuthenticateUser()

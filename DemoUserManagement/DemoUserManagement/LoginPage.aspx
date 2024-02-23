@@ -28,7 +28,7 @@
     <div class="row custom-margin-top">    
     <div class="col-md-4">
         New User?
-        <button id="NewUserBtn"  class="btn btn-success">Register</button>
+        <button id="RegisterBtn"  class="btn btn-success">Register</button>
     </div>
 </div>
 
