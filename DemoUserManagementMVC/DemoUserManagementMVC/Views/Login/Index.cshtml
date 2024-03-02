@@ -1,0 +1,51 @@
+﻿
+@{
+
+    ViewBag.Title = "Index";
+}
+
+<style>
+    .custom-margin-top {
+        margin-top: 10px;
+    }
+</style>
+
+@using (Html.BeginForm("CheckIfUserExists", "Login", FormMethod.Post))
+{
+    <div class="row">
+        <div class="col-md-4">
+            <label for="UserEmail">Email:</label>
+            <input type="text" id="UserEmail" class="form-control" name="UserEmail">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <label for="UserPassword">Password:</label>
+            <input type="password" id="UserPassword" class="form-control" name="UserPassword">
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-4">
+            <button id="SubmitBtn" class="btn btn-success custom-margin-top">Login</button>
+        </div>
+    </div>
+
+    <div id="tip" class="custom-margin-top">
+        @if (!string.IsNullOrEmpty(ViewBag.Error))
+        {
+            <div class="alert alert-danger custom-margin-top">@ViewBag.Error</div>
+        }
+    </div>
+
+    <div class="row custom-margin-top">
+        <div class="col-md-4">
+            New User?
+            <a href="@Url.Action("Index", "UserRegistration")" class="btn btn-success">Register</a>
+        </div>
+    </div>
+
+}
+

@@ -1,0 +1,155 @@
+
+https://www.youtube.com/watch?v=Uanx4_oAnlc&list=PL1tIj6UC0gcuKhJ-ez3_Pr5WseweyPvqW&index=1
+
+
+git is distributed version control system.
+
+It is used to track changes in any set of files.
+ 
+
+difference b/w git and github 
+
+git is application that tracks the changes. 
+github is place where we upload the files. 
+
+USING GIT BASH 
+
+step1:
+go to folder right click and open git bash 
+belagallus@BELAGALLUS-WIN10 MINGW64 ~/Desktop/git
+
+step2:
+to check whether current folder is a git repository or not
+git status 
+
+step3:
+to create empty repository 
+git init
+
+step4:
+now create a text file and check status
+you will see that the created file is untracked 
+
+now to track the changes add that file to git 
+$ git add someText.txt
+
+step5:
+now do some changes in the file and check status 
+you will see that changes are untracked 
+
+   step1: now to add the changes
+   $ git add someText.txt
+   step2: commit the changes
+   $git commit -m "first commit"
+
+step6:
+if there are 10 people working how to know who changed which feature
+$git log 
+
+commit f80129c1381b45690a812b42398f15d94e7ef3f4 (HEAD -> master)
+Author: shashi <shashi184131@gmail.com>
+Date:   Mon Jan 15 13:00:04 2024 +0530
+
+setting the owner of all tracking changes
+all changes will be saved to the repository linked to the given email
+all global files and changes are linked to that email
+$ git config --global email.name "shashi184131@gmail.com"
+
+
+    first commit
+
+if any changes again go step5
+
+made changes in file 
+$git add someText.txt 
+$git commit -m "second commit"
+
+to go to previous file  which has first commit
+$git log --oneline
+gives the id of all committed files
+ed01eb3 (HEAD -> master) second commit
+f80129c first commit
+
+$git checkout f80129c 
+
+now if you open your file you get your first code 
+
+now if you want second version 
+
+$git checkout ed01eb3
+
+
+to clear the git bash 
+clear 
+now check the status 
+$ git status 
+no files to commit
+
+delete someText.txt file and add git1.txt, git2.txt files 
+now how to save this to git bash 
+
+check status 
+git status
+HEAD detached at ed01eb3
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+        new file:   git 1.txt
+        new file:   git 2.txt
+        deleted:    someText.txt
+
+
+stage the changes 
+You need to specify the files you want to stage. If you want to stage all changes, you can use a period (.) to represent all files:
+
+git add .
+
+
+git status 
+
+[detached HEAD 5cd69a3] third commit
+ 3 files changed, 2 insertions(+), 2 deletions(-)
+ create mode 100644 git 1.txt
+ create mode 100644 git 2.txt
+ delete mode 100644 someText.txt
+
+git commit -m 
+
+
+
+PUSH AND PULL CODE FROM GITHUB
+
+
+first create account in github and have internet
+
+and create repository in github 
+
+copy link of repository
+https://github.com/shashisekhar131/gitFiles.git
+
+$ git remote add orign https://github.com/shashisekhar131/gitFiles.git
+
+add a remote repository(repository in github) named "origin" to your local Git repository.
+
+it means add repository in online to your local repostoires
+
+to push that repository 
+
+$ get push -u origin master
+
+
+to share repository 
+
+click on clone or download 
+click on clone with https take link and share
+if some one adds and commits changes you can see the changes. 
+
+to allow changes made by some others into your code 
+$git pull origin master 
+
+
+how to take folder in github and add changes to it?
+
+first copy link from clone with https 
+$ git clone https://github.com/shashisekhar131/mindfire-assignments-.git
+
+3rd video 8:50 

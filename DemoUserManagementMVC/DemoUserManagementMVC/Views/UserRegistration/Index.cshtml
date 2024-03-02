@@ -1,0 +1,291 @@
+﻿
+@{
+    ViewBag.Title = "UserRegistration";
+}
+
+
+@model  DemoUserManagement.Models.UserFormData
+
+@using (Html.BeginForm("FormSubmitted", "UserRegistration", FormMethod.Post))
+{
+    <div class="container">
+
+        <h2 class="text-center"> USER FORM </h2>
+
+        <div class="personal-details">
+
+            <h3> personal details </h3>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <label for="FirstName">First Name:</label>
+                    @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control", placeholder = "Enter here...", data_input = "user-input" })
+                    <span class="text-danger">@Html.ValidationMessageFor(model => model.FirstName)</span>
+                </div>
+
+                <div class="col-sm-6">
+                    <label for="LastName">Last Name:</label>
+                    @Html.TextBoxFor(model => model.LastName, new { @class = "form-control", placeholder = "Enter here...", data_input = "user-input" })
+                    <span class="text-danger">@Html.ValidationMessageFor(model => model.LastName)</span>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <label for="Password">Password:</label>
+                    @Html.PasswordFor(model => model.Password, new { @class = "form-control", placeholder = "Enter password", data_input = "user-input" })
+                    <span class="text-danger">@Html.ValidationMessageFor(model => model.Password)</span>
+                </div>
+
+                <div class="col-sm-6">
+                    <label for="RetypePassword">Re-type Password:</label>
+                    <input type="password" id="RetypePassword" class="form-control" value="88888888" placeholder="Enter password" name="re-type-password" data-input="user-input">
+                    <span class="text-danger">@Html.ValidationMessageFor(model => model.RetypePassword)</span>
+
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <label for="PhoneNumber">Phone Number:</label>
+                    @Html.TextBoxFor(model => model.PhoneNumber, new { @class = "form-control", placeholder = "Enter here...", data_input = "user-input" })
+                    <span class="text-danger">@Html.ValidationMessageFor(model => model.PhoneNumber)</span>
+                </div>
+
+                <div class="col-sm-6">
+                    <label for="AlternatePhoneNumber">Alternate Phone Number:</label>
+                    @Html.TextBoxFor(model => model.AlternatePhoneNumber, new { @class = "form-control", placeholder = "Enter here...", data_input = "user-input" })
+                </div>
+            </div>
+
+
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <label for="Email">Email:</label>
+                    @Html.TextBoxFor(model => model.Email, new { @class = "form-control", placeholder = "Enter here...", data_input = "user-input" })
+                    <span id="EmailErrorTip">@Html.ValidationMessageFor(model => model.Email)</span>
+                </div>
+
+                <div class="col-sm-6">
+                    <label for="AlternateEmail">Alternate Email:</label>
+                    @Html.TextBoxFor(model => model.AlternateEmail, new { @class = "form-control", placeholder = "Enter here...", data_input = "user-input" })
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <label for="DOB">Date of Birth:</label>
+                    @Html.TextBoxFor(model => model.DateOfBirth, new { @class = "form-control", placeholder = "Enter here...", data_input = "user-input", type = "date" })
+                    <span class="text-danger">@Html.ValidationMessageFor(model => model.DateOfBirth)</span>
+                </div>
+
+                <div class="col-sm-6">
+                    <label for="FavouriteColor">Favorite Color:</label>
+                    @Html.TextBoxFor(model => model.FavoriteColor, new { @class = "form-control", placeholder = "Enter here...", data_input = "user-input" })
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <label for="fileInputPAN">PAN file:</label>
+                    <input type="file" id="fileInputPAN" class="form-control" name="PANFile" />
+                </div>
+
+                <div class="col-sm-6">
+                    <label for="fileInputAadhaar">Aadhaar file:</label>
+                    <input type="file" id="fileInputAadhaar" class="form-control" name="AadhaarFile" />
+                </div>
+            </div>
+
+
+
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <label for="maritalStatus">Marital Status:</label>
+                    <div>
+                        @Html.RadioButtonFor(model => model.MaritalStatus, "married", new { data_input = "user-input" }) Married
+                        @Html.RadioButtonFor(model => model.MaritalStatus, "unmarried", new { data_input = "user-input" }) Unmarried
+                        <span class="text-danger">@Html.ValidationMessageFor(model => model.MaritalStatus)</span>
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <label for="language">Preferred Language:</label>
+                    @Html.DropDownListFor(model => model.PreferredLanguage,
+                              new List<SelectListItem>
+                              {
+                                             new SelectListItem { Text = "English", Value = "English" },
+                                             new SelectListItem { Text = "Hindi", Value = "Hindi" },
+                                             new SelectListItem { Text = "Others", Value = "Others" }
+                              },
+
+                                   new { @class = "form-control", data_input = "user-input" })
+                </div>
+            </div>
+
+
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <label for="PresentCountry">Present Country:</label>
+                    @Html.DropDownListFor(model => model.PresentCountry,
+             (IEnumerable<SelectListItem>)ViewBag.Countries,
+             new { @class = "form-control", data_input = "user-input" })
+
+                </div>
+
+                <div class="col-sm-6">
+                    <label for="PermanentCountry">Permanent Country:</label>
+                    @Html.DropDownListFor(model => model.PermanentCountry,
+            (IEnumerable<SelectListItem>)ViewBag.Countries,
+            new { @class = "form-control", data_input = "user-input" })
+                </div>
+            </div>
+
+
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <label for="PresentState">Present State:</label>
+                    @Html.DropDownListFor(model => model.PresentState,
+            (IEnumerable<SelectListItem>)ViewBag.Countries,
+            new { @class = "form-control", data_input = "user-input" })
+                </div>
+
+                <div class="col-sm-6">
+                    <label for="PermanentState">Permanent State:</label>
+                    @Html.DropDownListFor(model => model.PermanentState,
+               (IEnumerable<SelectListItem>)ViewBag.Countries,
+               new { @class = "form-control", data_input = "user-input" })
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="PresentAddress">Present Address (street):</label>
+                        @Html.TextBoxFor(model => model.PresentAddress, new { @class = "form-control", placeholder = "Enter present address", data_input = "user-input", value = "abc" })
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="PermanentAddress">Permanent Address (street):</label>
+                        @Html.TextBoxFor(model => model.PermanentAddress, new { @class = "form-control", placeholder = "Enter permanent address", data_input = "user-input", value = "abc" })
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+
+
+
+        </div>
+
+        <div class="education-details">
+            <h3> Educational Details </h3>
+
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <label for="PrimaryEducation">Primary Education (up to 10th):</label>
+                    @Html.TextBoxFor(model => model.PrimaryEducation, new { @class = "form-control", placeholder = "Enter here...", data_input = "user-input", value = "abc" })
+                </div>
+
+                <div class="col-sm-6">
+                    <label for="PercentageIn10th">Percentage in 10th:</label>
+                    @Html.TextBoxFor(model => model.PercentageIn10th, new { @class = "form-control", placeholder = "Enter here...", data_allowed = "marks", data_input = "user-input" })
+                    <span class="text-danger">@Html.ValidationMessageFor(model => model.PercentageIn10th)</span>
+
+                </div>
+            </div>
+
+
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <label for="IntermediateEducation">Intermediate Education:</label>
+                    @Html.TextBoxFor(model => model.IntermediateEducation, new { @class = "form-control", placeholder = "Enter here...", data_input = "user-input", value = "abc" })
+
+                </div>
+
+                <div class="col-sm-6">
+                    <label for="IntermediatePercentage">Intermediate Percentage:</label>
+                    @Html.TextBoxFor(model => model.IntermediatePercentage, new { @class = "form-control", placeholder = "Enter here...", data_allowed = "marks", data_input = "user-input" })
+                    <span class="text-danger">@Html.ValidationMessageFor(model => model.IntermediatePercentage)</span>
+
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <label for="BTech">BTech:</label>
+                    @Html.TextBoxFor(model => model.BTech, new { @class = "form-control", placeholder = "Enter here...", data_input = "user-input", value = "abc" })
+                </div>
+
+                <div class="col-sm-6">
+                    <label for="BTechPercentage">BTech Percentage:</label>
+                    @Html.TextBoxFor(model => model.BTechPercentage, new { @class = "form-control", placeholder = "Enter here...", data_allowed = "marks", data_input = "user-input" })
+                    <span class="text-danger">@Html.ValidationMessageFor(model => model.BTechPercentage)</span>
+
+                </div>
+            </div>
+
+
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <label for="UserRole">select your role</label>
+                    @Html.DropDownList("UserRole",
+             new List<SelectListItem>
+             {
+                            new SelectListItem { Text = "Admin", Value = "Admin" },
+                            new SelectListItem { Text = "StandardUser", Value = "StandardUser" },
+             },
+             new { @class = "form-control", data_input = "user-input" })
+                    <span id="RoleMessage"></span>
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- show for registered users -->
+
+        @if (ViewBag.NotesList != null)
+        {
+            @Html.Hidden("NotesUserID", TempData["UserID"])
+            @Html.Hidden("NotesObjectType", "1")
+
+            @Html.Partial("_NotesPartial", (IEnumerable<DemoUserManagement.Models.NoteModel>)ViewBag.NotesList)
+        }
+        @if (ViewBag.DocumentsList != null)
+        {
+            @Html.Hidden("DocumentsUserID", TempData["UserID"])
+            @Html.Hidden("DocumentsObjectType", "1")
+            @Html.Partial("_DocumentsPartial", (IEnumerable<DemoUserManagement.Models.DocumentModel>)ViewBag.DocumentsList)
+        }
+
+        <!-- user controls or partial views  -->
+        <span id="MainError"></span>
+        <button type="submit" id="BtnSubmit" class="btn btn-success input-margin-top">Submit</button>
+        <button type="button" id="BtnReset" class="btn btn-danger input-margin-top">Reset</button>
+
+
+    </div>
+
+
+}
+
+<script  src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+
+<script type="text/javascript" src="~/Scripts/UserRegistration.js"></script>
+
