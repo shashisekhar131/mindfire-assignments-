@@ -23,6 +23,14 @@ namespace DemoUserManagementMVC
                 url: "UserRegistration/GetStatesForCountry/{SelectedCountryID}",
                 defaults: new { controller = "UserRegistration", action = "GetStatesForCountry" }
             );
+            routes.MapRoute(
+                  name: "UserRegistration",
+                  url: "UserRegistration/{id}",
+                  defaults: new { controller = "UserRegistration", action = "Index", id = UrlParameter.Optional }
+              );
+
+
+
 
         }
     }

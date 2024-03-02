@@ -17,8 +17,9 @@ namespace DemoUserManagementMVC.Controllers
         static MyService service = new MyService();
         // GET: UserRegistration
 
-        public ActionResult Index()
+        public ActionResult Index(int? id)
         {   
+            
             var countries = service.GetAllCountries();
             ViewBag.Countries = countries.Select(c => new SelectListItem { Value = c.CountryID.ToString(), Text = c.CountryName }).ToList();
 
@@ -27,14 +28,11 @@ namespace DemoUserManagementMVC.Controllers
             SessionClass sessionData = (SessionClass)Session["UserSession"];
             
                
-            if (sessionData != null || TempData["UserID"] != null )
+            if (id!= null)
             {
                 // populate data into form admin came to edit
-                int UserID;
+                int UserID =(int) id;
 
-
-                if (TempData["UserID"] != null) UserID =(int)TempData["UserID"];
-                else UserID = sessionData.UserID;
                 UserDetailsModel User = service.GetUserDetails(UserID);
                 string UserRole = service.GetUserRoleForUserID(UserID);
 
@@ -66,8 +64,6 @@ namespace DemoUserManagementMVC.Controllers
                     UserRole = UserRole,
                 };
 
-                ViewBag.NotesList = service.GetNotes(UserID, (int)Enums.ObjecType.Users);
-                ViewBag.DocumentsList = service.GetDocumentsForUser(UserID, (int)Enums.ObjecType.Users);
 
                 TempData["UserID"] = UserID;
                 return View(UserInfo);

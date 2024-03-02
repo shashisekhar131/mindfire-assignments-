@@ -259,18 +259,18 @@
 
         <!-- show for registered users -->
 
-        @if (ViewBag.NotesList != null)
+        @if (TempData["UserID"] != null)
         {
             @Html.Hidden("NotesUserID", TempData["UserID"])
             @Html.Hidden("NotesObjectType", "1")
 
-            @Html.Partial("_NotesPartial", (IEnumerable<DemoUserManagement.Models.NoteModel>)ViewBag.NotesList)
+            @Html.Partial("_NotesPartial")
         }
-        @if (ViewBag.DocumentsList != null)
+        @if (TempData["UserID"] != null)
         {
             @Html.Hidden("DocumentsUserID", TempData["UserID"])
             @Html.Hidden("DocumentsObjectType", "1")
-            @Html.Partial("_DocumentsPartial", (IEnumerable<DemoUserManagement.Models.DocumentModel>)ViewBag.DocumentsList)
+            @Html.Partial("_DocumentsPartial")
         }
 
         <!-- user controls or partial views  -->

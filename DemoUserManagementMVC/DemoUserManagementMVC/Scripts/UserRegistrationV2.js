@@ -109,26 +109,27 @@ function collectFormData() {
 
 
 function PostFormData(UserFormData) {
-    let urlParams = new URLSearchParams(window.location.search);
-    let UserId = urlParams.get('id');
+    let UserId = parseInt($('#UserID').val());
+    alert(UserId);
     if (UserId == null) UserId = 0;
 
     $.ajax({
-        url: 'UserRegistrationV2/Submit_Form',
+        url: '/UserRegistrationV2/Submit_Form',
         type: 'POST',
         contentType: 'application/json; charset=utf-8',
         data: JSON.stringify({ UserFormData, UserId }),
         dataType: 'json',
         success: function (data) {
 
+            console.log(data);
             if (UserId == 0) {
                 var InsertedUser = data;
                 console.log("uploading the file");
                 UploadFile(InsertedUser);
 
-            } else {
+            } else  {
                 var Message = data;
-                window.location.href = "/Users.aspx";
+                window.location.href = "/Users/GetAllUsers";
 
             }
 
@@ -140,7 +141,7 @@ function PostFormData(UserFormData) {
         }
     });
 
-}
+}  
 
 
 function UploadFile(InsertedUser) {
@@ -148,14 +149,24 @@ function UploadFile(InsertedUser) {
 
     var fileInput = document.getElementById('fileInputPAN');
 
-    // Create FormData object and append file and UserId
-    var formData = new FormData();
-    formData.append('file', fileInput.files[0]); // Assuming only one file is selected
-    formData.append('UserID', InsertedUser.UserID);
+    alert("Please select a file");
+    var file = fileInput.files[0];
 
+    if (!file) {
+        alert("Please select a file");
+        return;
+    }
+   
+  
+    var formData = new FormData();
+    formData.append("file", file);
+    // uploading from the form directly so no file type selection there so 4- others, object type is usersDetails
+    formData.append("DocumentType", 4);
+    formData.append("ObjectType", 1);
+    formData.append("ObjectID", InsertedUser["UserID"]);
 
     $.ajax({
-        url: 'UploadHandler.ashx',
+        url: '/UserRegistrationV2/UploadDocument',
         type: 'POST',
         processData: false,  // Important! Don't process the files
         contentType: false,  // Important! Set content type to false
@@ -164,8 +175,7 @@ function UploadFile(InsertedUser) {
         success: function (data) {
             // Handle file upload success if needed
             console.log("file uploaded");
-            if (InsertedUser.RoleId == 1) window.location.href = "/Users.aspx";
-            else window.location.href = "/Users.aspx?id=" + InsertedUser.UserID;
+          window.location.href = "/Users/GetAllUsers";
 
         },
         error: function (xhr, status, error) {
@@ -175,9 +185,9 @@ function UploadFile(InsertedUser) {
     });
 }
 function PopulateValuesFromDBIntoForm(UserId) {
-
+    alert(UserId);
     $.ajax({
-        url: 'UserRegistrationV2/GetUserData',
+        url: '/UserRegistrationV2/GetUserData',
         type: 'POST',
         contentType: 'application/json; charset=utf-8',
         data: JSON.stringify({ UserId }),
@@ -185,6 +195,7 @@ function PopulateValuesFromDBIntoForm(UserId) {
         success: function (data) {
 
             var userData = data;
+            console.log(data);
             console.log(userData.PresentState + "big thans");
             for (var property in userData) {
                 if (userData.hasOwnProperty(property)) {
@@ -218,7 +229,7 @@ function updateStateDropDown(statedropdown, stateID) {
 
 
     $.ajax({
-        url: 'UserDetails.aspx/GetStateName',
+        url: '/UserRegistrationV2/GetStateName',
         type: 'POST',
         contentType: 'application/json; charset=utf-8',
         data: JSON.stringify({ StateID: parseInt(stateID) }),
@@ -244,7 +255,7 @@ function updateCountryDropDown(countrydropdown, countryID) {
 
 
     $.ajax({
-        url: 'UserDetails.aspx/GetCountryName',
+        url: '/UserRegistrationV2/GetCountryName',
         type: 'POST',
         contentType: 'application/json; charset=utf-8',
         data: JSON.stringify({ CountryID: parseInt(countryID) }),
@@ -268,13 +279,13 @@ function CheckIfEmailExists(email) {
     // Send AJAX request to the backend
     $.ajax({
         type: "POST",
-        url: "UserRegistrationV2/CheckIfEmailExists", // Replace with your actual backend endpoint
+        url: "/UserRegistrationV2/CheckIfEmailExists", // Replace with your actual backend endpoint
         contentType: 'application/json; charset=utf-8',
         data: JSON.stringify({ Email: email, UserID: id }),
         dataType: 'json',
         success: function (response) {
 
-            if (response.d) {
+            if (response) {
                 $('#EmailErrorTip').html("email already exists").css('color', 'red');
             } else {
                 $('#EmailErrorTip').html("can proceed with this email").css('color', 'green');
@@ -301,7 +312,7 @@ $(document).ready(function () {
     // for the first time
     loadCountries();
 
-/*
+
     // user selected country
     $('#PresentCountry').on('change', function () {
         CountrySelected('PresentCountry', 'PresentState');
@@ -311,12 +322,11 @@ $(document).ready(function () {
     });
 
 
-    if (new URLSearchParams(window.location.search).get('id') != null) {
-        PopulateValuesFromDBIntoForm(new URLSearchParams(window.location.search).get('id'));
+    if ($('#UserID').val() != null) {
+
+        PopulateValuesFromDBIntoForm($('#UserID').val());
         $('#BtnSubmit').html("Save");
         $('#BtnReset').hide();
-
-
     } else {
         $('#BtnSubmit').html("Submit");
         $('#BtnReset').show();
@@ -335,13 +345,14 @@ $(document).ready(function () {
             $('#MainError').html("without proper email you can't proceed").css('color', 'red');
         }
 
+
     });
 
     $("#Email").on('input', function () {
         var email = $(this).val();
 
         CheckIfEmailExists(email);
-    });*/
+    });
 
 });
 

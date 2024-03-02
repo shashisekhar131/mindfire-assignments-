@@ -59,7 +59,6 @@ namespace DemoUserManagementMVC.Controllers
 
         }
 
-        [CustomAuthorizationFilter]
 
         public ActionResult EditUser(int id)
         {

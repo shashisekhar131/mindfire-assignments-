@@ -19,7 +19,7 @@
                 {
                     "data": null,
                     "render": function (data, type, row) {
-                        return '<a href="@Url.Action("EditUser", "Users")/' + row.UserID + '" class="btn btn-primary">Edit</a>';
+                        return '<a href="/UserRegistration/Index/' + row.UserID + '" class="btn btn-primary">Edit</a>';
                     },
                     "name": "Edit",
                     "autowidth": true
