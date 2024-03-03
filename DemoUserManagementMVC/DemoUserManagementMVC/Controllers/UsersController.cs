@@ -20,7 +20,7 @@ namespace DemoUserManagementMVC.Controllers
         static MyService service = new MyService();
 
         // GET: Users
-    /*    [CustomAuthorizationFilter]*/
+        [CustomAuthorizationFilter]
 
         public ActionResult GetAllUsers()
         {                       

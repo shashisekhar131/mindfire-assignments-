@@ -78,9 +78,10 @@
                     "autowidth": true,
                     "render": function (data, type, full, meta) {
                         // Assuming full is your data object, use it to construct the link
-                        return '<a href="' + 'Documents/Download' +
-                            '?fileName=' + full.DocumentGuidName + '" target="_blank">' +
-                            data + '</a>';
+                      return '<a href="' + '@Url.Action("Download", "Documents")' +
+    '?fileName=' + full.DocumentGuidName + '" target="_blank">' +
+    data + '</a>';
+
                     }
                 },
                 { "data": "TimeStamp", "name": "TimeStamp", "autowidth": true },

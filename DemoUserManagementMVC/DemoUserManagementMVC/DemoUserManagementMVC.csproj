@@ -131,6 +131,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\LoginV2Controller.cs" />
+    <Compile Include="Controllers\LogoutController.cs" />
     <Compile Include="Controllers\NotesController.cs" />
     <Compile Include="Controllers\UserRegistrationController.cs" />
     <Compile Include="Controllers\UserRegistrationV2Controller.cs" />
@@ -139,6 +140,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helper\CustomAuthorizationFilterAttribute.cs" />
+    <Compile Include="Helper\CustomAuthorizationFilterAttributeV2.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -210,6 +212,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
     <Folder Include="Views\Documents\" />
+    <Folder Include="Views\Logout\" />
     <Folder Include="Views\Notes\" />
   </ItemGroup>
   <ItemGroup>

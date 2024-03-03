@@ -19,6 +19,8 @@ namespace DemoUserManagement.Models
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
+        [DataType(DataType.Password)]
+        [Compare("Password", ErrorMessage = "Passwords do not match.")]
         public string RetypePassword { get; set; }
 
         [Required(ErrorMessage = "Phone Number is required.")]

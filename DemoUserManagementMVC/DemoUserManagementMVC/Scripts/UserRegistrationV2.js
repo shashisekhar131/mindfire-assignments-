@@ -73,17 +73,94 @@ function CountrySelected(CountrydropdownId, StatedropdownId) {
     LoadStatesForCountry(selectedCountry, StatedropdownId);
 }
 
+function passwordValidation() {
+    var password = $('#Password').val().trim();
+    var retypePassword = $('#RetypePassword').val().trim();
+
+    // Check if passwords match
+    if (password !== retypePassword) {
+        $('#RetypePassword').addClass('is-invalid');
+
+        var errorMessage = $('<span class="error-message text-danger">Passwords do not match.</span>');
+
+        // Insert error message after RetypePassword input element
+        $('#RetypePassword').after(errorMessage);
+        return false;
+    }
+    return true;
+}
+
+function emailValidation() {
+    // Add your email validation regular expression
+    var emailRegex = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
+    // Validate each email input
+    $('[type="email"]').each(function () {
+        var emailInput = $(this);
+        var emailValue = emailInput.val().trim();
+
+        if (!emailRegex.test(emailValue)) {
+            var errorMessage = $('<span class="error-message text-danger ">Invalid email format.</span>');
+
+            // Insert error message after the email input element
+            emailInput.after(errorMessage);
+            emailInput.addClass('is-invalid');
+        }
+    });
+    return true;
+}
+
+function onlyNumberValidation() {
+    var onlyNumbersRegex = /^[0-9]+$/;
+    
+    // Validate each input with data-allowed="digits"
+    $('[data-allowed="digits"]').each(function () {
+        var inputElement = $(this);
+        var inputValue = inputElement.val().trim();
+
+        if (!onlyNumbersRegex.test(inputValue)) {
+            // Add 'is-invalid' class to the input element
+            inputElement.addClass('is-invalid');
+
+            // Create and insert error message
+            var errorMessage = $('<span class="error-message text-danger">Only numbers are allowed.</span>');
+            inputElement.after(errorMessage);
+
+        }
+    });
+
+    return true;
+}
+
 function collectFormData() {
     // Clear UserInfo and ListofAddresses if needed
     var UserInfo = {};
 
+    var isValid = true;
+    // remove all error messages elements added
+    $('.error-message').remove();
+    // remove  bootstrap class for all input elemnts
+    $('.is-invalid').removeClass('is-invalid');
 
+    // password check 
+  isValid = passwordValidation();
+    isValid = emailValidation();
+    isValid =  onlyNumberValidation();
+   
     // Collect personal details
     $('[data-input="user-input"]').each(function () {
         var element = $(this);
         var propertyValue;
         var propertyName = element.attr('id') || element.attr('name');
 
+        if (element.val() === undefined || element.val() === null || element.val().trim() === '') {
+            isValid = false;
+            element.addClass('is-invalid');
+
+            var errorMessage = $('<span class="error-message text-danger">Please fill in this field.</span>');
+
+            // Insert error message after input element
+            element.after(errorMessage);
+        }
         if (element.is('input') || element.is('select')) {
             propertyValue = element.val();
             UserInfo[propertyName] = propertyValue;
@@ -103,15 +180,18 @@ function collectFormData() {
 
     });
     console.log(UserInfo);
-    PostFormData(UserInfo);
+    if (isValid) {
+        PostFormData(UserInfo);
+    }
 }
 
 
 
 function PostFormData(UserFormData) {
     let UserId = parseInt($('#UserID').val());
-    alert(UserId);
-    if (UserId == null) UserId = 0;
+    if (isNaN(UserId)) {
+        UserId = 0;
+    }
 
     $.ajax({
         url: '/UserRegistrationV2/Submit_Form',
@@ -125,7 +205,13 @@ function PostFormData(UserFormData) {
             if (UserId == 0) {
                 var InsertedUser = data;
                 console.log("uploading the file");
-                UploadFile(InsertedUser);
+                var fileInputPAN = document.getElementById('fileInputPAN');
+                var fileInputAadhaar = document.getElementById('fileInputAadhaar');
+               
+                UploadFile(InsertedUser, fileInputAadhaar);
+
+                UploadFile(InsertedUser, fileInputPAN);
+
 
             } else  {
                 var Message = data;
@@ -144,12 +230,10 @@ function PostFormData(UserFormData) {
 }  
 
 
-function UploadFile(InsertedUser) {
+function UploadFile(InsertedUser, fileInput) {
     // Get the file input element
 
-    var fileInput = document.getElementById('fileInputPAN');
-
-    alert("Please select a file");
+   
     var file = fileInput.files[0];
 
     if (!file) {
@@ -175,7 +259,7 @@ function UploadFile(InsertedUser) {
         success: function (data) {
             // Handle file upload success if needed
             console.log("file uploaded");
-          window.location.href = "/Users/GetAllUsers";
+       window.location.href = "/Users/GetAllUsers";
 
         },
         error: function (xhr, status, error) {

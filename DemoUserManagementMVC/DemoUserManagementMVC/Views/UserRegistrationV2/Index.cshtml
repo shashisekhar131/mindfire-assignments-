@@ -15,24 +15,25 @@
         <div class="row">
             <div class="col-sm-6">
                 <label for="FirstName">First Name:</label>
-                <input type="text" id="FirstName" class="form-control" placeholder="Enter here..." value="ram" name="first-name" data-input="user-input">
+                <input type="text" id="FirstName" class="form-control" placeholder="Enter here..."  name="first-name" data-input="user-input"/>
+
             </div>
 
             <div class="col-sm-6">
                 <label for="LastName">Last Name:</label>
-                <input type="text" id="LastName" class="form-control" placeholder="Enter here..." value="kumar" name="last-name" data-input="user-input">
+                <input type="text" id="LastName" class="form-control" placeholder="Enter here..."  name="last-name" data-input="user-input"/>
             </div>
         </div>
 
         <div class="row">
             <div class="col-sm-6">
                 <label for="Password">Password:</label>
-                <input type="password" id="Password" class="form-control" value="88888888" placeholder="Enter password" name="password" data-input="user-input">
+                <input type="password" id="Password" class="form-control"  placeholder="Enter password" name="password" data-input="user-input"/>
             </div>
 
             <div class="col-sm-6">
                 <label for="RetypePassword">Re-type Password:</label>
-                <input type="password" id="RetypePassword" class="form-control" value="88888888" placeholder="Enter password" name="re-type-password" data-input="user-input">
+                <input type="password" id="RetypePassword" class="form-control"  placeholder="Enter password" name="re-type-password" data-input="user-input"/>
             </div>
         </div>
 
@@ -40,12 +41,12 @@
         <div class="row">
             <div class="col-sm-6">
                 <label for="PhoneNumber">Phone Number:</label>
-                <input type="text" id="PhoneNumber" class="form-control" value="1234567890" placeholder="Enter here..." name="ph" data-input="user-input">
+                <input type="text" id="PhoneNumber" class="form-control"  placeholder="Enter here..." name="ph" data-input="user-input" data-allowed="digits"/>
             </div>
 
             <div class="col-sm-6">
                 <label for="AlternatePhoneNumber">Alternate Phone Number:</label>
-                <input type="text" id="AlternatePhoneNumber" class="form-control" value="1234567890" placeholder="Enter here..." name="alternate-phone-number" data-input="user-input">
+                <input type="text" id="AlternatePhoneNumber" class="form-control"  placeholder="Enter here..." name="alternate-phone-number" data-input="user-input" data-allowed="digits"/>
             </div>
         </div>
 
@@ -55,34 +56,34 @@
                 <input type="email" id="Email" class="form-control" placeholder="Enter here..." name="email" data-input="user-input" required>
                 <span id="EmailErrorTip"></span>
             </div>
-
+            
             <div class="col-sm-6">
                 <label for="AlternateEmail">Alternate Email:</label>
-                <input type="text" id="AlternateEmail" class="form-control" placeholder="Enter here..." name="alt-email" data-input="user-input">
+                <input type="email" id="AlternateEmail" class="form-control" placeholder="Enter here..." name="alt-email" data-input="user-input"/>
             </div>
         </div>
 
         <div class="row">
             <div class="col-sm-6">
                 <label for="DOB">Date of Birth:</label>
-                <input type="date" id="DateOfBirth" class="form-control" placeholder="Enter here..." value="2024-02-10" name="dob" data-input="user-input">
+                <input type="date" id="DateOfBirth" class="form-control" placeholder="Enter here..." value="2024-02-10" name="dob" data-input="user-input"/>
             </div>
 
             <div class="col-sm-6">
                 <label for="FavouriteColor">Favorite Color:</label>
-                <input type="text" id="FavouriteColor" class="form-control" placeholder="Enter here..." value="red" name="fav-color" data-input="user-input">
+                <input type="text" id="FavouriteColor" class="form-control" placeholder="Enter here..."  name="fav-color" data-input="user-input"/>
             </div>
         </div>
 
         <div class="row">
             <div class="col-sm-6">
                 <label for="fileInputPAN">PAN file:</label>
-                <input type="file" id="fileInputPAN" class="form-control" />
+                <input type="file" id="fileInputPAN" class="form-control" data-input="user-input"/>
             </div>
 
             <div class="col-sm-6">
                 <label for="fileInputAadhaar">Aadhaar file:</label>
-                <input type="file" id="fileInputAadhaar" class="form-control" />
+                <input type="file" id="fileInputAadhaar" class="form-control" data-input="user-input"/>
             </div>
         </div>
 
@@ -91,8 +92,8 @@
         <div class="row">
             <div class="col-sm-6">
                 <label for="maritalStatus">Marital Status:</label>
-                <input type="radio" name="maritalStatus" value="married" data-input="user-input"> Married
-                <input type="radio" name="maritalStatus" value="unmarried" data-input="user-input"> Unmarried
+                <input type="radio" name="maritalStatus" value="married" data-input="user-input"/> Married
+                <input type="radio" name="maritalStatus" value="unmarried" data-input="user-input"/> Unmarried
             </div>
 
             <div class="col-sm-6">
@@ -140,14 +141,14 @@
             <div class="col-sm-6">
                 <div class="form-group">
                     <label for="PresentAddress">Present Address (street):</label>
-                    <input type="text" id="PresentAddress" class="form-control" placeholder="Enter present address" value="xyz" data-input="user-input">
+                    <input type="text" id="PresentAddress" class="form-control" placeholder="Enter present address"  data-input="user-input"/>
                 </div>
             </div>
 
             <div class="col-sm-6">
                 <div class="form-group">
                     <label for="PermanentAddress">Permanent Address (street):</label>
-                    <input type="text" id="PermanentAddress" class="form-control" placeholder="Enter permanent address" value="abc" data-input="user-input">
+                    <input type="text" id="PermanentAddress" class="form-control" placeholder="Enter permanent address"  data-input="user-input"/>
                 </div>
             </div>
         </div>
@@ -164,33 +165,33 @@
         <div class="row">
             <div class="col-sm-6">
                 <label for="PrimaryEducation">Primary Education (up to 10th):</label>
-                <input type="text" id="PrimaryEducation" class="form-control" placeholder="Enter here..." value="xyz" name="primary education(upto 10th)" data-input="user-input">
+                <input type="text" id="PrimaryEducation" class="form-control" placeholder="Enter here..."  name="primary education(upto 10th)" data-input="user-input"/>
             </div>
             <div class="col-sm-6">
                 <label for="PercentageIn10th">Percentage in 10th:</label>
-                <input type="text" id="PercentageIn10th" class="form-control" placeholder="Enter here..." value="99" name="percentage in 10th" data-allowed="marks" data-input="user-input">
+                <input type="text" id="PercentageIn10th" class="form-control" placeholder="Enter here..."  name="percentage in 10th" data-allowed="digits" data-input="user-input"/>
             </div>
         </div>
 
         <div class="row">
             <div class="col-sm-6">
                 <label for="IntermediateEducation">Intermediate Education:</label>
-                <input type="text" id="IntermediateEducation" class="form-control" placeholder="Enter here..." value="xyz" name="intermediate education" data-input="user-input">
+                <input type="text" id="IntermediateEducation" class="form-control" placeholder="Enter here..."  name="intermediate education" data-input="user-input"/>
             </div>
             <div class="col-sm-6">
                 <label for="IntermediatePercentage">Intermediate Percentage:</label>
-                <input type="text" id="IntermediatePercentage" class="form-control" placeholder="Enter here..." value="99" name="intermediate-percentage" data-allowed="marks" data-input="user-input">
+                <input type="text" id="IntermediatePercentage" class="form-control" placeholder="Enter here..."  name="intermediate-percentage" data-allowed="digits" data-input="user-input"/>
             </div>
         </div>
 
         <div class="row">
             <div class="col-sm-6">
                 <label for="BTech">BTech:</label>
-                <input type="text" id="BTech" class="form-control" placeholder="Enter here..." value="xyz" name="btech" data-input="user-input">
+                <input type="text" id="BTech" class="form-control" placeholder="Enter here..."  name="btech" data-input="user-input"/>
             </div>
             <div class="col-sm-6">
                 <label for="BTechPercentage">BTech Percentage:</label>
-                <input type="text" id="BTechPercentage" class="form-control" placeholder="Enter here..." value="99" name="btech-percentage" data-allowed="marks" data-input="user-input">
+                <input type="text" id="BTechPercentage" class="form-control" placeholder="Enter here..."  name="btech-percentage" data-allowed="digits" data-input="user-input"/>
             </div>
         </div>
 

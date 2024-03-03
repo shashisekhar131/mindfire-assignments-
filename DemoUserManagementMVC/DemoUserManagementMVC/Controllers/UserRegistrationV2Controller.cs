@@ -188,7 +188,7 @@ namespace DemoUserManagementMVC.Controllers
             }
         }
 
-
+        [HttpPost]
         public ActionResult Download(string fileName)
         {
             // Ensure fileName is not null or empty, handle errors if needed
