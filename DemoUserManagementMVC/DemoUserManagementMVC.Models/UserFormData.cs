@@ -19,24 +19,28 @@ namespace DemoUserManagement.Models
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
-        [DataType(DataType.Password)]
-        [Compare("Password", ErrorMessage = "Passwords do not match.")]
         public string RetypePassword { get; set; }
 
         [Required(ErrorMessage = "Phone Number is required.")]
         [DataType(DataType.PhoneNumber)]
         public string PhoneNumber { get; set; }
 
+        [Required(ErrorMessage = "This field is required.")]
+        [DataType(DataType.PhoneNumber)]
         public string AlternatePhoneNumber { get; set; }
 
         [Required(ErrorMessage = "Email is required.")]
         [EmailAddress(ErrorMessage = "Invalid Email Address.")]
         public string Email { get; set; }
 
+        [Required(ErrorMessage = "This field is required.")]
+
         public string AlternateEmail { get; set; }
 
        
         public string DateOfBirth { get; set; }
+
+        [Required(ErrorMessage = "This field is required.")]
 
         public string FavoriteColor { get; set; }
 
@@ -53,15 +57,22 @@ namespace DemoUserManagement.Models
 
         public string PermanentState { get; set; }
 
+        [Required(ErrorMessage = "This field is required.")]
+
         public string PresentAddress { get; set; }
 
+        [Required(ErrorMessage = "This field is required.")]
+
         public string PermanentAddress { get; set; }
+
+        [Required(ErrorMessage = "This field is required.")]
 
         public string PrimaryEducation { get; set; }
 
         [Required(ErrorMessage = "Percentage in 10th is required.")]
         [Range(0, 100, ErrorMessage = "Percentage must be between 0 and 100.")]
         public int PercentageIn10th { get; set; }
+        [Required(ErrorMessage = "This field is required.")]
 
         public string IntermediateEducation { get; set; }
 
@@ -69,7 +80,10 @@ namespace DemoUserManagement.Models
         [Range(0, 100, ErrorMessage = "Percentage must be between 0 and 100.")]
         public int IntermediatePercentage { get; set; }
 
+        [Required(ErrorMessage = "This field is required.")]
+
         public string BTech { get; set; }
+
 
         [Required(ErrorMessage = "BTech Percentage is required.")]
         [Range(0, 100, ErrorMessage = "Percentage must be between 0 and 100.")]

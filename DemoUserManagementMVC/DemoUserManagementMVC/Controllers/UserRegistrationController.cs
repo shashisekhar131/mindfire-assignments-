@@ -18,6 +18,7 @@ namespace DemoUserManagementMVC.Controllers
         static MyService service = new MyService();
         // GET: UserRegistration
 
+        [CustomAuthorizationFilter]
         public ActionResult Index(int? id)
         {   
             
@@ -42,6 +43,7 @@ namespace DemoUserManagementMVC.Controllers
                     FirstName = User.FirstName,
                     LastName = User.LastName,
                     Password = User.Password,
+                    RetypePassword = User.ReTypePassword,
                     PhoneNumber = User.PhoneNumber,
                     AlternatePhoneNumber = User.AlternatePhoneNumber,
                     Email = User.Email,
@@ -88,6 +90,7 @@ namespace DemoUserManagementMVC.Controllers
                     FirstName = model.FirstName,
                     LastName = model.LastName,
                     Password = model.Password,
+                    ReTypePassword = model.RetypePassword,
                     PhoneNumber = model.PhoneNumber,
                     AlternatePhoneNumber = model.AlternatePhoneNumber,
                     Email = model.Email,

@@ -16,30 +16,85 @@ namespace DemoUserManagementMVC.Helper
             //  custom authorization logic 
             SessionClass sessionData = (SessionClass)filterContext.HttpContext.Session["UserSession"];
 
-            if (sessionData == null)
-            {
+
+            var UserIdFromRoute = filterContext.RouteData.Values["id"];
+            var ControllerName = filterContext.Controller.ControllerContext.RouteData.Values["controller"].ToString();
+
+
+            if (ControllerName == "LoginV2" && sessionData != null)
+            {  // logged in again came to login page
                 filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new
                 {
-                    controller = "LoginV2", 
-                    action = "Index"        
+                    controller = "UserRegistrationV2",
+                    action = "Index",
+                    id = sessionData.UserID
                 }));
                 return;
-            }
-            else
-            {
-                if (sessionData.UserRole != 1)
-                {
 
+            }
+
+
+            if (ControllerName == "Users")
+            {
+
+                if (sessionData == null)
+                {
                     filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new
                     {
-                        controller = "UserRegistrationV2", 
-                        action = "Index",        
+                        controller = "LoginV2",
+                        action = "Index",
+
                     }));
                     return;
                 }
 
+                if (sessionData.UserRole != 1)
+                {
+                    filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new
+                    {
+                        controller = "UserRegistrationV2",
+                        action = "Index",
+                        id = sessionData.UserID
+                    }));
+                    return;
+                }
             }
 
+            if (ControllerName == "UserRegistrationV2")
+            {
+
+                if (UserIdFromRoute != null)
+                {
+                    if (sessionData == null)
+                    {
+                        filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new
+                        {
+                            controller = "LoginV2",
+                            action = "Index",
+
+                        }));
+                        return;
+                    }
+                    else if (sessionData.UserRole == 1)
+                    {
+
+                    }
+                    else if (int.TryParse(UserIdFromRoute.ToString(), out int userId) && userId == sessionData.UserID)
+                    {
+
+                    }
+                    else
+                    {
+                        filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new
+                        {
+                            controller = "UserRegistrationV2",
+                            action = "Index",
+                            id = sessionData.UserID
+                        }));
+                        return;
+                    }
+                }
+            }
 
         }
     }

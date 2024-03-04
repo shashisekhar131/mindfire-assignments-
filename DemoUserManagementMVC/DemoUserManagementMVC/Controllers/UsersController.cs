@@ -59,14 +59,7 @@ namespace DemoUserManagementMVC.Controllers
 
         }
 
-
-        public ActionResult EditUser(int id)
-        {
-            int UserID = id;
-            
-            TempData["UserID"] = UserID;
-            return RedirectToAction("Index","UserRegistration");
-        }
+        
 
     }
 }

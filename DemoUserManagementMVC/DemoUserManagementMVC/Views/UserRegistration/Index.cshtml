@@ -40,7 +40,7 @@
 
                 <div class="col-sm-6">
                     <label for="RetypePassword">Re-type Password:</label>
-                    <input type="password" id="RetypePassword" class="form-control" value="88888888" placeholder="Enter password" name="re-type-password" data-input="user-input">
+                    <input type="password" id="RetypePassword" class="form-control"  placeholder="Enter password" name="re-type-password" data-input="user-input">
                     <span class="text-danger">@Html.ValidationMessageFor(model => model.RetypePassword)</span>
 
                 </div>
@@ -56,6 +56,8 @@
                 <div class="col-sm-6">
                     <label for="AlternatePhoneNumber">Alternate Phone Number:</label>
                     @Html.TextBoxFor(model => model.AlternatePhoneNumber, new { @class = "form-control", placeholder = "Enter here...", data_input = "user-input" })
+                    <span class="text-danger">@Html.ValidationMessageFor(model => model.AlternatePhoneNumber)</span>
+
                 </div>
             </div>
 
@@ -71,6 +73,8 @@
                 <div class="col-sm-6">
                     <label for="AlternateEmail">Alternate Email:</label>
                     @Html.TextBoxFor(model => model.AlternateEmail, new { @class = "form-control", placeholder = "Enter here...", data_input = "user-input" })
+                    <span class="text-danger">@Html.ValidationMessageFor(model => model.AlternateEmail)</span>
+
                 </div>
             </div>
 
@@ -84,6 +88,8 @@
                 <div class="col-sm-6">
                     <label for="FavouriteColor">Favorite Color:</label>
                     @Html.TextBoxFor(model => model.FavoriteColor, new { @class = "form-control", placeholder = "Enter here...", data_input = "user-input" })
+                    <span class="text-danger">@Html.ValidationMessageFor(model => model.FavoriteColor)</span>
+
                 </div>
             </div>
 
@@ -168,14 +174,18 @@
                 <div class="col-sm-6">
                     <div class="form-group">
                         <label for="PresentAddress">Present Address (street):</label>
-                        @Html.TextBoxFor(model => model.PresentAddress, new { @class = "form-control", placeholder = "Enter present address", data_input = "user-input", value = "abc" })
+                        @Html.TextBoxFor(model => model.PresentAddress, new { @class = "form-control", placeholder = "Enter present address", data_input = "user-input" })
+                        <span class="text-danger">@Html.ValidationMessageFor(model => model.PresentAddress)</span>
+
                     </div>
                 </div>
 
                 <div class="col-sm-6">
                     <div class="form-group">
                         <label for="PermanentAddress">Permanent Address (street):</label>
-                        @Html.TextBoxFor(model => model.PermanentAddress, new { @class = "form-control", placeholder = "Enter permanent address", data_input = "user-input", value = "abc" })
+                        @Html.TextBoxFor(model => model.PermanentAddress, new { @class = "form-control", placeholder = "Enter permanent address", data_input = "user-input" })
+                        <span class="text-danger">@Html.ValidationMessageFor(model => model.PermanentAddress)</span>
+
                     </div>
                 </div>
             </div>
@@ -196,7 +206,9 @@
             <div class="row">
                 <div class="col-sm-6">
                     <label for="PrimaryEducation">Primary Education (up to 10th):</label>
-                    @Html.TextBoxFor(model => model.PrimaryEducation, new { @class = "form-control", placeholder = "Enter here...", data_input = "user-input", value = "abc" })
+                    @Html.TextBoxFor(model => model.PrimaryEducation, new { @class = "form-control", placeholder = "Enter here...", data_input = "user-input" })
+                    <span class="text-danger">@Html.ValidationMessageFor(model => model.PrimaryEducation)</span>
+
                 </div>
 
                 <div class="col-sm-6">
@@ -212,7 +224,9 @@
             <div class="row">
                 <div class="col-sm-6">
                     <label for="IntermediateEducation">Intermediate Education:</label>
-                    @Html.TextBoxFor(model => model.IntermediateEducation, new { @class = "form-control", placeholder = "Enter here...", data_input = "user-input", value = "abc" })
+                    @Html.TextBoxFor(model => model.IntermediateEducation, new { @class = "form-control", placeholder = "Enter here...", data_input = "user-input" })
+                    <span class="text-danger">@Html.ValidationMessageFor(model => model.IntermediateEducation)</span>
+
 
                 </div>
 
@@ -227,7 +241,9 @@
             <div class="row">
                 <div class="col-sm-6">
                     <label for="BTech">BTech:</label>
-                    @Html.TextBoxFor(model => model.BTech, new { @class = "form-control", placeholder = "Enter here...", data_input = "user-input", value = "abc" })
+                    @Html.TextBoxFor(model => model.BTech, new { @class = "form-control", placeholder = "Enter here...", data_input = "user-input" })
+                    <span class="text-danger">@Html.ValidationMessageFor(model => model.BTech)</span>
+
                 </div>
 
                 <div class="col-sm-6">

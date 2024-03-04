@@ -269,7 +269,6 @@ function UploadFile(InsertedUser, fileInput) {
     });
 }
 function PopulateValuesFromDBIntoForm(UserId) {
-    alert(UserId);
     $.ajax({
         url: '/UserRegistrationV2/GetUserData',
         type: 'POST',
