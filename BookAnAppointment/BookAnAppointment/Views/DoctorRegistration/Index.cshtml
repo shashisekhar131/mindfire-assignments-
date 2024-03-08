@@ -1,0 +1,50 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <h2 class="mb-4">Doctor Registration</h2>
+            <form id="doctorRegistrationForm">
+                <div class="form-group">
+                    <label for="userName">User Name</label>
+                    <input type="text" class="form-control" id="userName" placeholder="Enter your full name" data-input="user-input">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control" id="email" placeholder="Enter your email" data-input="user-input">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control" id="password" placeholder="Enter your password" data-input="user-input">
+                </div>
+                <div class="form-group">
+                    <label for="appointmentSlotTime">Select Session Length</label>
+                    <select class="form-control" id="appointmentSlotTime" data-input="user-input">
+                        <option value="15">15 minutes</option>
+                        <option value="30">30 minutes</option>
+                        <option value="45">45 minutes</option>
+                        <option value="60">60 minutes</option>
+
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="dayStartTime">Day Start Time</label>
+                    <input type="time" class="form-control" id="dayStartTime" data-input="user-input">
+                </div>
+                <div class="form-group">
+                    <label for="dayEndTime">Day End Time</label>
+                    <input type="time" class="form-control" id="dayEndTime" data-input="user-input">
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block mt-3">Create Account</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="~/Scripts/DoctorRegistration.js"></script>

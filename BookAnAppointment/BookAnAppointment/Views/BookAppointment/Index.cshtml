@@ -1,0 +1,43 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 mx-auto">
+            <div id="successMessage"></div>
+            <form id="appointmentForm">
+                <h2 class="mb-4">Book Appointment</h2>
+
+                <div class="form-group">
+                    <label for="doctorSelect">Select Doctor</label>
+                    <select class="form-control" id="doctorSelect" data-input="user-input">
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="dateSelect">Select Date</label>
+                    <input type="date" class="form-control" id="dateSelect" data-input="user-input">
+                </div>
+                <div id="slotContainer"></div>
+                <div class="form-group">
+                    <label for="patientName">Your Name</label>
+                    <input type="text" class="form-control" id="patientName" data-input="user-input" placeholder="Enter your name">
+                </div>
+                <div class="form-group">
+                    <label for="patientEmail">Your Email</label>
+                    <input type="email" class="form-control" id="patientEmail" data-input="user-input" placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label for="patientPhone">Your Phone</label>
+                    <input type="tel" class="form-control" id="patientPhone" data-input="user-input" placeholder="Enter your phone number">
+                </div>
+                <div id="choosenSlot" data-choosen-slot-start-time=""></div>
+                <button type="submit" class="btn btn-primary btn-block mt-3">Book Appointment</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="~/Scripts/BookAppointment.js"></script>
