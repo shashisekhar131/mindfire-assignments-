@@ -1,4 +1,5 @@
 ﻿using BookAnAppointment.Business;
+using BookAnAppointment.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,15 @@ namespace BookAnAppointment.Controllers
         public JsonResult CheckIfDoctorExists(string UserEmail, string UserPassword)
         {
             int doctorId = Business.CheckIfDoctorExists(UserEmail, UserPassword);
+            if(doctorId!= -1)
+            {
+                SessionClass sessionData = new SessionClass
+                {
+                    DoctorID = doctorId
+                };
+
+                Session["DoctorSession"] = sessionData;
+            }
             return Json(doctorId, JsonRequestBehavior.AllowGet);
         }
     }

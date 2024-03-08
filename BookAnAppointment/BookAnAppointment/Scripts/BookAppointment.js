@@ -1,12 +1,7 @@
 ﻿function submitAppointment() {
     collectAppointmentFormData();
 }
-
-
-
 function collectAppointmentFormData() {
-
-
     var isValid = true;
     $('.error-message').remove();
     $('.is-invalid').removeClass('is-invalid');
@@ -27,10 +22,8 @@ function collectAppointmentFormData() {
         isValid = false;
     }
 
-
     if (isValid) {
         var slotTime = $('#choosenSlot').data('choosen-slot-start-time');
-
         var patientInfo = {
             AppointmentDate: slotTime,
             DoctorID: parseInt($('#doctorSelect').val()),
@@ -41,9 +34,6 @@ function collectAppointmentFormData() {
         postFormData(patientInfo);
     }
 }
-
-
-
 function postFormData(patientInfo) {
     $.ajax({
         url: '/BookAppointment/InsertAppointment',
@@ -52,21 +42,18 @@ function postFormData(patientInfo) {
         data: JSON.stringify(patientInfo),
         dataType: 'json',
         success: function (data) {
-
             if (data) {
                 $('#successMessage').text('Appointment successfully booked!').addClass('alert alert-info').show();
                 $('#appointmentForm').hide();
             } else {
                 $('#successMessage').text('Something went wrong try again').addClass('alert alert-info').show();
                 $('#appointmentForm').hide();
-            }
-        
+            }        
         },
         error: function (xhr, status, error) {
             console.log(xhr.responseText);
         }
     });
-
 }
 
 function loadAllDoctors() {
@@ -99,7 +86,6 @@ function populateDoctorDropdown(doctors) {
         }));
     });
 }
-
 function getAvailableSlotsForDoctor(selectedDoctorId, selectedDate) {
     $('#selectedDate').html('<span>Slots for the date: ' + selectedDate + '</span>');
     $.ajax({
@@ -126,7 +112,6 @@ function renderSlots(data, selectedDate) {
     const totalSlots = Math.floor(
         (data.EndTime.Hours * 60 + data.EndTime.Minutes - data.StartTime.Hours * 60 - data.StartTime.Minutes) / data.SlotTime
     );
-
 
     for (let i = 0; i < totalSlots; i++) {
         // Create single slot
@@ -163,19 +148,15 @@ function renderSlots(data, selectedDate) {
 function formatTime(date) {
     return `${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
 }
-
-
 function handleSlotSelection(selectedSlot) {
 
     $('#slotContainer').hide();
-
     const startDate = selectedSlot.data('slot-start-time');
     $('#choosenSlot').data('choosen-slot-start-time', startDate);
     const formattedDate = startDate.toLocaleDateString();
     const formattedTime = startDate.toLocaleTimeString();
     $('#choosenSlot').html(`You have chosen ${formattedDate} ${formattedTime}`).addClass("alert alert-info mt-3");
 }
-
 
 $(document).ready(function () {
     loadAllDoctors();

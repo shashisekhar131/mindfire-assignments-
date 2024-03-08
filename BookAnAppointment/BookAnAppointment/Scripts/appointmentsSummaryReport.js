@@ -7,8 +7,6 @@ $(document).ready(function () {
     var defaultMonth = currentDate.toISOString().slice(0, 7);
 
     $('#summaryDateInput').val(defaultMonth);
-    alert(selectedMonth = $('#summaryDateInput').val());
-
     // Initial load with default month
     loadAppointmentSummaryData();
 
@@ -26,8 +24,6 @@ $(document).ready(function () {
             data: JSON.stringify({ selectedMonth, doctorId: parseInt(doctorId) }),
             success: function (data) {
                 // Update DataTable with new data
-                // Assuming data is your array of objects
-
                 appointmentSummaryTable.clear();
                 // Convert each object to an array and add to the DataTable
                 data.forEach(function (appointment) {
@@ -38,10 +34,8 @@ $(document).ready(function () {
                         appointment.CancelledAppointments
                     ]);
                 });
-
                 // Draw the updated DataTable
                 appointmentSummaryTable.draw();
-
             },
             error: function (xhr, status, error) {
                 console.log(error);

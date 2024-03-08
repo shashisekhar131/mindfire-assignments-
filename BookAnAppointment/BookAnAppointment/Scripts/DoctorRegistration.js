@@ -46,8 +46,7 @@ function postFormData(doctorInfo) {
         data: JSON.stringify(doctorInfo),
         dataType: 'json',
         success: function (data) {
-
-            alert("updated info");
+            window.location.href = "/DoctorLogin/Index";
         },
         error: function (xhr, status, error) {
             console.log(xhr.responseText);

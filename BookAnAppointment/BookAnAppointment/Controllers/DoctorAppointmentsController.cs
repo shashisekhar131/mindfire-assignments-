@@ -1,4 +1,5 @@
 ﻿using BookAnAppointment.Business;
+using BookAnAppointment.Helper;
 using BookAnAppointment.Models;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ using MyBusiness = BookAnAppointment.Business.Business;
 
 namespace BookAnAppointment.Controllers
 {
+    [CustomAuthorizationFilter]
     public class DoctorAppointmentsController : Controller
     {
         MyBusiness Business = new MyBusiness();
