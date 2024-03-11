@@ -67,9 +67,12 @@
         e.preventDefault();
         var appointmentId = $(this).data('id');
         $.ajax({
-            url: '/DoctorAppointments/CancelAppointment/' + appointmentId,
+            url: '/DoctorAppointments/CancelAppointment',
             type: 'POST',
-            success: function () {
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify({ id: appointmentId }),
+            dataType: 'json',
+            success: function (data) {                
                 doctorAppointmentsTable.ajax.reload();
             },
             error: function (error) {
@@ -83,9 +86,12 @@
         e.preventDefault();
         var appointmentId = $(this).data('id');
         $.ajax({
-            url: '/DoctorAppointments/CloseAppointment/' + appointmentId,
+            url: '/DoctorAppointments/CloseAppointment',
             type: 'POST',
-            success: function () {
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify({ id: appointmentId }),
+            dataType: 'json',
+            success: function (data) {
                 doctorAppointmentsTable.ajax.reload();
             },
             error: function (error) {
