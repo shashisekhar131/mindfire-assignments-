@@ -32,7 +32,6 @@ namespace DemoUserManagementMVC.Helper
                     id = sessionData.UserID
                 }));
                 return;
-
             }
 
 

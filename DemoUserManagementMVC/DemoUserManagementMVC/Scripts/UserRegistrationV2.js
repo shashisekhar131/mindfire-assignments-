@@ -172,14 +172,9 @@ function collectFormData() {
                 propertyValue = element.val();
                 UserInfo[propertyName] = propertyValue;
             }
-        }
-
-        if (element.is('input[type="file"]')) {
-            UserInfo[propertyName] = element;
-        }
+        }       
 
     });
-    console.log(UserInfo);
     if (isValid) {
         PostFormData(UserInfo);
     }
@@ -203,14 +198,25 @@ function PostFormData(UserFormData) {
 
             console.log(data);
             if (UserId == 0) {
+
                 var InsertedUser = data;
                 console.log("uploading the file");
                 var fileInputPAN = document.getElementById('fileInputPAN');
                 var fileInputAadhaar = document.getElementById('fileInputAadhaar');
-               
-                UploadFile(InsertedUser, fileInputAadhaar);
 
-                UploadFile(InsertedUser, fileInputPAN);
+                if (!fileInputAadhaar.files[0] && !fileInputPAN.files[0]) {
+                    window.location.href = "/Users/GetAllUsers";
+                } else if (!fileInputAadhaar.files[0] && fileInputPAN.files[0]) {
+                    UploadFile(InsertedUser, fileInputPAN);
+                } else if (fileInputAadhaar.files[0] && !fileInputPAN.files[0]) {
+                    UploadFile(InsertedUser, fileInputAadhaar);
+                } else {
+                    UploadFile(InsertedUser, fileInputAadhaar);
+                    UploadFile(InsertedUser, fileInputPAN);
+                }
+
+
+               
 
 
             } else  {
@@ -234,13 +240,7 @@ function UploadFile(InsertedUser, fileInput) {
     // Get the file input element
 
    
-    var file = fileInput.files[0];
-
-    if (!file) {
-        alert("Please select a file");
-        return;
-    }
-   
+    var file = fileInput.files[0];   
   
     var formData = new FormData();
     formData.append("file", file);
@@ -259,7 +259,7 @@ function UploadFile(InsertedUser, fileInput) {
         success: function (data) {
             // Handle file upload success if needed
             console.log("file uploaded");
-       window.location.href = "/Users/GetAllUsers";
+         window.location.href = "/Users/GetAllUsers";
 
         },
         error: function (xhr, status, error) {
@@ -280,6 +280,7 @@ function PopulateValuesFromDBIntoForm(UserId) {
             var userData = data;
             console.log(data);
             console.log(userData.PresentState + "big thans");
+
             for (var property in userData) {
                 if (userData.hasOwnProperty(property)) {
                     var value = userData[property];
@@ -300,6 +301,17 @@ function PopulateValuesFromDBIntoForm(UserId) {
                 $('#UserRole').show();
             }
 
+            // set the re-password field  as it doesn't comes from db
+            $('#RetypePassword').val(userData.Password);
+
+            // set the data as it comes in format with time
+            var dateString = userData.DateOfBirth;
+            var dateObject = new Date(dateString);
+            // Format the date as YYYY-MM-DD (required format for HTML date input)
+            var formattedDate = dateObject.toISOString().split('T')[0];
+            $('#DateOfBirth').val(formattedDate).val();
+
+
         },
         error: function (xhr, status, error) {
             console.log('Error loading states: ', error);
@@ -309,24 +321,8 @@ function PopulateValuesFromDBIntoForm(UserId) {
 }
 
 function updateStateDropDown(statedropdown, stateID) {
-
-
-    $.ajax({
-        url: '/UserRegistrationV2/GetStateName',
-        type: 'POST',
-        contentType: 'application/json; charset=utf-8',
-        data: JSON.stringify({ StateID: parseInt(stateID) }),
-        dataType: 'json',
-        success: function (data) {
-            console.log(stateID);
-            $('#' + statedropdown + ' option[value="' + stateID.toString() + '"]').prop('selected', true);
-            console.log($('#' + statedropdown).val());
-        },
-        error: function (xhr, status, error) {
-            console.log('Error loading states: ', error);
-            console.log(xhr.responseText);
-        }
-    });
+      $('#' + statedropdown + ' option[value="' + stateID.toString() + '"]').prop('selected', true);
+          
 }
 
 function updateCountryDropDown(countrydropdown, countryID) {
@@ -335,24 +331,9 @@ function updateCountryDropDown(countrydropdown, countryID) {
 
     if (countrydropdown == "PermanentCountry") LoadStatesForCountry(countryID, "PermanentState");
 
+    $('#' + countrydropdown + ' option[value="' + countryID.toString() + '"]').prop('selected', true);
 
-
-    $.ajax({
-        url: '/UserRegistrationV2/GetCountryName',
-        type: 'POST',
-        contentType: 'application/json; charset=utf-8',
-        data: JSON.stringify({ CountryID: parseInt(countryID) }),
-        dataType: 'json',
-        success: function (data) {
-
-            $('#' + countrydropdown + ' option[value="' + countryID.toString() + '"]').prop('selected', true);
-
-        },
-        error: function (xhr, status, error) {
-            console.log('Error loading states: ', error);
-            console.log(xhr.responseText);
-        }
-    });
+       
 }
 function CheckIfEmailExists(email) {
     console.log(id);
@@ -380,15 +361,6 @@ function CheckIfEmailExists(email) {
         }
     });
 }
-
-
-
-
-
-
-
-
-
 
 $(document).ready(function () {
 

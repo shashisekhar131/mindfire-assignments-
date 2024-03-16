@@ -42,7 +42,7 @@ namespace DemoUserManagement.Models
 
         [Required(ErrorMessage = "This field is required.")]
 
-        public string FavoriteColor { get; set; }
+        public string FavouriteColor { get; set; }
 
         [Required(ErrorMessage = "Marital Status is required.")]
         public string MaritalStatus { get; set; }

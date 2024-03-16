@@ -1,5 +1,6 @@
 ﻿using DemoUserManagement.Models;
 using DemoUserManagement.Utils;
+using DemoUserManagementMVC.Helper;
 using Microsoft.SqlServer.Server;
 using System;
 using System.Collections.Generic;
@@ -19,6 +20,7 @@ namespace DemoUserManagementMVC.Controllers
         static MyService service = new MyService();
 
         // GET: UserRegistrationV2
+        [CustomAuthorizationFilterAttributeV2]
         public ActionResult Index(int? id)
         {
             TempData["UserID"] = id;
@@ -64,13 +66,12 @@ namespace DemoUserManagementMVC.Controllers
                     FirstName = UserFormData.FirstName,
                     LastName = UserFormData.LastName,
                     Password = UserFormData.Password,
-                    ReTypePassword = UserFormData.RetypePassword,
                     PhoneNumber = UserFormData.PhoneNumber,
                     AlternatePhoneNumber = UserFormData.AlternatePhoneNumber,
                     Email = UserFormData.Email,
                     AlternateEmail = UserFormData.AlternateEmail,
-                    DOB = UserFormData.DateOfBirth.ToString(),
-                    Favouritecolor = UserFormData.FavoriteColor,
+                    DOB = UserFormData.DateOfBirth.ToString(),                   
+                    Favouritecolor = UserFormData.FavouriteColor,
                     MaritalStatus = UserFormData.MaritalStatus,
                     PreferedLanguage = UserFormData.PreferredLanguage,
                     Aadhaar = "",
@@ -100,6 +101,7 @@ namespace DemoUserManagementMVC.Controllers
 
 
                 };
+
 
                 string UserSelectedRole = UserFormData.UserRole;
                 int RoleID = service.GetRoleIDForRole(UserSelectedRole);
@@ -236,13 +238,12 @@ namespace DemoUserManagementMVC.Controllers
                 FirstName = UserDetails.FirstName,
                 LastName = UserDetails.LastName,
                 Password = UserDetails.Password,
-                RetypePassword =UserDetails.ReTypePassword,
                 PhoneNumber = UserDetails.PhoneNumber,
                 AlternatePhoneNumber = UserDetails.AlternatePhoneNumber,
                 Email = UserDetails.Email,
                 AlternateEmail = UserDetails.AlternateEmail,
                 DateOfBirth = DateTime.Now.ToString(),
-                FavoriteColor = UserDetails.Favouritecolor,
+                FavouriteColor = UserDetails.Favouritecolor,
                 MaritalStatus = UserDetails.MaritalStatus,
                 PreferredLanguage = UserDetails.PreferedLanguage,
                 PresentCountry = UserDetails.PresentAddress.CountryID.ToString(),
@@ -265,18 +266,7 @@ namespace DemoUserManagementMVC.Controllers
         }
 
 
-      [HttpPost]
-        public JsonResult GetCountryName(int CountryID)
-        {
-            string Name = service.GetCountryName(CountryID);
-            return Json(Name, JsonRequestBehavior.AllowGet);
-        }
-        [HttpPost]
-        public JsonResult GetStateName(int StateID)
-        {
-            string Name = service.GetStateName(StateID);
-            return Json(Name, JsonRequestBehavior.AllowGet);
-        }
+    
 
 
     }
