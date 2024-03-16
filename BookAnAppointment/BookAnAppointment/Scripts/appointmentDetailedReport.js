@@ -35,7 +35,6 @@
                 });
                 // Draw the updated DataTable
                 appointmentDetailedTable.draw();
-
             },
             error: function (xhr, status, error) {
                 console.log(error);
@@ -52,10 +51,14 @@
         });
 
         var doc = new jsPDF();
+        // We can adjust the position and styling as needed
+        doc.text("Appointment detailed Report for " + $('#doctorName').val() +" on " + $('#detailedDateInput').val(), 14, 15);
+
         // Set table header
         doc.autoTable({
             head: [columns],
-            body: rows
+            body: rows,
+            startY: 20
         });
         doc.save('detailed_appointments_report.pdf');
     });

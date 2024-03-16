@@ -12,8 +12,12 @@ namespace BookAnAppointment.Controllers
     {
         MyBusiness Business = new MyBusiness();
         // GET: DoctorRegistration
-        public ActionResult Index()
+        public ActionResult Index(int? id)
         {
+            if (id != null)
+            {   
+                TempData["doctorId"] = id;
+            }
             return View();
         }
 
@@ -23,5 +27,21 @@ namespace BookAnAppointment.Controllers
             bool flag = Business.InsertDoctor(doctorInfo);
             return Json(flag, JsonRequestBehavior.AllowGet);
         }
+
+        [HttpPost]
+        public JsonResult GetDoctorDetails(int doctorId)
+        {
+            DoctorInfo doctorInfo = Business.GetDoctorDetails(doctorId);
+            return Json(doctorInfo, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public JsonResult UpdateDoctor(DoctorInfo doctorInfo)
+        {
+
+            bool flag = Business.UpdateDoctor(doctorInfo);
+            return Json(flag, JsonRequestBehavior.AllowGet);
+        }
+
+
     }
 }

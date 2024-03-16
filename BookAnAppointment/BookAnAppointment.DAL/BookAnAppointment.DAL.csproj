@@ -42,6 +42,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
@@ -110,6 +111,10 @@
     <ProjectReference Include="..\BookAnAppointment.Models\BookAnAppointment.Models.csproj">
       <Project>{aac19753-484d-4405-9955-600f71ee2350}</Project>
       <Name>BookAnAppointment.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BookAnAppointment.Utils\BookAnAppointment.Utils.csproj">
+      <Project>{e8921e78-970f-4a8a-9f13-b07fb3536d00}</Project>
+      <Name>BookAnAppointment.Utils</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

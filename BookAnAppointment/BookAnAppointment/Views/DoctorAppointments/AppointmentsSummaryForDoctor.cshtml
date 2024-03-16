@@ -9,6 +9,13 @@
     @Html.Hidden("doctorId", TempData["doctorId"])
 
 }
+
+@if (TempData["doctorName"] != null)
+{
+    @Html.Hidden("doctorName", TempData["doctorName"])
+
+}
+
 <div class="container mt-4">
     <h2>Appointment Summary Report</h2>
     <button id="exportPdfBtn" class="btn btn-primary">Export to PDF</button>

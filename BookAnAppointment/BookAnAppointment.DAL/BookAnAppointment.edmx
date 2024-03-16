@@ -15,7 +15,7 @@
           <Property Name="PatientName" Type="nvarchar(max)" Nullable="false" />
           <Property Name="PatientEmail" Type="nvarchar(max)" Nullable="false" />
           <Property Name="PatientPhone" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="AppointmentStatus" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="AppointmentStatus" Type="int" Nullable="false" />
           <Property Name="AppointmentTime" Type="time" Precision="7" Nullable="false" />
         </EntityType>
         <EntityType Name="Doctor">
@@ -89,7 +89,7 @@
           <Property Name="PatientName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="PatientEmail" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="PatientPhone" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="AppointmentStatus" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="AppointmentStatus" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Doctor" Relationship="Self.FK__Appointme__Docto__52593CB8" FromRole="Appointment" ToRole="Doctor" />
           <Property Name="AppointmentTime" Type="Time" Nullable="false" Precision="7" />
         </EntityType>

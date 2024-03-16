@@ -3,13 +3,23 @@
     ViewBag.Title = "Index";
 }
 
+@if (TempData["doctorId"] != null)
+{
+    @Html.Hidden("doctorId", TempData["doctorId"]);
+}
+else
+{
+    @Html.Hidden("doctorId", 0);
 
+}
 
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-6">
-            <h2 class="mb-4">Doctor Registration</h2>
+            <div id="successMessage"></div>
             <form id="doctorRegistrationForm">
+                <h2 class="mb-4">Doctor Registration</h2>
+
                 <div class="form-group">
                     <label for="userName">User Name</label>
                     <input type="text" class="form-control" id="userName" placeholder="Enter your full name" data-input="user-input">
@@ -29,7 +39,6 @@
                         <option value="30">30 minutes</option>
                         <option value="45">45 minutes</option>
                         <option value="60">60 minutes</option>
-
                     </select>
                 </div>
                 <div class="form-group">
@@ -41,7 +50,7 @@
                     <input type="time" class="form-control" id="dayEndTime" data-input="user-input">
                 </div>
 
-                <button type="submit" class="btn btn-primary btn-block mt-3">Create Account</button>
+                <button type="submit" class="btn btn-primary btn-block mt-3" id="createDoctorAccountBtn">Create Account</button>
             </form>
         </div>
     </div>

@@ -20,7 +20,6 @@
                     <label for="dateSelect">Select Date</label>
                     <input type="date" class="form-control" id="dateSelect" data-input="user-input">
                 </div>
-                <div id="slotContainer"></div>
                 <div class="form-group">
                     <label for="patientName">Your Name</label>
                     <input type="text" class="form-control" id="patientName" data-input="user-input" placeholder="Enter your name">
@@ -39,5 +38,22 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="slotModal" tabindex="-1" role="dialog" aria-labelledby="slotModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="slotModalLabel">Available Slots</h5>                
+            </div>
+            <div class="modal-body">
+                <div id="slotContainer"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeModalButton">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <script type="text/javascript" src="~/Scripts/BookAppointment.js"></script>

@@ -18,7 +18,8 @@ namespace BookAnAppointment.Controllers
         // GET: DoctorAppointments
         public ActionResult Index(int? id)
         {
-            TempData["doctorId"] = id;
+            TempData["doctorId"] = id;     
+           
             return View();
         }
         [HttpPost]
@@ -65,11 +66,19 @@ namespace BookAnAppointment.Controllers
         public ActionResult AppointmentsSummaryForDoctor(int? id)
         {
             TempData["doctorId"] = id;
+            int doctorId = (int)id;
+            string doctorName = Business.GetDoctorName(doctorId);
+            TempData["doctorName"] = doctorName;
+
             return View();
         }
         public ActionResult DetailedAppointmentsForDoctor(int? id)
         {
             TempData["doctorId"] = id;
+            int doctorId = (int)id;
+            string doctorName = Business.GetDoctorName(doctorId);
+            TempData["doctorName"] = doctorName;
+
             return View();
         }        
         [HttpPost]
@@ -86,6 +95,7 @@ namespace BookAnAppointment.Controllers
             return Json(detailedList, JsonRequestBehavior.AllowGet);
 
         }
+       
 
     }
 }

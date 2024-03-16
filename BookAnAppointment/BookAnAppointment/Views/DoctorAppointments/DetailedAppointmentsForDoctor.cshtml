@@ -10,6 +10,12 @@
 
 }
 
+@if (TempData["doctorName"] != null)
+{
+    @Html.Hidden("doctorName", TempData["doctorName"])
+
+}
+
 
 <div class="container mt-4">
     <h2>Appointment Detailed Report</h2>

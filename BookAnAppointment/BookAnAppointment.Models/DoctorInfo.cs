@@ -14,5 +14,6 @@ namespace BookAnAppointment.Models
         public string Email { get; set; }
         public string Password { get; set; }
         public int AppointmentSlotTime { get; set; }
+        public int DoctorID { get; set; }
     }
 }

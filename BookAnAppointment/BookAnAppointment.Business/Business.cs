@@ -30,6 +30,10 @@ namespace BookAnAppointment.Business
         {
             return DataAccess.InsertDoctor(doctorInfo);
         }
+        public bool UpdateDoctor(DoctorInfo doctorInfo)
+        {
+            return DataAccess.UpdateDoctor(doctorInfo);
+        }
 
         public int CheckIfDoctorExists(string UserEmail, string UserPassword)
         {
@@ -61,7 +65,13 @@ namespace BookAnAppointment.Business
             return DataAccess.GetDetailedForMonth(selectedMonth, doctorId);
         }
 
-
-
+        public string GetDoctorName(int doctorId)
+        {
+            return DataAccess.GetDoctorName( doctorId);
+        }
+        public DoctorInfo GetDoctorDetails(int doctorId)
+        {
+            return DataAccess.GetDoctorDetails(doctorId);
+        }
     }
 }

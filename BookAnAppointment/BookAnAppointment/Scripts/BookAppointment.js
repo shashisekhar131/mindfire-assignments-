@@ -11,15 +11,33 @@ function collectAppointmentFormData() {
 
         if (element.val() === undefined || element.val() === null || element.val().trim() === '') {
             isValid = false;
-            element.addClass('is-invalid');
-
             var errorMessage = $('<span class="error-message text-danger">Please fill in this field.</span>');
-            element.after(errorMessage);
+            element.addClass('is-invalid').after(errorMessage);
+        }
+        if (element.prop('type') === "tel") {
+            var phoneRegex = /^[0-9]{10}$/;
+            if (!phoneRegex.test(element.val())) {
+                isValid = false;
+                var errorMessage = $('<span class="error-message text-danger"> phone number is invalid.</span>');
+                element.addClass('is-invalid').after(errorMessage);
+            } 
+        }
+        if (element.prop('type') === "date") {
+            var currentDate = new Date();
+            // Set hours to 0 to compare only the date part
+            currentDate.setHours(0, 0, 0, 0); 
+            var selectedDate = new Date(element.val()); 
+            if (selectedDate < currentDate) {
+                isValid = false;
+                var errorMessage = $('<span class="error-message text-danger">Please select a date that is not in the past.</span>');
+                element.addClass('is-invalid').after(errorMessage);
+            }
         }
     });
 
     if (!$('#choosenSlot').data('choosen-slot-start-time')) {
         isValid = false;
+        $('#choosenSlot').html(`Choose some slot`).addClass("alert alert-info mt-3");
     }
 
     if (isValid) {
@@ -105,8 +123,8 @@ function renderSlots(data, selectedDate) {
     const slotContainer = $('#slotContainer');
     slotContainer.empty();
     
-    $('<div>', { class: '', text: 'Slot time for this doctor is ' + data.SlotTime + ' minutes' }).appendTo('#slotContainer');
-    $('<div>', { class: '', text: 'Slots for the date: ' + selectedDate }).appendTo('#slotContainer');
+    $('<div>', { class: 'alert alert-primary mt-3', text: 'Slot time for this doctor is ' + data.SlotTime + ' minutes' }).appendTo('#slotContainer');
+    $('<div>', { class: 'alert alert-info', text: 'Slots for the date: ' + selectedDate }).appendTo('#slotContainer');
 
     // Get total number of slots = total time / each slot time
     const totalSlots = Math.floor(
@@ -128,18 +146,18 @@ function renderSlots(data, selectedDate) {
         );
 
         const slotElement = $('<span>')
-            .addClass('slot badge badge-pill mx-1')
+            .addClass('slot badge mx-1 my-2')
             .text(`${formatTime(slotStartTime)} - ${formatTime(slotEndTime)}`)
-            .data('slot-start-time', slotStartTime);
+            .data('slot-start-time', slotStartTime)
+            .css('cursor', 'pointer')
+            .css('font-size', '1.25rem'); 
 
         if (isBooked) {
-            slotElement.css('background-color', 'red');
+            slotElement.css('background-color', 'red').click(() => $('#choosenSlot').html(`This slot is already booked`).addClass("alert alert-info mt-3") );
         } else {
             slotElement.css('background-color', 'green');
+            slotElement.click(() => handleSlotSelection(slotElement));
         }
-
-        slotElement.click(() => handleSlotSelection(slotElement));
-
         slotContainer.append(slotElement);
     }
 }
@@ -149,8 +167,10 @@ function formatTime(date) {
     return `${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
 }
 function handleSlotSelection(selectedSlot) {
+        
+    $('.slot').removeClass('bg-primary text-white');
+    selectedSlot.addClass('bg-primary text-white');
 
-    $('#slotContainer').hide();
     const startDate = selectedSlot.data('slot-start-time');
     $('#choosenSlot').data('choosen-slot-start-time', startDate);
     const formattedDate = startDate.toLocaleDateString();
@@ -167,7 +187,8 @@ $(document).ready(function () {
         var selectedDoctorId = $(this).val();
         var currentDate = $('#dateSelect').val();
         getAvailableSlotsForDoctor(selectedDoctorId, currentDate);
-        $('#slotContainer').show();
+        $('#slotModal').modal('show'); // Open the modal
+
     });
 
     $('#dateSelect').on('change', function () {
@@ -177,7 +198,7 @@ $(document).ready(function () {
         // Check if selectedDoctorId is a valid number before calling getAvailableSlotsForDoctor
         if (!isNaN(selectedDoctorId)) {
             getAvailableSlotsForDoctor(selectedDoctorId, selectedDate);
-            $('#slotContainer').show();
+            $('#slotModal').modal('show'); // Open the modal
         } else {        
             $('#doctorSelect').after($('<span>').text('Select doctor first').addClass('text-danger'));         
         }
@@ -186,5 +207,9 @@ $(document).ready(function () {
     $('#appointmentForm').on('submit', function (event) {
         event.preventDefault();
         submitAppointment();
+    });
+
+    $('#closeModalButton').on('click', function () {
+        $('#slotModal').modal('hide');
     });
 });

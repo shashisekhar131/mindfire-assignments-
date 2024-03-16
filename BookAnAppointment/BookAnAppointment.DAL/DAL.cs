@@ -4,9 +4,11 @@ using System.Data.Entity;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.Remoting.Contexts;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using BookAnAppointment.Models;
+using BookAnAppointment.Utils;
 
 namespace BookAnAppointment.DAL
 {
@@ -30,7 +32,7 @@ namespace BookAnAppointment.DAL
             }
             catch (Exception ex)
             {
-                //LoggerClass.AddData(ex);
+                LoggerClass.LogIntoFile(ex);
             }
 
             return listOfDoctors;
@@ -63,7 +65,7 @@ namespace BookAnAppointment.DAL
             }
             catch (Exception ex)
             {
-                //LoggerClass.AddData(ex);
+                LoggerClass.LogIntoFile(ex);
             }
 
             return doctorAvailabilityInfo;
@@ -85,7 +87,7 @@ namespace BookAnAppointment.DAL
                         PatientName = appointmentInfo.PatientName,
                         PatientEmail = appointmentInfo.PatientEmail,
                         PatientPhone = appointmentInfo.PatientPhone,
-                        AppointmentStatus = "Open"
+                        AppointmentStatus = (int)Enums.AppointmentStatusType.Open
                     };
 
                     context.Appointments.Add(appointmentEntity);
@@ -95,7 +97,7 @@ namespace BookAnAppointment.DAL
             }
             catch (Exception ex)
             {
-                //LoggerClass.AddData(ex);
+                LoggerClass.LogIntoFile(ex);
             }
             return flag;
         }
@@ -134,11 +136,40 @@ namespace BookAnAppointment.DAL
             }
             catch (Exception ex)
             {
-                //LoggerClass.AddData(ex);
+                LoggerClass.LogIntoFile(ex);
             }
             return flag;
         }
 
+        public bool UpdateDoctor(DoctorInfo doctorInfo)
+        {
+            bool flag = false;
+            try
+            {
+                using (var context = new BookAnAppointmentEntities())
+                {
+                    var user = context.Users.FirstOrDefault(u => u.UserID == doctorInfo.DoctorID);
+                    user.UserName = doctorInfo.DoctorName;
+                    user.Password = doctorInfo.Password;    
+                    user.Email = doctorInfo.Email;
+
+
+                    var doctor = context.Doctors.FirstOrDefault(doc => doc.DoctorID == doctorInfo.DoctorID);
+                    doctor.DoctorName = doctorInfo.DoctorName;
+                   /* doctor.AppointmentSlotTime= doctorInfo.AppointmentSlotTime;
+                    doctor.DayStartTime = doctorInfo.DayStartTime;
+                    doctor.DayEndTime = doctorInfo.DayEndTime;*/
+                    
+                    context.SaveChanges();
+                    flag = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                LoggerClass.LogIntoFile(ex);
+            }
+            return flag;
+        }
         public int CheckIfDoctorExists(string UserEmail, string UserPassword)
         {
             int doctorId = -1;
@@ -163,13 +194,21 @@ namespace BookAnAppointment.DAL
             }
             catch (Exception ex)
             {
-                //LoggerClass.AddData(ex);
+                LoggerClass.LogIntoFile(ex);
             }
             return doctorId;
         }
         public List<AppointmentModel> GetSortedAndPagedAppointmentsForDoctor(int doctorId, DateTime selectedDate, string sortExpression, string sortDirection, int pageIndex, int pageSize)
         {
             List<AppointmentModel> AppointmentsList = new List<AppointmentModel>();
+
+            // Storing the integer value in db and sending the string value to frontend
+            Dictionary<int, string> status = new Dictionary<int, string>
+            {
+                { (int)Enums.AppointmentStatusType.Cancelled, "Cancelled" },
+                { (int)Enums.AppointmentStatusType.Open, "Open" },
+                { (int)Enums.AppointmentStatusType.Closed, "Closed" }
+            };
 
             using (var Context = new BookAnAppointmentEntities()) 
             {
@@ -185,11 +224,13 @@ namespace BookAnAppointment.DAL
                 // Apply paging
                 List<Appointment> Appointments = query.Skip(pageIndex * pageSize).Take(pageSize).ToList();
 
+
                 AppointmentsList = Appointments.Select(appointment => new AppointmentModel
                 {
                     AppointmentID = appointment.AppointmentID,
                     AppointmentTime = appointment.AppointmentTime,
-                    AppointmentStatus = appointment.AppointmentStatus,
+
+                    AppointmentStatus = status[appointment.AppointmentStatus],
                     AppointmentDate = appointment.AppointmentDate,
                     PatientEmail = appointment.PatientEmail,
                     PatientName = appointment.PatientName,
@@ -213,6 +254,9 @@ namespace BookAnAppointment.DAL
                 case "PatientName":
                     query = (sortDirection == "ASC") ? query.OrderBy(appointment => appointment.PatientName) : query.OrderByDescending(appointment => appointment.PatientName);
                     break;
+                default:
+                    query = query.OrderBy(appointment => appointment.AppointmentID);
+                    break;
             }
             return query;
         }
@@ -230,7 +274,7 @@ namespace BookAnAppointment.DAL
             }
             catch (Exception ex)
             {
-                // LoggerClass.AddData(ex);
+                LoggerClass.LogIntoFile(ex);
             }
             return total;
         }
@@ -243,14 +287,14 @@ namespace BookAnAppointment.DAL
                 using (var context = new BookAnAppointmentEntities())
                 {
                     var appointment = context.Appointments.Find(id);                    
-                    appointment.AppointmentStatus = "Cancelled";
+                    appointment.AppointmentStatus = (int)Enums.AppointmentStatusType.Cancelled;
                     context.SaveChanges();
                     flag = true;
                 }
             }
             catch (Exception ex)
             {
-                // LoggerClass.AddData(ex);
+                LoggerClass.LogIntoFile(ex);
             }
             return flag;
         }
@@ -262,14 +306,14 @@ namespace BookAnAppointment.DAL
                 using (var context = new BookAnAppointmentEntities())
                 {
                     var appointment = context.Appointments.Find(id);
-                    appointment.AppointmentStatus = "Closed";
+                    appointment.AppointmentStatus = (int)Enums.AppointmentStatusType.Closed;
                     context.SaveChanges();
                     flag = true;
                 }
             }
             catch (Exception ex)
             {
-                // LoggerClass.AddData(ex);
+                LoggerClass.LogIntoFile(ex);
             }
             return flag;
         }
@@ -292,8 +336,8 @@ namespace BookAnAppointment.DAL
                         {
                             Date = group.Key,
                             TotalAppointments = group.Count(),
-                            ClosedAppointments = group.Count(a => a.AppointmentStatus == "Closed"),
-                            CancelledAppointments = group.Count(a => a.AppointmentStatus == "Cancelled")
+                            ClosedAppointments = group.Count(a => a.AppointmentStatus == (int)Enums.AppointmentStatusType.Closed),
+                            CancelledAppointments = group.Count(a => a.AppointmentStatus == (int)Enums.AppointmentStatusType.Cancelled)
                         })
                         .OrderBy(a => a.Date)
                         .ToList();
@@ -301,7 +345,7 @@ namespace BookAnAppointment.DAL
             }
             catch (Exception ex)
             {
-                // Handle the exception, log, or throw it as needed.
+                LoggerClass.LogIntoFile(ex);
             }
 
             return summaryList;
@@ -310,29 +354,110 @@ namespace BookAnAppointment.DAL
         public List<AppointmentDetailedInfo> GetDetailedForMonth(DateTime selectedMonth, int doctorId)
         {
             List<AppointmentDetailedInfo> detailedList = new List<AppointmentDetailedInfo>();
-
+            Dictionary<int, string> status = new Dictionary<int, string>
+            {
+                { (int)Enums.AppointmentStatusType.Cancelled, "Cancelled" },
+                { (int)Enums.AppointmentStatusType.Open, "Open" },
+                { (int)Enums.AppointmentStatusType.Closed, "Closed" }
+            };
             try
             {
                 using (var context = new BookAnAppointmentEntities())
-                {
-                    detailedList = context.Appointments
-                        .Where(a => a.DoctorID == doctorId && a.AppointmentDate.Month == selectedMonth.Month && a.AppointmentDate.Year == selectedMonth.Year)
-                        .OrderBy(a => a.AppointmentDate)
-                        .Select(a => new AppointmentDetailedInfo
-                        {
-                            Date = a.AppointmentDate,
-                            PatientName = a.PatientName,
-                            Status = a.AppointmentStatus
-                        })
-                        .ToList();
+                {               
+
+                  var tempDetailedList = context.Appointments
+                   .Where(a => a.DoctorID == doctorId && a.AppointmentDate.Month == selectedMonth.Month && a.AppointmentDate.Year == selectedMonth.Year)
+                   .OrderBy(a => a.AppointmentDate)
+                   .Select(a => new
+                   {
+                       Date = a.AppointmentDate,
+                       PatientName = a.PatientName,
+                       AppointmentStatus = a.AppointmentStatus
+                   })
+                   .ToList();
+
+                    // Perform dictionary lookup outside LINQ query( Status = status[a.AppointmentStatus] )
+                    detailedList = tempDetailedList
+                    .Select(a => new AppointmentDetailedInfo
+                    {
+                        Date = a.Date,
+                        PatientName = a.PatientName,
+                        Status = status[a.AppointmentStatus]
+                    })
+                    .ToList();
                 }
             }
             catch (Exception ex)
             {
-                // Handle the exception, log, or throw it as needed.
+                LoggerClass.LogIntoFile(ex);
             }
 
             return detailedList;
+        }
+        public bool DeleteAllAppointments()
+        {
+            bool flag = false;
+            try
+            {
+                using (var context = new BookAnAppointmentEntities())
+                {
+                    var appointments = context.Appointments.ToList();
+                    // Remove all appointments from the context
+                    context.Appointments.RemoveRange(appointments);
+                    flag = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                LoggerClass.LogIntoFile(ex);
+            }
+            return flag;
+        }
+
+        public string GetDoctorName(int doctorId)
+        {
+            string doctorName = "";
+            try
+            {
+                using (var context = new BookAnAppointmentEntities())
+                {
+                    var doctor = context.Doctors.FirstOrDefault(doc => doc.DoctorID == doctorId);
+                    doctorName = doctor.DoctorName;
+                }
+            }
+            catch (Exception ex)
+            {
+                LoggerClass.LogIntoFile(ex);
+            }
+            return doctorName;
+        }
+
+        public DoctorInfo GetDoctorDetails(int doctorId)
+        {
+            DoctorInfo DoctorInfo = null;
+            try
+            {
+                using (var context = new BookAnAppointmentEntities())
+                {
+                    var doctor = context.Doctors.FirstOrDefault(doc => doc.DoctorID == doctorId);
+                    var user = context.Users.FirstOrDefault(u => u.UserID == doctorId);
+                    DoctorInfo = new DoctorInfo
+                    {
+                        DayEndTime = doctor.DayEndTime,
+                        DayStartTime = doctor.DayStartTime,
+                        DoctorName = doctor.DoctorName,
+                        AppointmentSlotTime = doctor.AppointmentSlotTime,
+                        Email = user.Email,
+                        Password = user.Password
+                   };
+
+                }
+            }
+            catch (Exception ex)
+            {
+                LoggerClass.LogIntoFile(ex);
+            }
+            return DoctorInfo;
         }
     }
 }

@@ -5,7 +5,7 @@ $(document).ready(function () {
     // Set the default value of the month input to the current year and month
     var currentDate = new Date();
     var defaultMonth = currentDate.toISOString().slice(0, 7);
-
+   
     $('#summaryDateInput').val(defaultMonth);
     // Initial load with default month
     loadAppointmentSummaryData();
@@ -52,10 +52,14 @@ $(document).ready(function () {
         });
 
         var doc = new jsPDF();
+        // We can adjust the position and styling as needed
+        doc.text("Appointment Summary Report for " + $('#doctorName').val() +" on " + $('#summaryDateInput').val() , 14, 15); 
+
         // Set table header
         doc.autoTable({
             head: [columns],
-            body: rows
+            body: rows,
+            startY: 20 
         });
         doc.save('appointment_summary.pdf');
     });   
