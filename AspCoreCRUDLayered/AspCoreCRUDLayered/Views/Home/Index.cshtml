@@ -1,0 +1,35 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+
+<a href="@Url.Action("StudentDetailsForm", "Home")">Add new student</a>
+
+<table class="table table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th>Student Name</th>
+            <th>Mobile</th>
+            <th>Email</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in ViewBag.studentList)
+        {
+            <tr>
+                <td>@item.StudentName</td>
+                <td>@item.Mobile</td>
+                <td>@item.Email</td>
+                <td>
+                    <a href="@Url.Action("StudentDetailsForm", "Home", new { id = item.StudentId })">Edit</a>
+                    <a href="@Url.Action("Delete", "Home", new { id = item.StudentId })">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
