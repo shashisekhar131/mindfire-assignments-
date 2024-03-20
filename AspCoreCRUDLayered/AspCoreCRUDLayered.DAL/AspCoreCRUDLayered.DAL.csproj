@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AspCoreCRUDLayered.Models\AspCoreCRUDLayered.Models.csproj" />
+    <ProjectReference Include="..\AspCoreCRUDLayered.Utils\AspCoreCRUDLayered.Utils.csproj" />
   </ItemGroup>
 
 </Project>

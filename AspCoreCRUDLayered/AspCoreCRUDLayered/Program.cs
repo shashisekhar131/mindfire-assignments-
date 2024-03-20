@@ -1,6 +1,7 @@
 using AspCoreCRUDLayered.Business;
 using AspCoreCRUDLayered.DAL;
 using AspCoreCRUDLayered.DAL.DbModels;
+using AspCoreCRUDLayered.Utils;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +11,10 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<IBusiness, Business>();
 builder.Services.AddScoped<IDataAccess, DataAccess>();
+
+string logFilePath = builder.Configuration.GetValue<string>("LogFilePath");
+
+builder.Services.AddSingleton<AspCoreCRUDLayered.Utils.ILogger>(new Logger(logFilePath));
 
 builder.Services.AddDbContext<SchoolDbContext>(
     options => options.UseSqlServer(builder.Configuration.GetConnectionString("SchoolDbConnection")));

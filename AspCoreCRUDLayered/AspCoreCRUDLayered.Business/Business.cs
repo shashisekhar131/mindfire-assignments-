@@ -15,17 +15,34 @@ namespace AspCoreCRUDLayered.Business
         {
             _dataAccess = dataAccess;
         }
-        public List<StudentModel> GetAllStudents()
+       
+        public Task<List<StudentModel>> GetAllStudentsAsync()
         {
-            return _dataAccess.GetAllStudents();
+            return _dataAccess.GetAllStudentsAsync();
+        }     
+        public Task<bool> DeleteStudentAsync(int id)
+        {
+            return _dataAccess.DeleteStudentAsync(id);
+        }
+        public Task<bool> InsertStudentAsync(StudentModel student)
+        {
+            return _dataAccess.InsertStudentAsync(student);
+        }       
+        public  Task<bool> UpdateStudentAsync(StudentModel student)
+        {
+            return _dataAccess.UpdateStudentAsync(student);
+        }
+        public bool InsertStudent(StudentModel student)
+        {
+            return _dataAccess.InsertStudent(student);
         }
         public bool DeleteStudent(int id)
         {
             return _dataAccess.DeleteStudent(id);
         }
-        public bool InsertStudent(StudentModel student)
+        public List<StudentModel> GetAllStudents()
         {
-            return _dataAccess.InsertStudent(student);
+            return _dataAccess.GetAllStudents();
         }
         public bool UpdateStudent(StudentModel student)
         {

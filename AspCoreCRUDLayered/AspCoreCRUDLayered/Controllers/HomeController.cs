@@ -18,15 +18,15 @@ namespace AspCoreCRUDLayered.Controllers
             _Business = business;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            ViewBag.studentList = _Business.GetAllStudents();           
+            ViewBag.studentList = await _Business.GetAllStudentsAsync();           
             return View();
         }
 
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            bool flag = _Business.DeleteStudent(id);
+            bool flag = await _Business.DeleteStudentAsync(id);
             
             return RedirectToAction("Index");
         }
@@ -44,16 +44,16 @@ namespace AspCoreCRUDLayered.Controllers
         }
 
         [HttpPost]
-        public IActionResult SubmitStudentDetails(StudentModel student)
+        public async Task<IActionResult> SubmitStudentDetails(StudentModel student)
         {
             
             if (student.StudentId == 0)
             {
-                bool flag = _Business.InsertStudent(student);
+                bool flag = await _Business.InsertStudentAsync(student);
             }
             else
             {
-                bool flag = _Business.UpdateStudent(student);
+                bool flag = await _Business.UpdateStudentAsync(student);
             }
 
             return RedirectToAction("Index");

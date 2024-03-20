@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AspCoreCRUDLayered.Business\AspCoreCRUDLayered.Business.csproj" />
+    <ProjectReference Include="..\AspCoreCRUDLayered.Utils\AspCoreCRUDLayered.Utils.csproj" />
   </ItemGroup>
 
 </Project>

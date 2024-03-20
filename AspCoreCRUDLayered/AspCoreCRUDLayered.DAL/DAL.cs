@@ -1,64 +1,130 @@
 ﻿using AspCoreCRUDLayered.DAL.DbModels;
 using AspCoreCRUDLayered.Models;
+using AspCoreCRUDLayered.Utils;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace AspCoreCRUDLayered.DAL
 {
     public class DataAccess:IDataAccess
     {
         private readonly SchoolDbContext _context;
+        private readonly Utils.ILogger _logger;
 
-        public DataAccess(SchoolDbContext context)
+
+        public DataAccess(SchoolDbContext context,Utils.ILogger logger)
         {
             _context = context;
+            _logger  = logger;
         }
-        public List<StudentModel> GetAllStudents()
+
+        public async Task<List<StudentModel>> GetAllStudentsAsync()
         {
             List<StudentModel> students = new List<StudentModel>();
-            try
+            
+
+            using (var transaction = await _context.Database.BeginTransactionAsync())
             {
-                
-                    students = _context.Students
-                                        .Select(s => new StudentModel
-                                        {      
-                                            StudentId = s.StudentId,
-                                            StudentName = s.StudentName,
-                                            Email = s.Email,
-                                            Mobile = s.Mobile                                                                                 
-                                        })
-                                        .ToList();
-                
+                try
+                {
+                    students = await _context.Students
+                        .Select(s => new StudentModel
+                        {
+                            StudentId = s.StudentId,
+                            StudentName = s.StudentName,
+                            Email = s.Email,
+                            Mobile = s.Mobile
+                        })
+                        .ToListAsync();
+
+                    await transaction.CommitAsync();
+
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogException(ex);
+                    await transaction.RollbackAsync();
+                }
             }
-            catch (Exception ex)
-            {
-                // Handle exception
-               
-            }
+
             return students;
-        }
+        }      
 
-        public bool DeleteStudent(int id)
+        public async Task<bool> DeleteStudentAsync(int id)
         {
-            bool flag  = false;
+            bool flag = false;
             try
             {
-               
-                    var student = _context.Students.FirstOrDefault(x => x.StudentId == id);
+                var student = await _context.Students.FirstOrDefaultAsync(x => x.StudentId == id);
 
-                    if (student != null)
-                    {
-                        _context.Students.Remove(student);
-                        flag = true;
-                        _context.SaveChanges();
-                    }
-                
+                if (student != null)
+                {
+                    _context.Students.Remove(student);
+                    await _context.SaveChangesAsync();
+                    flag = true;
+                }
             }
             catch (Exception ex)
             {
-                // Handle exception
-
+                _logger.LogException(ex);
             }
             return flag;
         }
+
+        public async Task<bool> InsertStudentAsync(StudentModel student)
+        {
+            bool flag = false;
+            using (var transaction = await _context.Database.BeginTransactionAsync())
+            {
+                try
+                {
+                    var newStudent = new Student
+                    {
+                        StudentName = student.StudentName,
+                        Email = student.Email,
+                        Mobile = student.Mobile,
+                    };
+
+                    _context.Students.Add(newStudent);
+                    await _context.SaveChangesAsync();
+                    flag = true;
+
+                    await transaction.CommitAsync();
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogException(ex);
+                    await transaction.RollbackAsync();
+                }
+            }
+            return flag;
+        }
+
+        public async Task<bool> UpdateStudentAsync(StudentModel student)
+        {
+            bool flag = false;
+            try
+            {
+                var currentStudent = await _context.Students.FirstOrDefaultAsync(x => x.StudentId == student.StudentId);
+
+                if (currentStudent != null)
+                {
+                    currentStudent.Email = student.Email;
+                    currentStudent.Mobile = student.Mobile;
+                    currentStudent.StudentName = student.StudentName;
+
+                    await _context.SaveChangesAsync();
+                    flag = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogException(ex);
+            }
+            return flag;
+        }
+
+
 
         public bool InsertStudent(StudentModel student)
         {
@@ -79,7 +145,7 @@ namespace AspCoreCRUDLayered.DAL
             }
             catch (Exception ex)
             {
-                // Handle exception
+                _logger.LogException(ex);
 
             }
             return flag;
@@ -100,7 +166,7 @@ namespace AspCoreCRUDLayered.DAL
             }
             catch (Exception ex)
             {
-                // Handle exception
+                _logger.LogException(ex);
 
             }
             return flag;
@@ -123,12 +189,58 @@ namespace AspCoreCRUDLayered.DAL
             }
             catch (Exception ex)
             {
-                // Handle exception
+                _logger.LogException(ex);
 
             }
             return student;
         }
-      
 
+        public List<StudentModel> GetAllStudents()
+        {
+            List<StudentModel> students = new List<StudentModel>();
+            try
+            {
+
+                students = _context.Students
+                                    .Select(s => new StudentModel
+                                    {
+                                        StudentId = s.StudentId,
+                                        StudentName = s.StudentName,
+                                        Email = s.Email,
+                                        Mobile = s.Mobile
+                                    })
+                                    .ToList();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogException(ex);
+
+            }
+            return students;
+        }
+
+        public bool DeleteStudent(int id)
+        {
+            bool flag = false;
+            try
+            {
+
+                var student = _context.Students.FirstOrDefault(x => x.StudentId == id);
+
+                if (student != null)
+                {
+                    _context.Students.Remove(student);
+                    flag = true;
+                    _context.SaveChanges();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogException(ex);
+
+            }
+            return flag;
+        }
     }
 }
