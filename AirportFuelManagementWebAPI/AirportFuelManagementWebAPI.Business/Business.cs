@@ -74,6 +74,14 @@ namespace AirportFuelManagementWebAPI.Business
         {
             return dataAccess.FuelConsumptionReport();
         }
+        public Task<FuelTransactionModel> GetTransactionById(int id)
+        {
+            return dataAccess.GetTransactionById(id);
+        }
+        public Task<bool> RemoveAllTransactions()
+        {
+            return dataAccess.RemoveAllTransactions();
+        }
 
 
     }

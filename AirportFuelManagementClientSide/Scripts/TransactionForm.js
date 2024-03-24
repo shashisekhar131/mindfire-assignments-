@@ -43,21 +43,27 @@ $(document).ready(function () {
 // fetch the data and populate into dropdowns 
 fetchAirports();
 fetchAircrafts();
+$('#aircraftName').prop('disabled', true); 
 
+$('#transactionType').change(function() {
+    if ($(this).val() === "IN") {
+        $('#aircraftName').prop('disabled', true); 
+    } else {
+        $('#aircraftName').prop('disabled', false); 
+    }
+});
 $('#transactionForm').submit(function (event) {
     event.preventDefault(); 
-      
+    
     var  Transaction = {
-        createdDate: $('#createdDate').val(),
         transactionType: (($('#transactionType').val() == "IN")?1:0),
-        airportID: parseInt($('#airportName').val()),
-        aircraftID: parseInt($('#aircraftName').val()),
+        airportId: parseInt($('#airportName').val()),
+        aircraftId: (($('#transactionType').val() == "IN")?0:parseInt($('#aircraftName').val())) ,
         quantity: parseFloat($('#quantity').val()),
-        transactionIdparent: parseInt($('#parentID').val())
     };
 
     $.ajax({
-        url: 'https://localhost:7053/api/Transaction', 
+        url: 'https://localhost:7053/api/Transaction/InsertTransaction', 
         type: 'POST',
         headers: {
             'Authorization': 'Bearer ' + (localStorage.getItem('jwtToken') || null)

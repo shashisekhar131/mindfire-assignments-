@@ -37,7 +37,7 @@ namespace AirportFuelManagementWebAPI.Controllers
             return Ok(airports);
         }
         [Authorize]
-        [HttpGet("id")]
+        [HttpGet("{id}")]
         public async Task<ActionResult> GetAirportById(int id)
         {
 
@@ -45,7 +45,7 @@ namespace AirportFuelManagementWebAPI.Controllers
             return Ok(airport);
         }
         [Authorize]
-        [HttpPost]
+        [HttpPost("InsertAirport")]
         public async Task<ActionResult> InsertAirport(AirportModel airport)
         {
 
@@ -60,7 +60,7 @@ namespace AirportFuelManagementWebAPI.Controllers
             }
         }
         [Authorize]
-        [HttpPut]
+        [HttpPut("UpdateAirport")]
         public async Task<ActionResult> UpdateAirport(AirportModel airport)
         {
 

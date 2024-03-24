@@ -17,5 +17,8 @@ namespace AirportFuelManagementWebAPI.Models
         public string? Source { get; set; }
 
         public string? Destination { get; set; }
+        public string? SourceName { get; set; }
+        public string? DestinationName { get; set; }
+
     }
 }

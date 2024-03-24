@@ -43,7 +43,7 @@ namespace AirportFuelManagementWebAPI.Controllers
             
         }
         [Authorize]
-        [HttpPost]
+        [HttpPost("InsertAircraft")]
         public async Task<ActionResult> InsertAircraft(AircraftModel aircraft)
         {
             
@@ -55,7 +55,7 @@ namespace AirportFuelManagementWebAPI.Controllers
            
         }
         [Authorize]
-        [HttpPut]
+        [HttpPut("UpdateAircraft")]
         public async Task<ActionResult> UpdateAircraft(AircraftModel aircraft)
         {
             

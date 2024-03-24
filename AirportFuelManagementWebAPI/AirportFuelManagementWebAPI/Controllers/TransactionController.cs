@@ -31,6 +31,13 @@ namespace AirportFuelManagementWebAPI.Controllers
             return StatusCode(StatusCodes.Status500InternalServerError);
         }
         [Authorize]
+        [HttpGet("GetTransactionById/{id}")]
+        public async Task<ActionResult> GetTransactionById(int id)
+        {
+            FuelTransactionModel transaction = await business.GetTransactionById(id);
+            return Ok(transaction);
+        }
+        [Authorize]
         [HttpGet("FuelConsumptionReport")]
         public async Task<ActionResult> FuelConsumptionReport()
         {
@@ -39,7 +46,7 @@ namespace AirportFuelManagementWebAPI.Controllers
             return Ok(transactions);
         }
         [Authorize]
-        [HttpPost]
+        [HttpPost("InsertTransaction")]
         public async Task<ActionResult> InsertTransaction(FuelTransactionModel Transaction)
         {
 

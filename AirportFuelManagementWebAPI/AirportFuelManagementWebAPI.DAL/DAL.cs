@@ -116,23 +116,31 @@ namespace AirportFuelManagementWebAPI.DAL
             return flag;
         }
 
-
-        public async Task<List<AircraftModel>> GetAllAircrafts()
+      public async Task<List<AircraftModel>> GetAllAircrafts()
         {
-            List<AircraftModel> aircrafts = new List<AircraftModel>();
+             List<AircraftModel> aircrafts = new List<AircraftModel>();
 
             try
             {
+                var airports = await context.Airports.ToListAsync();
+
                 aircrafts = await context.Aircraft
-                                         .Select(s => new AircraftModel
-                                         {
-                                             AircraftId = s.AircraftId,
-                                             AircraftNumber = s.AircraftNumber,
-                                             AirLine = s.AirLine,
-                                             Source = s.Source,
-                                             Destination = s.Destination
-                                         })
-                                         .ToListAsync();
+                    .Select(s => new AircraftModel
+                    {
+                        AircraftId = s.AircraftId,
+                        AircraftNumber = s.AircraftNumber,
+                        AirLine = s.AirLine,
+                        Source = s.Source,
+                        Destination = s.Destination
+                    })
+                    .ToListAsync();
+
+                
+                foreach (var aircraft in aircrafts)
+                {
+                    aircraft.SourceName = airports.FirstOrDefault(a => a.AirportId == Convert.ToInt32(aircraft.Source))?.AirportName;
+                    aircraft.DestinationName = airports.FirstOrDefault(a => a.AirportId == Convert.ToInt32(aircraft.Destination))?.AirportName;
+                }
             }
             catch (Exception ex)
             {
@@ -141,6 +149,7 @@ namespace AirportFuelManagementWebAPI.DAL
 
             return aircrafts;
         }
+
 
         public async Task<AircraftModel> GetAircraftById(int id)
         {
@@ -310,7 +319,63 @@ namespace AirportFuelManagementWebAPI.DAL
             }
         }
 
+        public async Task<FuelTransactionModel> GetTransactionById(int id)
+        {
+            FuelTransactionModel fuelTransaction = new FuelTransactionModel();
 
+            try
+            {
+                var tempFuelTransaction = await context.FuelTransactions.FirstOrDefaultAsync(ft => ft.TransactionId == id);
+               
+                if (tempFuelTransaction != null)
+                {
+                    // Map the properties from the database entity to the model
+                    fuelTransaction = new FuelTransactionModel
+                    {
+                        TransactionId = tempFuelTransaction.TransactionId,
+                        TransactionTime = tempFuelTransaction.TransactionTime,
+                        TransactionType = tempFuelTransaction.TransactionType,
+                        Quantity = tempFuelTransaction.Quantity,
+                        TransactionIdparent = tempFuelTransaction.TransactionIdparent,
+                        AirportId = tempFuelTransaction.AirportId,
+                        AircraftId = tempFuelTransaction.AircraftId,
+                        AirportName = (await context.Airports.FirstOrDefaultAsync(a => a.AirportId == tempFuelTransaction.AirportId))?.AirportName,
+                        AircraftName = (await context.Aircraft.FirstOrDefaultAsync(ac => ac.AircraftId == tempFuelTransaction.AircraftId))?.AircraftNumber
+
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.LogException(ex);
+            }
+
+            return fuelTransaction;
+        }
+
+        public async Task<bool> RemoveAllTransactions()
+        {
+            bool flag = false;
+            try
+            {
+                // Retrieve all transactions
+                var allTransactions = await context.FuelTransactions.ToListAsync();
+                
+                context.RemoveRange(allTransactions);
+
+                // Save changes to the database
+                await context.SaveChangesAsync();
+
+                // Return true to indicate successful removal
+                flag = true;
+            }
+            catch (Exception ex)
+            {
+                logger.LogException(ex);
+
+            }
+            return flag;
+        }
         public async Task<bool> InsertUser(UserModel user)
         {
             bool flag = false;

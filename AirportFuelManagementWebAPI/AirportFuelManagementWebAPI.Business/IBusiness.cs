@@ -23,6 +23,8 @@ namespace AirportFuelManagementWebAPI.Business
         public Task<int> CheckIfUserExists(string userEmail, string userPassword);
         public Task<bool> CheckIfEmailAlreadyExists(string userEmail);
         public Task<List<AirportTransactionInfo>> FuelConsumptionReport();
+        public Task<FuelTransactionModel> GetTransactionById(int id);
+        public Task<bool> RemoveAllTransactions();
 
     }
 }
