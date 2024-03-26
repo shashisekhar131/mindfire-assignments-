@@ -29,8 +29,7 @@ function insertAircraft(aircraft){
         contentType: 'application/json',
         data: JSON.stringify(aircraft), 
         success: function(response) {
-            $('#aircraftForm').hide();
-            $('#message').text('Aircraft added successfully').addClass('alert alert-info').show();     
+            window.location.href="../Views/AircraftsList.html"; 
        },
         error: function(xhr, status, error) {
             console.error('Error:', error);
@@ -50,8 +49,7 @@ function updateAircraft(aircraft){
         contentType: 'application/json',
         data: JSON.stringify(aircraft), 
         success: function(response) {
-            $('#aircraftForm').hide();
-            $('#message').text('Aircraft updated successfully').addClass('alert alert-info').show();     
+            window.location.href="../Views/AircraftsList.html";   
        },
         error: function(xhr, status, error) {
             console.error('Error:', error);
@@ -66,15 +64,11 @@ function populateDropdowns(){
         headers: {
             'Authorization': 'Bearer ' + (localStorage.getItem('jwtToken') || null)
         },
-        success: function (data) {
-            console.log(data);
-            console.log($('#Source'));
+        success: function (data) {          
             $('#Source').empty();
             $('#Destination').empty();
             
             data.forEach(function (airport) {
-                // Create an option element for each airport
-                console.log(airport);
                 var option = $('<option>');
                 option.val(airport.airportId); 
                 option.text(airport.airportName);       
@@ -82,6 +76,9 @@ function populateDropdowns(){
                 $('#Source').append(option);
                 $('#Destination').append(option.clone());
             });
+                
+            $('#Source').val(data[0].airportId);
+            $('#Destination').val(data[0].airportId);
         },
         error: function (xhr, status, error) {
             console.log(error);
@@ -91,9 +88,7 @@ function populateDropdowns(){
 }
 
 $(document).ready(function(){
-    $('#airportForm').show();
-    $('#message').hide();
-
+ 
     populateDropdowns();    
 
     var id = parseInt(new URLSearchParams(window.location.search).get('id'));
@@ -115,9 +110,7 @@ $(document).ready(function(){
         };
 
         if(id!=0) updateAircraft(aircraft);
-        else insertAircraft(aircraft);
-
-       
+        else insertAircraft(aircraft);       
     });
 });
 

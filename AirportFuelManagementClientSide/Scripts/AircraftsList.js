@@ -2,13 +2,13 @@
 function loadAircraftData() {
    
     var aircraftTable = $('#aircraftTable').DataTable({
-        lengthMenu:  [5, 10, 15, 20] , 
-        pageLength: 5 
+        lengthMenu:  [3, 5, 10, 15, 20] , 
+        pageLength: 3 
         });
-        $('#aircraftTable tbody').on('click', '.edit-btn', function() {
-            var aircraftId = $(this).data('aircraft-id');
-            window.location.href = "../Views/AircraftForm.html?id=" + aircraftId;
-        });
+    $('#aircraftTable tbody').on('click', '.edit-btn', function() {
+        var aircraftId = $(this).data('aircraft-id');
+        window.location.href = "../Views/AircraftForm.html?id=" + aircraftId;
+    });
     $.ajax({
         url: 'https://localhost:7053/api/Aircraft', 
         type: 'GET',
@@ -18,7 +18,6 @@ function loadAircraftData() {
         success: function (data) {
             console.log(data);
             aircraftTable.clear();
-            // Add each aircraft to the DataTable
             data.forEach(function (aircraft) {
                 var editButton = '<button class="btn btn-primary btn-sm edit-btn" data-aircraft-id="' + aircraft.aircraftId + '">Edit</button>';
 
@@ -32,9 +31,7 @@ function loadAircraftData() {
                 ]);
                 
             });
-            // Draw the updated DataTable
-            aircraftTable.draw();
-         
+            aircraftTable.draw();         
         },
         error: function (xhr, status, error) {
             console.log(error);
@@ -43,8 +40,6 @@ function loadAircraftData() {
     });
 }
 
-$(document).ready(function () {
-    
-        loadAircraftData();
-      
+$(document).ready(function () {    
+        loadAircraftData();      
 });

@@ -6,5 +6,4 @@ $(document).ready(function() {
     else{
         $('#navbar').load('navbar.html');
     }
-
 });

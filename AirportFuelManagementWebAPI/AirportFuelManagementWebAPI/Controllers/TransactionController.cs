@@ -52,11 +52,19 @@ namespace AirportFuelManagementWebAPI.Controllers
 
             bool flag = await business.InsertTransaction(Transaction);
             if (flag)
-                return Ok(Transaction);
+                return Ok(flag);
             else
                 return StatusCode(StatusCodes.Status500InternalServerError, "Failed to insert Transaction.");
-
         }
-       
+        [Authorize]
+        [HttpDelete("RemoveAllTransactions")]
+        public async Task<ActionResult> RemoveAllTransactions()
+        {
+             bool flag = await business.RemoveAllTransactions();
+            if (flag)
+                return Ok(flag);
+            else
+                return StatusCode(StatusCodes.Status500InternalServerError, "Failed to insert Transaction.");
+        }
     }
 }

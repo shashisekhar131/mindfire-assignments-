@@ -44,6 +44,6 @@ $(document).ready(function () {
          startY: 20
      });
      doc.save('fuel_consumption_report.pdf');
- });
+   });
     
 });

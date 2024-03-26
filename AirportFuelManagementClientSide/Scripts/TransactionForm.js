@@ -11,6 +11,8 @@ function fetchAirports() {
             $.each(data, function (index, airport) {
                 $('#airportName').append('<option value="' + airport.airportId + '">' + airport.airportName + '</option>');
             });
+            $('#airportName').val(data[0].airportId);
+
         },
         error: function (xhr, status, error) {
             console.log(error);
@@ -31,6 +33,8 @@ function fetchAircrafts() {
             $.each(data, function (index, aircraft) {
                 $('#aircraftName').append('<option value="' + aircraft.aircraftId + '">' + aircraft.aircraftNumber + '</option>');
             });
+            $('#aircraftName').val(data[0].aircraftId);
+
         },
         error: function (xhr, status, error) {
             console.log(error);
@@ -44,7 +48,7 @@ $(document).ready(function () {
 fetchAirports();
 fetchAircrafts();
 $('#aircraftName').prop('disabled', true); 
-
+$('#transactionType').val("IN");
 $('#transactionType').change(function() {
     if ($(this).val() === "IN") {
         $('#aircraftName').prop('disabled', true); 
@@ -56,11 +60,12 @@ $('#transactionForm').submit(function (event) {
     event.preventDefault(); 
     
     var  Transaction = {
-        transactionType: (($('#transactionType').val() == "IN")?1:0),
-        airportId: parseInt($('#airportName').val()),
-        aircraftId: (($('#transactionType').val() == "IN")?0:parseInt($('#aircraftName').val())) ,
-        quantity: parseFloat($('#quantity').val()),
+        TransactionType: (($('#transactionType').val() == "IN")?1:2),
+        AirportId: parseInt($('#airportName').val()),
+        AircraftId: (($('#transactionType').val() == "IN")?0:parseInt($('#aircraftName').val())) ,
+        Quantity: parseFloat($('#quantity').val()),
     };
+
 
     $.ajax({
         url: 'https://localhost:7053/api/Transaction/InsertTransaction', 
@@ -72,10 +77,14 @@ $('#transactionForm').submit(function (event) {
         data: JSON.stringify(Transaction),
         success: function (response) {
         console.log(response);
+        window.location.href="../Views/TransactionsList.html";
         },
         error: function (xhr, status, error) {
-            console.error('Error:', error,xhr);
-        }
+            if (xhr.status === 500) {
+                $('#toastContainer .toast').toast('show');
+              } else {
+                alert("An error occurred while processing your request. Please try again later.");
+              }         }
     });
 });
 });

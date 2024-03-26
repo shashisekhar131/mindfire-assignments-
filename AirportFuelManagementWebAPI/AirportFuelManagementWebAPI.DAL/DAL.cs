@@ -246,6 +246,7 @@ namespace AirportFuelManagementWebAPI.DAL
                                     AircraftId = t.AircraftId,
                                     AirportId = t.AirportId,
                                     Quantity = t.Quantity,
+                                    TransactionType = t.TransactionType,
                                     TransactionIdparent = t.TransactionIdparent,
                                     TransactionTime = t.TransactionTime,
                                     AircraftName = aircrafts.FirstOrDefault(a => a.AircraftId == t.AircraftId).AircraftNumber,
@@ -279,16 +280,25 @@ namespace AirportFuelManagementWebAPI.DAL
                         .Where(ft => ft.AirportId == transaction.AirportId && ft.TransactionType == 2)
                         .SumAsync(ft => (decimal?)ft.Quantity) ?? 0)
                     + transaction.Quantity;
-
-                FuelTransaction dbTransaction = new FuelTransaction
+                FuelTransaction dbTransaction = new FuelTransaction()
                 {
                     TransactionTime = DateTime.Now,
                     TransactionType = transaction.TransactionType,
                     AirportId = transaction.AirportId,
-                    AircraftId = transaction.AircraftId,
                     Quantity = transaction.Quantity,
-                    TransactionIdparent= transaction.TransactionIdparent
+                    TransactionIdparent = transaction.TransactionIdparent
                 };
+                if (transaction.AircraftId != 0)
+                {
+                    dbTransaction.AircraftId = transaction.AircraftId;
+
+                }
+                else
+                {   // for IN transaction default aircraft 
+                    dbTransaction.AircraftId = 1;
+                }
+
+
 
                 context.FuelTransactions.Add(dbTransaction);
                 await context.SaveChangesAsync();
@@ -358,15 +368,19 @@ namespace AirportFuelManagementWebAPI.DAL
             bool flag = false;
             try
             {
-                // Retrieve all transactions
                 var allTransactions = await context.FuelTransactions.ToListAsync();
                 
                 context.RemoveRange(allTransactions);
 
-                // Save changes to the database
                 await context.SaveChangesAsync();
 
-                // Return true to indicate successful removal
+                var airports = await context.Airports.ToListAsync();
+
+                foreach (var airport in airports)
+                {
+                    airport.FuelAvailable = 0;
+                }
+                await context.SaveChangesAsync();
                 flag = true;
             }
             catch (Exception ex)

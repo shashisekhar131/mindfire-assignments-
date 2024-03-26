@@ -52,7 +52,6 @@ function fetchParentTransaction(id) {
         // Disable all form fields to make it read-only
         $('#airportName').prop('disabled', true);
         $('#transactionType').prop('disabled', true);
-        $('#quantity').prop('disabled', true);
         $('#parentID').prop('disabled',true);
         },
         error: function (xhr, status, error) {
@@ -73,7 +72,7 @@ $('#transactionForm').submit(function (event) {
     event.preventDefault(); 
     
     var  Transaction = {
-        transactionType: (($('#transactionType').val() == "IN")?1:0),
+        transactionType: (($('#transactionType').val() == "IN")?1:2),
         airportId: parseInt($('#airportName').val()),
         aircraftId: (($('#transactionType').val() == "IN")?0:parseInt($('#aircraftName').val())) ,
         quantity: parseFloat($('#quantity').val()),
@@ -90,10 +89,15 @@ $('#transactionForm').submit(function (event) {
         data: JSON.stringify(Transaction),
         success: function (response) {
         console.log(response);
+        window.location.href="../Views/TransactionsList.html";
+
         },
         error: function (xhr, status, error) {
-            console.error('Error:', error,xhr);
-        }
+            if (xhr.status === 500) {
+                $('#toastContainer .toast').toast('show');
+              } else {
+                alert("An error occurred while processing your request. Please try again later.");
+              }         }
     });
 });
 });

@@ -45,7 +45,7 @@ namespace AirportFuelManagementWebAPI.Controllers
         [Authorize]
         [HttpPost("InsertAircraft")]
         public async Task<ActionResult> InsertAircraft(AircraftModel aircraft)
-        {
+         {
             
             bool flag = await business.InsertAircraft(aircraft);
             if (flag)

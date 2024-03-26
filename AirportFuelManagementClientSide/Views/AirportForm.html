@@ -19,25 +19,31 @@
 <body>
         <div id="navbar"></div>
 
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-md-6 col-md-offset-3">
-                <div id="message"></div>
-                <form id="airportForm" >
-                    <h2 class="text-center">Add Airport</h2>
-                    <div class="form-group">
-                        <label for="AirportName">Airport Name:</label>
-                        <input type="text" id="AirportName" class="form-control" placeholder="Enter Airport Name" value="xyz" name="AirportName">
+        <div class="container mt-5">
+            <div class="row justify-content-center">
+                <div class="col-md-6 col-md-offset-3">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="text-center">Add Airport</h2>
+                        </div>
+                        <div class="card-body">
+                            <form id="airportForm">
+                                <div class="form-group">
+                                    <label for="AirportName">Airport Name:</label>
+                                    <input type="text" id="AirportName" class="form-control" placeholder="Enter Airport Name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="FuelCapacity">Fuel Capacity:</label>
+                                    <input type="number" id="FuelCapacity" class="form-control" placeholder="Enter Fuel Capacity" required>
+                                </div>
+                                <button type="submit" class="btn btn-success btn-block">Submit</button>
+                            </form>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="FuelCapacity">Fuel Capacity:</label>
-                        <input type="text" id="FuelCapacity" class="form-control" placeholder="Enter Fuel Capacity" value="1" name="FuelCapacity">
-                    </div>
-                    <button type="submit" class="btn btn-success btn-block">Submit</button> <!-- btn-block class for full-width button -->
-                </form>
+                </div>
             </div>
         </div>
-    </div>
+        
     <script src="/Scripts/AirportForm.js"></script>
     <script src="/Scripts/common.js"></script>
 </body>

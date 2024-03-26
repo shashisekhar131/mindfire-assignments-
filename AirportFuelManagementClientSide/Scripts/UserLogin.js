@@ -12,12 +12,18 @@ $(document).ready(function() {
         contentType: 'application/json',
         data: JSON.stringify({UserEmail,UserPassword}),
         success: function(response) {
+
+          
           localStorage.setItem('jwtToken', response.token);
           window.location.href="../Views/AirportsList.html";
         },
         error: function(xhr, status, error) {
-          console.error('Error occurred:', error);
-        }
+          if (xhr.status === 401) {
+            $('#toastContainer .toast').toast('show');
+          } else {
+            alert("An error occurred while processing your request. Please try again later.");
+          }    
+          }
       });
     });
   });

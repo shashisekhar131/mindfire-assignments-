@@ -1,6 +1,26 @@
  
-    $(document).ready(function () {
+    function deleteTransactions() {
+        $.ajax({
+            url: 'https://localhost:7053/api/Transaction/RemoveAllTransactions',
+            type: 'DELETE',
+            headers: {
+                'Authorization': 'Bearer ' + (localStorage.getItem('jwtToken') || null)
+            },
+            success: function(response) {
+                location.reload();
+            },
+            error: function(xhr, status, error) {
+            }
+          });  
+      }
 
+    
+    $(document).ready(function () {
+       
+        $('#confirmDeleteBtn').click(function() {
+            deleteTransactions();            
+          });
+          
         var transactionTable = $('#transactionTable').DataTable({
             lengthMenu:  [3,5,10,15] , 
             pageLength: 3
@@ -10,13 +30,11 @@
             window.location.href = "../Views/ReverseTransactionForm.html?parentTransactionId=" + id;
         });
         
-        // Initial load
-        loadTransactionData();
-        
+        loadTransactionData();        
     
         function loadTransactionData() {
             $.ajax({
-                url: 'https://localhost:7053/api/Transaction', // Replace with your API endpoint
+                url: 'https://localhost:7053/api/Transaction', 
                 type: 'GET',
                 headers: {
                     'Authorization': 'Bearer ' + (localStorage.getItem('jwtToken') || null)
@@ -32,9 +50,9 @@
                         transactionTable.row.add([
                             transaction.transactionId,
                             transaction.transactionTime,
-                            (transaction.transactionType == 0)?"OUT":"IN",
+                            (transaction.transactionType == 1)?"IN":"OUT",
                             transaction.airportName,
-                            transaction.aircraftName,
+                            (transaction.transactionType == 1)?"":transaction.aircraftName,
                             transaction.quantity,
                             transaction.transactionIdparent,
                             reverseTransactionBtn

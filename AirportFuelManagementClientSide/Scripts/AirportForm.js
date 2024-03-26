@@ -15,8 +15,7 @@ function populateAirportForm(id){
         }
     });
 }
-function insertAirport(airport){  
-
+function insertAirport(airport){ 
     $.ajax({
         url: 'https://localhost:7053/api/Airport/InsertAirport', 
         type: 'POST', 
@@ -26,8 +25,7 @@ function insertAirport(airport){
         contentType: 'application/json',
         data: JSON.stringify(airport), 
         success: function(response) {
-            $('#airportForm').hide();
-            $('#message').text('Airport added successfully').addClass('alert alert-info').show();     
+            window.location.href="../Views/AirportsList.html";      
        },
         error: function(xhr, status, error) {
             console.error('Error:', error);
@@ -36,8 +34,6 @@ function insertAirport(airport){
 }
 
 function updateAirport(airport){
-    
-
     $.ajax({
         url: 'https://localhost:7053/api/Airport/UpdateAirport', 
         type: 'PUT', 
@@ -47,8 +43,7 @@ function updateAirport(airport){
         contentType: 'application/json',
         data: JSON.stringify(airport), 
         success: function(response) {
-            $('#airportForm').hide();
-            $('#message').text('Airport updated successfully').addClass('alert alert-info').show();     
+            window.location.href="../Views/AirportsList.html";     
        },
         error: function(xhr, status, error) {
             console.error('Error:', error);
@@ -57,10 +52,7 @@ function updateAirport(airport){
 }
 
 $(document).ready(function(){
-      
-    $('#airportForm').show();
-    $('#message').hide();
-
+ 
     var id = parseInt(new URLSearchParams(window.location.search).get('id'));
     if(!isNaN(id)){
         populateAirportForm(id);
@@ -69,8 +61,7 @@ $(document).ready(function(){
     }
 
     $('#airportForm').submit(function(event){
-       event.preventDefault();      
-
+       event.preventDefault(); 
        var airport = {   
        airportId:id,
        airportName: $('#AirportName').val(),
